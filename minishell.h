@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brook <brook@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 22:20:47 by brook             #+#    #+#             */
-/*   Updated: 2022/11/24 22:26:06 by brook            ###   ########.fr       */
+/*   Created: 2022/11/24 22:14:02 by brook             #+#    #+#             */
+/*   Updated: 2022/11/24 22:17:59 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main(void)
-{
-	char	*line;
+# define CLOSE	"\001\033[0m\002"
+# define BOLD	"\001\033[1m\002"
+# define BEGIN(x,y)	"\001\033["#x";"#y"m\002]"
 
-	while (1)
-	{
-		line = readline(BEGIN(49, 34)"Minishell $ "CLOSE);
-		if (!line)
-		{
-			printf("allocation error\n");
-			exit(1);
-		}
-		add_history(line);
-		free(line);
-	}
-}
+#include <stdlib.h>
+#include <readline/history.h>
+
+#endif
