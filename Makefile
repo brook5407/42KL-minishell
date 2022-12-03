@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/02 13:00:04 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/03 14:25:44 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,13 @@ SRC_PATH	:= srcs
 
 OBJ_PATH	:= objs
 
-LIBFT		:=
+LIBFT		:= lib42
 
 INCLUDES	:= includes
+
+INCFLAGS	:= -I $(INCLUDES) -I $(LIBFT)
+
+STATLIB		:= $(LIBFT)/*.a
 
 RM			:= rm -rf
 
@@ -62,6 +66,7 @@ endif
 
 $(NAME): $(OBJS)
 	@echo "↻ Creating $(NAME)..."
+	@make bonus -C $(LIBFT)
 	@$(CC) $(CFLAGS) $^ $(RLFLAGS) -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
@@ -71,10 +76,12 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 
 clean:
 	@clear
+	@make clean -C $(LIBFT)
 	@$(RM) $(OBJ_PATH)
 	@echo "✗ Removed $(OBJ_PATH)"
 
 fclean: clean
+	@make fclean -C $(LIBFT)
 	@$(RM) $(NAME)
 	@echo "✗ Removed $(NAME)"
 

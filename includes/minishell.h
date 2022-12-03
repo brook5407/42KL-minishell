@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/01 16:56:23 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/03 14:22:22 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,21 @@
 # include <curses.h>
 # include <term.h>
 # include <unistd.h>
+# include "../lib42/lib42.h"
 
 /* ====== TEXT STYLING ====== */
 
 /* ====== MACROS ====== */
 
 /* ====== ENUMS ====== */
+
+typedef enum e_token_type
+{
+	CMD,
+	OPR,
+	ID,
+	LIT
+}		t_token_type;
 
 /* ====== STRUCTS ====== */
 
