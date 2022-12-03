@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/03 14:25:44 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/03 14:51:39 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,20 @@ SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
 OBJS		:= $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 
 #------------------------------------------------------------------------------#
+#   STYLING                                                                    #
+#------------------------------------------------------------------------------#
+
+GR			:= \033[1;92m
+
+BL			:= \033[1;34m
+
+UBL			:= \033[4;34m
+
+YL			:= \033[1;33m
+
+DF			:= \033[0m
+
+#------------------------------------------------------------------------------#
 #   RECIPE                                                                     #
 #------------------------------------------------------------------------------#
 
@@ -65,25 +79,26 @@ ifeq ($(DB), 1)
 endif
 
 $(NAME): $(OBJS)
-	@echo "↻ Creating $(NAME)..."
+	@clear
+	@echo "$(GR)🚀 Launching $(NAME)...$(DF)"
 	@make bonus -C $(LIBFT)
 	@$(CC) $(CFLAGS) $^ $(RLFLAGS) -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "↻ Compiling $(notdir $<)"
+	@echo "$(BL)↻ Compiling $(UBL)$(notdir $<)$(DF)"
 
 clean:
 	@clear
 	@make clean -C $(LIBFT)
 	@$(RM) $(OBJ_PATH)
-	@echo "✗ Removed $(OBJ_PATH)"
+	@echo "$(YL)✗ Removed $(OBJ_PATH)$(DF)"
 
 fclean: clean
 	@make fclean -C $(LIBFT)
 	@$(RM) $(NAME)
-	@echo "✗ Removed $(NAME)"
+	@echo "$(YL)✗ Removed $(NAME)$(DF)"
 
 re: fclean all
 
