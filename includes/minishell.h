@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/03 14:22:22 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/03 19:43:29 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ typedef enum e_token_type
 /* ====== STRUCTS ====== */
 
 /* ====== FUNCTION PROTOTYPES ====== */
+
+void	lexer(char *cmds);
 
 #endif

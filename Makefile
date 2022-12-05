@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/03 14:51:39 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/03 15:25:07 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ NORM		:= norminette
 #   PROGRAM'S SCRS                                                             #
 #------------------------------------------------------------------------------#
 
-SRCS		:= minishell.c
+SRCS		:= minishell.c \
+			   lexer/lexer.c
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
 
@@ -82,7 +83,7 @@ $(NAME): $(OBJS)
 	@clear
 	@echo "$(GR)🚀 Launching $(NAME)...$(DF)"
 	@make bonus -C $(LIBFT)
-	@$(CC) $(CFLAGS) $^ $(RLFLAGS) -o $@
+	@$(CC) $(CFLAGS) $^ $(RLFLAGS) $(STATLIB) -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(@D)
