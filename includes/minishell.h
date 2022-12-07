@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/06 16:59:24 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:22:40 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,17 @@
 
 /* ====== TEXT STYLING ====== */
 
+
 /* ====== MACROS ====== */
-# define OPERATORS "<>|="
+# define OPERATORS "<>|"
+# define BUILTINS_TOTAL 7
 
 /* ====== ENUMS ====== */
 
 typedef enum e_token_type
 {
 	CMD,
+	EXT_CMD,
 	OPR,
 	ID,
 	VAL,
@@ -54,23 +57,37 @@ typedef enum e_operators
 	HEREDOC,
 	APPEND,
 	PIPE,
-	ASSG,
-	AND,
-	OR,
-	WILDCARD
+	ASSG
 }		t_operators;
 
 /* ====== STRUCTS ====== */
 
-typedef struct s_built_in {
-	char	*name;
-	char	*str;
-}	t_built_in;
+typedef struct	s_token
+{
+	t_token_type	type;
+	void			*content;
+}		t_token;
+
+typedef struct	s_env
+{
+	char	*key;
+	char	*value;
+}		t_env;
+
+typedef struct	s_minishell
+{
+	char	**builtins;
+	t_list	*envp;
+}		t_minishell;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
-void	lexer(char *cmds);
-void	tokenizer(char *word);
-void	recognize_cmd(char *token);
+void	init_minishell(t_minishell *ms, char **ev);
+void	init_environment(t_minishell *ms, char **ev);
+void	add_env_var(t_minishell *ms, char *key, char *value);
+
+void	lexer(t_minishell *ms, char *cmds);
+void	tokenizer(t_minishell *ms, char *word);
+void	recognize_cmd(t_minishell *ms, char *token);
 
 #endif

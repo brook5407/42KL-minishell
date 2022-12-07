@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:26:33 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/06 16:48:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:57:51 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ char	*get_token(char **word)
 	return (token);
 }
 
-void	identify_token(char *token)
+void	identify_token(t_minishell *ms, char *token)
 {
-	recognize_cmd(token);
+	recognize_cmd(ms, token);
 }
 
 /**
@@ -70,15 +70,15 @@ void	identify_token(char *token)
  * 			   some tokens hiding somewhere in the words.
  * 
  * @brief Tokenizer will identify and tokenize the tokens hiding in the word and
- * store them into cmd_list (data structure to store the commands).
+ * 		  store them into cmd_list (data structure to store the commands).
 */
-void	tokenizer(char *word)
+void	tokenizer(t_minishell *ms, char *word)
 {
 	char	*token;
 
 	if (word == NULL)
 		return ;
 	token = get_token(&word); // need to recognize the token
-	identify_token(token);
+	identify_token(ms, token);
 	free(token);
 }

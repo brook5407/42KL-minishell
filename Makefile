@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/06 16:26:55 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/07 16:08:36 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,8 @@ NORM		:= norminette
 #------------------------------------------------------------------------------#
 
 SRCS		:= minishell.c \
+			   init/minishell_init.c \
+			   init/environment_init.c \
 			   lexer/lexer.c \
 			   lexer/tokenizer.c \
 			   lexer/tokenizer_helper.c

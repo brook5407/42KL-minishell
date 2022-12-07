@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 15:30:49 by wricky-t         ###   ########.fr       */
+/*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
+/*   Updated: 2022/12/07 16:07:22 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * Lexer - Perform Lexical Analysis
-*/
-void	lexer(t_minishell *ms, char *cmds)
+static void	init_builtins(t_minishell *ms)
 {
-	char	**words;
+	char	**builtins;
 
-	// Breaks the commands into smaller pieces
-	words = ft_split_delims(cmds, "\"\'");
-	while (*words != NULL)
-	{
-		// Identify the tokens into category
-		// printf("Processing [%s]\n", *words);
-		tokenizer(ms, *words);
-		words++;
-	}
+	builtins = ft_calloc(BUILTINS_TOTAL + 1, sizeof(char *));
+	builtins[0] = "echo";
+	builtins[1] = "cd";
+	builtins[2] = "pwd";
+	builtins[3] = "env";
+	builtins[4] = "unset";
+	builtins[5] = "export";
+	builtins[6] = "exit";
+	ms->builtins = builtins;
+}
+
+void	init_minishell(t_minishell *ms, char **ev)
+{
+	init_environment(ms, ev);
+	init_builtins(ms);
 }
