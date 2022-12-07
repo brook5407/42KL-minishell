@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 16:22:40 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:44:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 # include <term.h>
 # include <unistd.h>
 # include "../lib42/lib42.h"
+
+
+#define BUFFSIZE 256
+
+extern char		**g_envp;
 
 /* ====== TEXT STYLING ====== */
 
@@ -89,5 +94,12 @@ void	add_env_var(t_minishell *ms, char *key, char *value);
 void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
+
+int		call_cd(char *argv);
+int		call_pwd(char *args);
+int		call_env(char **envp);
+
+t_env	*load_env_var(t_list *envp, char *var);
+void	edit_env_val(t_list *envp, char *var, char *value);
 
 #endif
