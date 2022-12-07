@@ -6,27 +6,27 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 16:23:18 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 17:14:30 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-t_env	*load_env_var(const t_list *envp, char *var)
+t_env	*load_env_var(t_list *envp, char *var)
 {
 	t_env *env_var;
 
 	while (envp != NULL)
 	{
 		env_var = envp->content;
-		if (env_var->key == var)
+		if (ft_strcmp(var, env_var->key) == 0)
 			return (env_var);
-		envp->next;
+		envp = envp->next;
 	}
 	return (NULL);
 }
 
-void edit_env_val(const t_list *envp, char *var, char *value)
+void edit_env_val(t_list *envp, char *var, char *value)
 {
 	t_env *env;
 

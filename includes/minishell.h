@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 16:44:25 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:56:12 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
 
-int		call_cd(char *argv);
-int		call_pwd(char *args);
-int		call_env(char **envp);
+int call_cd(t_list *envp, char *args);
+// int		call_pwd(char *args);
+// int		call_env(char **envp);
 
 t_env	*load_env_var(t_list *envp, char *var);
 void	edit_env_val(t_list *envp, char *var, char *value);

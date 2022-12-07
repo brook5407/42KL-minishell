@@ -6,15 +6,15 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 13:44:22 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:55:06 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int call_env(int argc, char **argv, char **envp)
-{
-    while(*envp)
-        printf("%s\n",*envp++);
-    return (0);
-}
+// int call_env(int argc, char **argv, char **envp)
+// {
+//     while(*envp)
+//         printf("%s\n",*envp++);
+//     return (0);
+// }
