@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 10:59:38 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 13:41:45 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,10 @@
  * 3. Parser
  * 4. Executer
  */
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
 	char	*cmds;
 
-	if (argc != 1 || argv[1])
-	{
-		printf("This program does not accept arguments\n");
-		exit(0);
-	}
 	while (1)
 	{
 		cmds = readline("> ");

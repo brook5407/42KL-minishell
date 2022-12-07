@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 10:58:32 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:20:52 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 
 #define BUFFSIZE 256
 
+extern char		**g_envp;
+
 /* ====== TEXT STYLING ====== */
 
 /* ====== MACROS ====== */
@@ -49,11 +51,20 @@ typedef enum e_token_type
 
 /* ====== STRUCTS ====== */
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}	t_env;
+
 /* ====== FUNCTION PROTOTYPES ====== */
 
 void	lexer(char *cmds);
-int 	call_cd(char *argv);
-int 	call_pwd(char *args);
-int 	call_env(char **envp);
+int		call_cd(char *argv);
+int		call_pwd(char *args);
+int		call_env(char **envp);
+
+t_env	*load_env_var(t_list *envp, char *var);
+void	edit_env_val(t_list *envp, char *var, char *value);
 
 #endif
