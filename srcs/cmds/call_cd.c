@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 16:24:03 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:54:39 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,18 @@
 int call_cd(t_list *envp, char *args)
 {
 	char	cur_path[BUFFSIZE];
+	t_env	*env_var;
 
 	if (!args)
-		args = load_var(envp, "HOME");
+	{
+		env_var = load_env_var(envp, "HOME");
+		args = env_var->value;
+	}
 	else if (args[0] == '-')
-		args = load_var(envp, "OLDPWD");
+	{
+		env_var = load_env_var(envp, "OLDPWD");
+		args = env_var->value;
+	}
 	getcwd(cur_path, BUFFSIZE);
 	edit_env_val(envp, "OLDPWD", cur_path);
 	if(chdir(args) != 0)
