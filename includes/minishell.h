@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/03 19:43:29 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 10:58:32 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # include <unistd.h>
 # include "../lib42/lib42.h"
 
+
+#define BUFFSIZE 256
+
 /* ====== TEXT STYLING ====== */
 
 /* ====== MACROS ====== */
@@ -49,5 +52,8 @@ typedef enum e_token_type
 /* ====== FUNCTION PROTOTYPES ====== */
 
 void	lexer(char *cmds);
+int 	call_cd(char *argv);
+int 	call_pwd(char *args);
+int 	call_env(char **envp);
 
 #endif

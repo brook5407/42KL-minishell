@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
+#    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/03 15:25:07 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/07 11:01:33 by chchin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,11 @@ NORM		:= norminette
 #------------------------------------------------------------------------------#
 
 SRCS		:= minishell.c \
-			   lexer/lexer.c
+			   lexer/lexer.c \
+			   cmds/call_cd.c \
+			   cmds/call_pwd.c \
+			   cmds/call_env.c
+
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
 
