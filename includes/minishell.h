@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 16:56:12 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 17:30:17 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,12 @@
 # include <unistd.h>
 # include "../lib42/lib42.h"
 
-
-#define BUFFSIZE 256
-
-extern char		**g_envp;
-
 /* ====== TEXT STYLING ====== */
-
 
 /* ====== MACROS ====== */
 # define OPERATORS "<>|"
 # define BUILTINS_TOTAL 7
+# define BUFFSIZE 256
 
 /* ====== ENUMS ====== */
 
@@ -66,20 +61,19 @@ typedef enum e_operators
 }		t_operators;
 
 /* ====== STRUCTS ====== */
-
-typedef struct	s_token
+typedef struct s_token
 {
 	t_token_type	type;
 	void			*content;
 }		t_token;
 
-typedef struct	s_env
+typedef struct s_env
 {
 	char	*key;
 	char	*value;
 }		t_env;
 
-typedef struct	s_minishell
+typedef struct s_minishell
 {
 	char	**builtins;
 	t_list	*envp;
@@ -95,7 +89,7 @@ void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
 
-int call_cd(t_list *envp, char *args);
+int		call_cd(t_list *envp, char *args);
 // int		call_pwd(char *args);
 // int		call_env(char **envp);
 

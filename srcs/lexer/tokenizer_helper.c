@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 15:59:26 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:31:04 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	recognize_external(t_minishell *ms, char *token)
 	struct dirent	*entity;
 
 	path = getenv("PATH");
-	paths = ft_split(path,':');
+	paths = ft_split(path, ':');
 	while (*paths != NULL)
 	{
 		dir = opendir(*paths);
@@ -31,7 +31,7 @@ void	recognize_external(t_minishell *ms, char *token)
 			entity = readdir(dir);
 			if (entity == NULL)
 				break ;
-			if (ft_strncmp(token, entity->d_name, ft_strlen(token)) == 0)
+			if (ft_strcmp(token, entity->d_name) == 0)
 				printf("[EXT_CMD]: %s\n", entity->d_name);
 		}
 		paths++;
@@ -51,20 +51,16 @@ void	recognize_cmd(t_minishell *ms, char *token)
 {
 	char	*token_copy;
 	char	**builtins;
-	size_t	len;
 
 	builtins = ms->builtins;
 	token_copy = ft_strlower(ft_strdup(token));
-	len = ft_strlen(token_copy);
 	while (*builtins != NULL)
 	{
-		if (len < ft_strlen(*builtins))
-			len = ft_strlen(*builtins);
-		if (ft_strncmp(*builtins, token_copy, len) == 0)
+		if (ft_strcmp(*builtins, token_copy) == 0)
 			break ;
 		builtins++;
 	}
-	if (*builtins == NULL) // meaning not builtins
+	if (*builtins == NULL)
 		recognize_external(ms, token_copy);
 	else
 		printf("[CMD]: %s\n", *builtins);

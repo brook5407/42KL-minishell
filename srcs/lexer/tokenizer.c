@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:26:33 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 13:57:51 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:32:16 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	tokenizer(t_minishell *ms, char *word)
 
 	if (word == NULL)
 		return ;
-	token = get_token(&word); // need to recognize the token
+	token = get_token(&word);
 	identify_token(ms, token);
 	free(token);
 }
