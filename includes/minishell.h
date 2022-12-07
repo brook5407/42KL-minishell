@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/03 19:43:29 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:59:24 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 /* ====== TEXT STYLING ====== */
 
 /* ====== MACROS ====== */
+# define OPERATORS "<>|="
 
 /* ====== ENUMS ====== */
 
@@ -41,13 +42,35 @@ typedef enum e_token_type
 	CMD,
 	OPR,
 	ID,
+	VAL,
 	LIT
 }		t_token_type;
 
+typedef enum e_operators
+{
+	DOLLAR,
+	RDRIN,
+	RDROUT,
+	HEREDOC,
+	APPEND,
+	PIPE,
+	ASSG,
+	AND,
+	OR,
+	WILDCARD
+}		t_operators;
+
 /* ====== STRUCTS ====== */
+
+typedef struct s_built_in {
+	char	*name;
+	char	*str;
+}	t_built_in;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
 void	lexer(char *cmds);
+void	tokenizer(char *word);
+void	recognize_cmd(char *token);
 
 #endif

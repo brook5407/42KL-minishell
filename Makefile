@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/03 15:25:07 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/06 16:26:55 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,9 @@ NORM		:= norminette
 #------------------------------------------------------------------------------#
 
 SRCS		:= minishell.c \
-			   lexer/lexer.c
+			   lexer/lexer.c \
+			   lexer/tokenizer.c \
+			   lexer/tokenizer_helper.c
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
 
