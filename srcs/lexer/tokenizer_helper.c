@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 17:31:04 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:07:38 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	recognize_external(t_minishell *ms, char *token)
 			entity = readdir(dir);
 			if (entity == NULL)
 				break ;
-			if (ft_strcmp(token, entity->d_name) == 0)
+			if (entity->d_type == DT_REG && !ft_strcmp(token, entity->d_name))
 				printf("[EXT_CMD]: %s\n", entity->d_name);
 		}
 		paths++;

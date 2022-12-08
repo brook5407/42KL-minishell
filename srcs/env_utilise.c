@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utilise.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 17:14:30 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/07 19:40:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,20 @@ void edit_env_val(t_list *envp, char *var, char *value)
 		env->value = value;
 	// else
 		// add_env
+}
+
+char	*get_env_value(t_minishell *ms, char *key)
+{
+	t_list	*envp;
+	t_env	*env_var;
+
+	envp = ms->envp;
+	while (envp != NULL)
+	{
+		env_var = envp->content;
+		if (ft_strcmp(key, env_var->key) == 0)
+			return (env_var->value);
+		envp = envp->next;
+	}
+	return (NULL);
 }

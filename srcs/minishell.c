@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 17:14:52 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/08 20:39:29 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,17 @@ int	main(int ac, char **av, char **ev)
 
 	(void)ac;
 	(void)av;
+	init_signal();
 	init_minishell(&ms, ev);
 	while (1)
 	{
-		cmds = readline("> ");
+		cmds = readline(ms.prompt);
 		if (cmds == NULL)
 			break ;
 		add_history(cmds);
 		lexer(&ms, cmds);
 		free(cmds);
 	}
+	system("leaks -q minishell");
 	return (0);
 }
