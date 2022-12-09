@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_cd.c                                          :+:      :+:    :+:   */
+/*   save                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/09 17:02:52 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:37:57 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static char *check_path(t_minishell *ms, char *path)
 	}
 	else if (!ft_strcmp(path, "-"))
 	{
+		// printf("%d\n",ft_strcmp(path, "-"));
 		env_var = load_env_var(ms->envp, "OLDPWD");
 		if (env_var == NULL)
 		{
@@ -66,6 +67,7 @@ int call_cd(t_minishell *ms, char *path)
 		perror("cd");
 	else
 	{
+		call_pwd(ms);
 		edit_oldpwd(ms);
 		getcwd(cwd, sizeof(cwd));
 		edit_env_val(ms, "PWD", cwd);

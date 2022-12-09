@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/07 16:56:12 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:31:46 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include "../lib42/lib42.h"
 
 
-#define BUFFSIZE 256
+#define BUFFSIZE 1024
 
 extern char		**g_envp;
 
@@ -95,11 +95,14 @@ void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
 
-int call_cd(t_list *envp, char *args);
-// int		call_pwd(char *args);
-// int		call_env(char **envp);
+int		call_cd(t_minishell *ms, char *path);
+int		call_pwd(t_minishell *ms);
+int		call_env(t_minishell *ms);
+int		call_exit(t_minishell *ms, char *cmds);
 
 t_env	*load_env_var(t_list *envp, char *var);
-void	edit_env_val(t_list *envp, char *var, char *value);
+void	edit_env_val(t_minishell *ms, char *key, char *value);
+
+void	free_env(t_minishell *ms);
 
 #endif

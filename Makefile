@@ -6,7 +6,7 @@
 #    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/07 16:57:20 by chchin           ###   ########.fr        #
+#    Updated: 2022/12/09 15:35:00 by chchin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,8 @@ SRCS		:= minishell.c \
 			   cmds/call_cd.c \
 			   cmds/call_pwd.c \
 			   cmds/call_env.c \
+			   cmds/call_exit.c \
+			   free/free_env.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)

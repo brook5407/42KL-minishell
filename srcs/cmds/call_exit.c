@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_env.c                                         :+:      :+:    :+:   */
+/*   call_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/09 10:57:59 by chchin           ###   ########.fr       */
+/*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
+/*   Updated: 2022/12/09 15:36:38 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	call_env(t_minishell *ms)
+int	call_exit(t_minishell *ms, char *cmds)
 {
-	t_list	*envp;
-	t_env	*env_var;
-
-	envp = ms->envp;
-	while (envp != NULL)
-	{
-		env_var = envp->content;
-		printf("%s=%s\n", env_var->key, env_var->value);
-		envp = envp->next;
-	}
-	return (0);
+	free(cmds);
+	free_env(ms);
+	system("leaks -q minishell");
+	exit(0);
 }
