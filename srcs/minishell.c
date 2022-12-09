@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 13:30:56 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/09 19:57:36 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av, char **ev)
 		cmds = readline(ms.prompt);
 		if (cmds == NULL)
 			break ;
+		cmds = check_dangling_quote(cmds);
 		add_history(cmds);
 		lexer(&ms, cmds);
 		free(cmds);

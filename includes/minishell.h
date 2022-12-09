@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 13:15:30 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/09 15:54:39 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 
 /* ====== MACROS ====== */
 # define OPERATORS "<>|"
+# define QUOTES "\"\'"
 # define BUILTINS_TOTAL 7
 # define BUFFSIZE 256
 
@@ -96,6 +97,8 @@ void	add_env_var(t_minishell *ms, char *key, char *value);
 void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
+
+char	*check_dangling_quote(char *cmds);
 
 int		call_cd(t_list *envp, char *args);
 // int		call_pwd(char *args);
