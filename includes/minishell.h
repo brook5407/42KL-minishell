@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/08 12:01:01 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:15:30 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_minishell
 
 void	init_minishell(t_minishell *ms, char **ev);
 void	init_environment(t_minishell *ms, char **ev);
-void	init_signal();
+void	init_signal(void);
 void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);
