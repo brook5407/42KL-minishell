@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:16:36 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 19:49:34 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/10 14:37:57 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ static char	get_dangling_quote(char *cmds)
 	return (0);
 }
 
+/**
+ * @brief Check if there's a dangling quote
+ * 
+ * 1. Get the dangling quote first if have. If no, get_dangling_quote
+ * 	  will return 0.
+ * 2. Manually add newline after the current command. Readline function does not
+ * 	  read '\n'.
+ * 3. Read line to get the closing quote
+ * 4. Check through the user input string to see if the closing quote
+ * 	  has been provided
+ * 5. Join the user input string to the cmds no matter what
+ * 6. If the closing quote is in the string, break the loop.
+ * 7. If the closing quote is not in the string, manually add '\n' because
+ *    readline does not read '\n'
+ * 8. Return the latest cmds str
+*/
 char	*check_dangling_quote(char *cmds)
 {
 	char	dang_quote;
@@ -52,11 +68,11 @@ char	*check_dangling_quote(char *cmds)
 	char	*line;
 
 	dang_quote = get_dangling_quote(cmds);
-	cmds = ft_strjoin_free(cmds, "\n");
 	if (dang_quote == 0)
 		return (cmds);
 	while (1)
 	{
+		cmds = ft_strjoin_free(cmds, "\n");
 		line = readline("> ");
 		if (line == NULL)
 			break ;
@@ -64,7 +80,6 @@ char	*check_dangling_quote(char *cmds)
 		cmds = ft_strjoin_free(cmds, line);
 		if (enclosed != NULL)
 			break ;
-		cmds = ft_strjoin_free(cmds, "\n");
 	}
 	return (cmds);
 }

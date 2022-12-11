@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 15:54:39 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/09 21:37:11 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	add_env_var(t_minishell *ms, char *key, char *value);
 void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
 void	recognize_cmd(t_minishell *ms, char *token);
+void	recognize_operator(t_minishell *ms, char *token);
 
 char	*check_dangling_quote(char *cmds);
 

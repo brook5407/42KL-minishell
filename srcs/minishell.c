@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 19:57:36 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/11 17:51:58 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ int	main(int ac, char **av, char **ev)
 		if (cmds == NULL)
 			break ;
 		cmds = check_dangling_quote(cmds);
-		add_history(cmds);
+		if (cmds != NULL && *cmds != '\0')
+			add_history(cmds);
 		lexer(&ms, cmds);
 		free(cmds);
 	}
-	system("leaks -q minishell");
+	free(ms.prompt);
 	return (0);
 }
