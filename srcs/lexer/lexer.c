@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 14:14:05 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/11 18:07:28 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@
 void	lexer(t_minishell *ms, char *cmds)
 {
 	char	**words;
+	char	**ori_words;
 
 	words = ft_split_delims(cmds, "\"\'");
+	ori_words = words;
 	while (*words != NULL)
 	{
-		ft_printf("processing: %s\n", *words);
 		tokenizer(ms, *words);
-		ft_printf("\n");
 		words++;
 	}
+	ft_freestrarr(ori_words);
 }
