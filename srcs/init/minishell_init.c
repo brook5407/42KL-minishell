@@ -6,12 +6,18 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 19:39:01 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:33:41 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Set the list of builtins name
+ * 
+ * This is to avoid the if else ft_strcmp chain. Can just iterate
+ * through this list using a loop and do whatever you want.
+*/
 static void	init_builtins(t_minishell *ms)
 {
 	char	**builtins;
@@ -27,6 +33,16 @@ static void	init_builtins(t_minishell *ms)
 	ms->builtins = builtins;
 }
 
+/**
+ * @brief Set the prompt message
+ * 
+ * Format: [USER] @ [CURRENT DIRECTORY] $
+ * 
+ * Special case:
+ * 1. If at HOME, current_directory show "~" instead of directory name
+ * 2. If PWD is not set, current_directory set as "🤷"
+ * 3. If PWD is set, dir's pointer set to the last '/'
+*/
 void	set_prompt(t_minishell *ms)
 {
 	char	*user;
@@ -39,7 +55,7 @@ void	set_prompt(t_minishell *ms)
 	dir = get_env_value(ms, "PWD");
 	if (dir != NULL && ft_strcmp(dir, get_env_value(ms, "HOME")) == 0)
 		dir = "~";
-	else if (dir != NULL && ft_strcmp(dir, "/") != 0)
+	else if (dir != NULL)
 		dir = ft_strrchr(dir, '/');
 	else
 		dir = "🤷";
@@ -49,6 +65,14 @@ void	set_prompt(t_minishell *ms)
 	ms->prompt = prompt;
 }
 
+/**
+ * @brief Initialize the main struct
+ * 
+ * 1. Initialize signal
+ * 2. Initialize environment variables
+ * 3. Initialize builtins name
+ * 4. Set the prompt
+*/
 void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
