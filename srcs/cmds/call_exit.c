@@ -15,7 +15,7 @@
 int	call_exit(t_minishell *ms, char *cmds)
 {
 	free(cmds);
-	free_env(ms);
+	free_env(ms->envp);
 	system("leaks -q minishell");
 	exit(0);
 }

@@ -6,7 +6,7 @@
 #    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/09 15:35:00 by chchin           ###   ########.fr        #
+#    Updated: 2022/12/11 18:12:38 by brook            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,8 @@ SRCS		:= minishell.c \
 			   cmds/call_pwd.c \
 			   cmds/call_env.c \
 			   cmds/call_exit.c \
+			   cmds/call_unset.c \
+			   cmds/call_export.c \
 			   free/free_env.c \
 
 

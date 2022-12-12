@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/09 16:31:46 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/11 18:12:01 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,14 @@ void	recognize_cmd(t_minishell *ms, char *token);
 int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);
 int		call_env(t_minishell *ms);
+int		call_unset(t_minishell *ms, char *key);
+int		call_export(t_minishell *ms, char *key);
 int		call_exit(t_minishell *ms, char *cmds);
 
 t_env	*load_env_var(t_list *envp, char *var);
 void	edit_env_val(t_minishell *ms, char *key, char *value);
 
-void	free_env(t_minishell *ms);
+void	free_env_var(t_env *env_var);
+void	free_env(t_list *envp);
 
 #endif

@@ -15,8 +15,8 @@
 static char *check_path(t_minishell *ms, char *path)
 {
 	t_env	*env_var;
-	
-	if (!path)
+
+	if (!path || !ft_strcmp(path, "~"))
 	{
 		env_var = load_env_var(ms->envp, "HOME");
 		if (env_var == NULL)

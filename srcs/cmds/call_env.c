@@ -21,7 +21,8 @@ int	call_env(t_minishell *ms)
 	while (envp != NULL)
 	{
 		env_var = envp->content;
-		printf("%s=%s\n", env_var->key, env_var->value);
+		if (env_var->value)
+			printf("%s=%s\n", env_var->key, env_var->value);
 		envp = envp->next;
 	}
 	return (0);
