@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/10 14:39:07 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:15:30 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,17 @@ static void	signal_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	else if (sig == SIGTERM)
+	{
+		exit(1);
+	}
 }
 
-void	init_signal(void)
+void	init_signal(t_minishell *ms)
 {
 	struct termios		old_state;
 
+	(void)ms;
 	if (tcgetattr(STDIN_FILENO, &old_state) == -1)
 	{
 		printf("Get terminal control attribute failed.\n");
@@ -63,5 +68,6 @@ void	init_signal(void)
 		exit(0);
 	}
 	signal(SIGINT, signal_handler);
+	signal(SIGTERM, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

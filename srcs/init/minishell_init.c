@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 13:56:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:12:42 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	set_prompt(t_minishell *ms)
 void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
-	init_signal();
+	init_signal(ms);
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);
