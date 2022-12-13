@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 13:41:09 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:22:27 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
  * 
  * TODO: To handle this: ./, ../, ../../../
 */
-char	*join_path(t_minishell *ms, char *path, char *token)
+char	*get_extcmd_path(char *path, char *token)
 {
 	char	*joined;
 	char	*start;
@@ -44,14 +44,7 @@ char	*join_path(t_minishell *ms, char *path, char *token)
 		joined = ft_strjoin(path, "/");
 		return (ft_strjoin_free(joined, token));
 	}
-	if (occurrence == start)
-		return (ft_strdup(token));
-	else if (occurrence > start)
-	{
-		joined = ft_strjoin(get_env_value(ms, "PWD"), "/");
-		return (ft_strjoin_free(joined, token));
-	}
-	return (NULL);
+	return (ft_strdup(token));
 }
 
 /**
@@ -73,16 +66,18 @@ char	*join_path(t_minishell *ms, char *path, char *token)
 */
 int	recognize_external(t_minishell *ms, char *token)
 {
-	int		i;
-	char	**paths;
-	char	*extcmd;
+	int			i;
+	char		**paths;
+	char		*extcmd;
+	struct stat	file_stat;
 
 	i = -1;
 	paths = ft_split(get_env_value(ms, "PATH"), ':');
 	while (paths[++i] != NULL)
 	{
-		extcmd = join_path(ms, paths[i], token); // is it really needed?
-		if (access(extcmd, F_OK | X_OK) == 0)
+		extcmd = get_extcmd_path(paths[i], token);
+		if (access(extcmd, X_OK) == 0
+			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
 		{
 			printf("[EXT_CMD]: %s\n", extcmd);
 			free(extcmd);
@@ -166,18 +161,11 @@ int	recognize_operator(t_minishell *ms, char *token)
 
 void	recognize_token(t_minishell *ms, char *token)
 {
-	// Recognize command (Built-ins & External)
 	if (recognize_cmd(ms, token) == 0)
 	{
 		if (recognize_operator(ms, token) == 0)
 		{
-			// is a string literal, directly store as string
 			printf("[STR]: %s\n", token);
 		}
-		// an operator has been recognized
 	}
-	// a command has been recognized
-	
-	// at this point, the token has been recognized and store inside the linked list
-	// nothing to do after this point forward
 }

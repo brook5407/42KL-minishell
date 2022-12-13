@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:16:36 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/10 14:37:57 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:05:09 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static char	get_dangling_quote(char *cmds)
 		{
 			end_quote = ft_strchr(cmds + 1, *cmds);
 			if (end_quote != NULL)
+			{
 				cmds = end_quote + 1;
+				continue ;
+			}
 			else if (end_quote == NULL)
 				return (*start_quote);
 		}
@@ -81,5 +84,6 @@ char	*check_dangling_quote(char *cmds)
 		if (enclosed != NULL)
 			break ;
 	}
+	cmds = check_dangling_quote(cmds);
 	return (cmds);
 }

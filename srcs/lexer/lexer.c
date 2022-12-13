@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/11 18:07:28 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:06:32 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	lexer(t_minishell *ms, char *cmds)
 	ori_words = words;
 	while (*words != NULL)
 	{
+		printf("Processing: %s\n", *words);
 		tokenizer(ms, *words);
 		words++;
 	}
