@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:15:30 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 14:50:47 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ static void	signal_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (sig == SIGTERM)
-	{
-		exit(1);
-	}
 }
 
 void	init_signal(t_minishell *ms)
@@ -68,6 +64,5 @@ void	init_signal(t_minishell *ms)
 		exit(0);
 	}
 	signal(SIGINT, signal_handler);
-	signal(SIGTERM, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
