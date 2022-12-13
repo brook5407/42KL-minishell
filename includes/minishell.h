@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 13:54:57 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:12:50 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_minishell
 
 void	init_minishell(t_minishell *ms, char **ev);
 void	init_environment(t_minishell *ms, char **ev);
-void	init_signal(void);
+void	init_signal(t_minishell *ms);
 void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);
@@ -110,7 +110,7 @@ int		call_export(t_minishell *ms, char *key);
 int		call_exit(t_minishell *ms, char *cmds);
 
 t_env	*load_env_var(t_list *envp, char *var);
-void	edit_env_val(t_list *envp, char *var, char *value);
+void	edit_env_val(t_minishell *ms, char *key, char *value);
 char	*get_env_value(t_minishell *ms, char *key);
 
 void	free_env_var(t_env *env_var);
