@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/09 17:02:52 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 11:26:45 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	edit_oldpwd(t_minishell *ms)
 int call_cd(t_minishell *ms, char *path)
 {
 	char	*cur_path;
-	char	cwd[BUFFSIZE];
 
 	cur_path = check_path(ms, path);
 	if (cur_path == NULL)
@@ -67,8 +66,9 @@ int call_cd(t_minishell *ms, char *path)
 	else
 	{
 		edit_oldpwd(ms);
-		getcwd(cwd, sizeof(cwd));
-		edit_env_val(ms, "PWD", cwd);
+		free(cur_path);
+		cur_path = getcwd(NULL, 0);
+		edit_env_val(ms, "PWD", cur_path);
 	}
 	free(cur_path);
 	return (0);
