@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utilise.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/13 13:56:29 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:36:53 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	edit_env_val(t_minishell *ms, char *key, char *value)
 	else
 	{
 		free(env->value);
-		env->value = ft_strdup(value);
+		env->value = value;
+		// free(key);
 	}
 }
 

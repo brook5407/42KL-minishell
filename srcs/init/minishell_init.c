@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:12:42 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 15:34:31 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,5 @@ void	init_minishell(t_minishell *ms, char **ev)
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);
-	set_prompt(ms);
+	// set_prompt(ms);
 }

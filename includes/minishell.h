@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:12:50 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 14:28:00 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_minishell
 void	init_minishell(t_minishell *ms, char **ev);
 void	init_environment(t_minishell *ms, char **ev);
 void	init_signal(t_minishell *ms);
+void	set_prompt(t_minishell *ms);
 void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);

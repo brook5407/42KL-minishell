@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 13:47:34 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 16:15:40 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ void print_export(t_minishell *ms)
 	while (export != NULL)
 	{
 		env_var = export->content;
-		if (env_var->value)
-			printf("declare -x %s=%s\n", env_var->key, env_var->value);
+		if (env_var->value[0])
+			printf("declare -x %s=\"%s\"\n", env_var->key, env_var->value);
+		else
+			printf("declare -x %s\n", env_var->key);
 		free(env_var->key);
 		free(env_var->value);
 		free(env_var);
@@ -94,16 +96,26 @@ void print_export(t_minishell *ms)
 int	call_export(t_minishell *ms, char *s)
 {
 	// t_env	*env_var;
-	// char	*key;
-	// char	*value;
+	char	*key;
+	char	*value;
 	
-
 	if (!s)
 		print_export(ms);
-	// else
-	// {
-	// 	value = ft_strchr(s, '=') + 1;
-	// 	key = ft_strlcpy()
-	// }
+	else
+	{
+		s++;
+		value = ft_strchr(s, '=');
+		if (value == NULL)
+		{
+			value = strdup("");
+			key = ft_strdup(s);
+		}
+		else
+		{
+			key = ft_strndup(s, value - s);
+			value = ft_strdup(value + 1);
+		}
+		edit_env_val(ms, key, value);
+	}
 	return (0);
 }
