@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/12 20:39:52 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:32:08 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define OPERATORS "<>|"
 # define QUOTES "\"\'"
 # define BUILTINS_TOTAL 7
+# define OPERATORS_TOTAL 5
 # define BUFFSIZE 256
 
 /* ====== ENUMS ====== */
@@ -56,13 +57,11 @@ typedef enum e_token_type
 
 typedef enum e_operators
 {
-	DOLLAR,
 	RDRIN,
 	RDROUT,
 	HEREDOC,
 	APPEND,
-	PIPE,
-	ASSG
+	PIPE
 }		t_operators;
 
 /* ====== STRUCTS ====== */
@@ -82,6 +81,7 @@ typedef struct s_minishell
 {
 	char	*prompt;
 	char	**builtins;
+	char	**operators;
 	t_list	*envp;
 }		t_minishell;
 

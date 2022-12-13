@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/12 18:33:41 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:36:19 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,25 @@ static void	init_builtins(t_minishell *ms)
 	builtins[5] = "export";
 	builtins[6] = "exit";
 	ms->builtins = builtins;
+}
+
+/**
+ * @brief Set the list of operators
+ * 
+ * This is to avoid the if else ft_strcmp chain. Can just iterate
+ * through this list using a loop and do whatever you want.
+*/
+static void	init_operators(t_minishell *ms)
+{
+	char	**operators;
+
+	operators = ft_calloc(OPERATORS_TOTAL + 1, sizeof(char *));
+	operators[0] = "|";
+	operators[1] = ">";
+	operators[2] = "<";
+	operators[3] = ">>";
+	operators[4] = "<<";
+	ms->operators = operators;
 }
 
 /**
@@ -79,5 +98,6 @@ void	init_minishell(t_minishell *ms, char **ev)
 	init_signal();
 	init_environment(ms, ev);
 	init_builtins(ms);
+	init_operators(ms);
 	set_prompt(ms);
 }
