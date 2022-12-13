@@ -6,15 +6,19 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:18:37 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 16:55:11 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:32:06 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// int call_pwd(char *args)
-// {
-//     (void)args;
-//     printf("%s\n",getenv("PWD"));
-//     return (0);
-// }
+int	call_pwd(t_minishell *ms)
+{
+	char	cwd[BUFFSIZE];
+
+	(void)ms;
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		perror("pwd");
+	ft_putendl_fd(cwd, 1);
+	return (0);
+}

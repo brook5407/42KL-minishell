@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 13:32:08 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:54:57 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,18 @@ int		only_contain_operator(char *token);
 
 char	*check_dangling_quote(char *cmds);
 
-int		call_cd(t_list *envp, char *args);
-// int		call_pwd(char *args);
-// int		call_env(char **envp);
+int		call_cd(t_minishell *ms, char *path);
+int		call_pwd(t_minishell *ms);
+int		call_env(t_minishell *ms);
+int		call_unset(t_minishell *ms, char *key);
+int		call_export(t_minishell *ms, char *key);
+int		call_exit(t_minishell *ms, char *cmds);
 
 t_env	*load_env_var(t_list *envp, char *var);
 void	edit_env_val(t_list *envp, char *var, char *value);
 char	*get_env_value(t_minishell *ms, char *key);
+
+void	free_env_var(t_env *env_var);
+void	free_env(t_list *envp);
 
 #endif

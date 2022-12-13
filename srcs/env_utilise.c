@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/07 19:40:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:56:29 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_env	*load_env_var(t_list *envp, char *var)
 {
-	t_env *env_var;
+	t_env	*env_var;
 
 	while (envp != NULL)
 	{
@@ -26,15 +26,18 @@ t_env	*load_env_var(t_list *envp, char *var)
 	return (NULL);
 }
 
-void edit_env_val(t_list *envp, char *var, char *value)
+void	edit_env_val(t_minishell *ms, char *key, char *value)
 {
-	t_env *env;
+	t_env	*env;
 
-	env = load_env_var(envp, var);
-	if (env)
-		env->value = value;
-	// else
-		// add_env
+	env = load_env_var(ms->envp, key);
+	if (!env)
+		add_env_var(ms, key, value);
+	else
+	{
+		free(env->value);
+		env->value = ft_strdup(value);
+	}
 }
 
 char	*get_env_value(t_minishell *ms, char *key)
