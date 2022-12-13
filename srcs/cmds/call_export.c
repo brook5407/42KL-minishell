@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 15:04:39 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:15:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ void	print_export(t_minishell *ms)
 		export = tmp;
 	}
 }
+
 int	call_export(t_minishell *ms, char *s)
 {
 	// t_env	*env_var;
 	// char	*key;
 	// char	*value;
-	
 
 	if (!s)
 		print_export(ms);
