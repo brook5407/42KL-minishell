@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_dangling_quote.c                             :+:      :+:    :+:   */
+/*   check_dangling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:16:36 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 17:05:09 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 12:44:29 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*check_dangling_quote(char *cmds)
 	while (1)
 	{
 		cmds = ft_strjoin_free(cmds, "\n");
-		line = readline("> ");
+		line = readline("quote > ");
 		if (line == NULL)
 			break ;
 		enclosed = ft_strchr(line, dang_quote);

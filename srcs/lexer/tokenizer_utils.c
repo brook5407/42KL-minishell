@@ -6,31 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:11:31 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 15:45:34 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 14:21:05 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * @brief Takes in a dirent structure and read the entries of that directory
- * 
- * This function is meant to be used in a while loop like get_next_line
-*/
-char	*get_next_file(DIR *dir)
-{
-	struct dirent	*entity;
-
-	while (1)
-	{
-		entity = readdir(dir);
-		if (entity == NULL)
-			break ;
-		if (entity->d_type == DT_REG)
-			return (entity->d_name);
-	}
-	return (NULL);
-}
 
 /**
  * @brief Check if a token is in a set of quote

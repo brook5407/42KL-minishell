@@ -1,170 +1,176 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   recognizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 12:26:33 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/12 13:55:44 by wricky-t         ###   ########.fr       */
+/*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
+/*   Updated: 2022/12/14 13:24:24 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /**
- * Get string literal token, not neccessary means it's a string literal.
- * @brief This function is to extract token that is wrapped with quotes
- *        and treat them as a token.
+ * @brief Join the path of the external command before comparing
  * 
- * This function will be called if the get_token function detects a quote.
- * If that's the case, meaning the starting character of the word must be
- * a quote. Hence, locate the closing quote, to mark the end of the token.
- * The next token will start at the closing quote + 1.
+ * As mentioned below, the user can have three way to execute an external
+ * command:
+ * 1. Just the name of the command (ex: cat)
+ * 2. Fully specify the path to command (ex: /bin/cat)
+ * 3. Partially specify the path to command but must in that directory
+ *    (ex: munki/AppUsaged, but have to be at /usr/local/)
  * 
- * But, here's a twist, that's not actual the end of a token if the
- * following character is not an operator. So it's the case like this:
+ * This function is to join the path based on the way the user specify.
+ * For:
+ * 1. Join the path of PATH to the token
+ * 2. Assuming it's a valid executable path, so just strdup
+ * 3. Append the value of PWD infront of token
  * 
- * echo "Hello World"echo
- * tokens: [echo], ["Hello World"echo]
- * 
- * Hence, if the characters after the closing quote is not an operator,
- * the pointer to the end of the token keep incrementing until it hits
- * either a '\0' or an operator.
+ * TODO: To handle this: ./, ../, ../../../
 */
-char	*get_str_token(char **word)
+char	*get_extcmd_path(char *path, char *token)
 {
-	char	quote;
-	char	*token;
-	char	*next;
+	char	*joined;
+	char	*start;
+	char	*occurrence;
 
-	quote = *(*word);
-	next = ft_strchr(*word, quote) + 1;
-	if (next == NULL)
-		return (NULL);
-	while (*next != '\0')
+	joined = NULL;
+	start = token;
+	occurrence = ft_strchr(start, '/');
+	if (occurrence == NULL)
 	{
-		if (ft_strchr(OPERATORS, *next) != NULL)
-			break ;
-		next++;
+		joined = ft_strjoin(path, "/");
+		return (ft_strjoin_free(joined, token));
 	}
-	token = ft_strndup(*word, next - *word);
-	*word = next;
-	return (token);
+	return (ft_strdup(token));
 }
 
 /**
- * Get the operator token. The validity of the operator token is not
- * determined yet.
- * @brief This function is to extract the operator out from the word
+ * @brief To recognize if the token is a external command or not.
  * 
- * This function will be called when detects an operator. Which means the
- * first character must be an operator. As long as the following character
- * is an operator, which ever it is, increment the pointer.
- * When hit a non-operator character, this marks the start of the next token.
- * Point the pointer to next token to that character. Return the operator
- * afterward.
+ * External command can be executed in two ways:
+ * 1. [EXT_CMD] args
+ * 2. /full/path/to/[EXT_CMD] args
+ * 3. path/to/[EXT_CMD] args (part of the path, if the user is at the
+ *    directory, then the command can be executed)
+ * 
+ * To be safe, it's better to get the full path of the command before
+ * checking if the file exists and can be executed.
+ * After that, just check if the file exists and can be executed. If so,
+ * store it into command list as a EXT_CMD and return 1.
+ * 
+ * The return value indicates whether a token has been recognized or not.
+ * 1 = Yes, 0 = No
 */
-char	*get_operator_token(char **word)
+int	recognize_external(t_minishell *ms, char *token)
 {
-	char	*token;
-	char	*next;
+	int			i;
+	char		**paths;
+	char		*path_value;
+	char		*extcmd;
+	struct stat	file_stat;
 
-	next = *word;
-	while (*next != '\0')
+	i = -1;
+	path_value = get_env_value(ms, "PATH");
+	if (path_value == NULL)
+		return (0);
+	paths = ft_split(get_env_value(ms, "PATH"), ':');
+	while (paths[++i] != NULL)
 	{
-		if (ft_strchr(OPERATORS, *next) == NULL)
-			break ;
-		next++;
+		extcmd = get_extcmd_path(paths[i], token);
+		if (access(extcmd, X_OK) == 0
+			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
+		{
+			printf("[EXT_CMD]: %s\n", extcmd);
+			free(extcmd);
+			return (1);
+		}
+		free(extcmd);
 	}
-	token = ft_strndup(*word, next - *word);
-	*word = next;
-	return (token);
+	ft_freestrarr(paths);
+	return (0);
 }
 
 /**
- *  * Get token
+ * Recognize cmd
+ * @brief Identify whether the token is a cmd
  * 
- * @brief Return the token and set the start of next token
+ * The priority will be like this:
+ * 1. Check if the cmd is a minishell built-ins command
+ * 2. Check if the cmd is a program and can be found on the system
  * 
- * @param word The string that potentially has token hiding inside.
- * 			   Using double pointer here so that can set the pointer to the
- * 			   start of the next token.
- * 
- * This function should be called in a while loop. The while loop condition
- * should check if the word has reach the '\0' or not.
- * 
- * What determines/delimit the start & end of a token.
- * - What's in between "" or '' is a token.
- * - When detects a operator, what's infront of that operator is a token
- * - A series of operator is a token
- * - When reach '\0', what's before it, will be treated as a token no
- *   matter what. And the pointer to next token should be pointing to
- *   '\0'.
- * 
- * The word that's been pass in will not have a space anymore, except if
- * the word is something like: "Hello World", then it's possible. But
- * this will be treated as a token anyway.
- * 
- * The start of the next token should be the end of the previous token + 1
- * 
- * Example:
- * "Hello World" - ["Hello World"]
- * "Hello"&&echo - ["Hello"], [&&], [echo]
- * hello|echo - [hello], [|], [echo]
- * '"hello"' - ['"hello"']
- * "'Hello"' - ["'Hello"], [']
- * 'echo "Hello"' - ['echo "Hello"']
-*/
-// QUESTION: Should my tokenizer extract the "" / '' also?
-char	*get_token(char **word)
+ * 1. Check if the token is inside a set of quote. If yes, when strdup, don't
+ *    duplicate the quotes. If no, do normal strdup.
+ * 2. To make minishell to accept uppercase command, we need to convert it
+ *    into lowercase first. Then use the lowercase version to check if it's a
+ *    built-in or external command.
+ * 3. To check if it's a builtin, strcmp with each of the builtins command name
+ *    in the list. If yes, add to data structure.
+ * 4. 
+ */
+int	recognize_cmd(t_minishell *ms, char *token)
 {
-	char	*token;
-	char	*next;
+	int		i;
+	char	*token_copy;
 
-	next = *word;
-	if (ft_strchr(OPERATORS, *next) != NULL)
-		return (get_operator_token(word));
-	else if (ft_strchr(QUOTES, *next) != NULL)
-		return (get_str_token(word));
-	while (*next != '\0')
+	i = -1;
+	if (token_in_quote(token) == 1)
+		token_copy = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
+	else
+		token_copy = ft_strdup(token);
+	token_copy = ft_strlower(token_copy);
+	while (ms->builtins[++i] != NULL)
 	{
-		if (ft_strchr(OPERATORS, *next) != NULL)
-			break ;
-		next++;
+		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
+		{
+			printf("[CMD]: %s\n", token);
+			free(token_copy); // might not need to free this
+			return (1);
+		}
 	}
-	token = ft_strndup(*word, next - *word);
-	*word = next;
-	return (token);
+	if (recognize_external(ms, token_copy) == 1)
+	{
+		free(token_copy); // might not need to free this
+		return (1);
+	}
+	free(token_copy);
+	return (0);
 }
 
 /**
- * Tokenizer - Identify the tokens/lexemes inside a words.
- * 
- * @param word Before this function executes, the commands has been
- * 			   pre-processed by the lexer (split the commands into words).
- * 			   The word here is the part of a command and there's potentially
- * 			   some tokens hiding somewhere in the words.
- * 
- * @brief Tokenizer will identify and tokenize the tokens hiding in the word and
- * 		  store them into cmd_list (data structure to store the commands).
+ * Operators are: | (Pipes), < (Redirect input), > (Redirect output),
+ * 				  << (Heredoc) & >> (Append)
 */
-void	tokenizer(t_minishell *ms, char *word)
+int	recognize_operator(t_minishell *ms, char *token)
 {
-	char	*token;
+	int	i;
 
-	if (word == NULL)
-		return ;
-	while (*word != '\0')
+	i = -1;
+	(void)ms;
+	if (only_contain_operator(token) == 0)
+		return (0);
+	while (ms->operators[++i] != NULL)
 	{
-		token = get_token(&word);
-		recognize_token(ms, token);
-		free(token);
+		if (ft_strcmp(token, ms->operators[i]) == 0)
+		{
+			printf("[OPR]: %s\n", token);
+			return (1);
+		}
 	}
+	// here must reject the token
+	printf("INVALID TOKEN: %s\n", token);
+	return (0);
 }
 
-/**
- * token = get_token(&word);
- * recognize_cmd(ms, token);
- * free(token); // might not need to free
-*/
+void	recognize_token(t_minishell *ms, char *token)
+{
+	if (recognize_cmd(ms, token) == 0)
+	{
+		if (recognize_operator(ms, token) == 0)
+		{
+			printf("[STR]: %s\n", token);
+		}
+	}
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:12:42 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/14 16:41:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,16 @@ void	set_prompt(t_minishell *ms)
 {
 	char	*user;
 	char	*dir;
+	char	*home;
 	char	*prompt;
 
 	user = get_env_value(ms, "USER");
 	if (user == NULL)
 		user = "user";
 	dir = get_env_value(ms, "PWD");
+	home = get_env_value(ms, "HOME");
+	if (home == NULL)
+		dir = "🤷";
 	if (dir != NULL && ft_strcmp(dir, get_env_value(ms, "HOME")) == 0)
 		dir = "~";
 	else if (dir != NULL)

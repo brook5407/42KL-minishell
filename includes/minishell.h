@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:12:50 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/14 19:09:51 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ typedef enum e_token_type
 	LIT
 }		t_token_type;
 
-typedef enum e_operators
-{
-	RDRIN,
-	RDROUT,
-	HEREDOC,
-	APPEND,
-	PIPE
-}		t_operators;
+// typedef enum e_operators
+// {
+// 	RDRIN,
+// 	RDROUT,
+// 	HEREDOC,
+// 	APPEND,
+// 	PIPE
+// }		t_operators;
 
 /* ====== STRUCTS ====== */
 typedef struct s_token
 {
 	t_token_type	type;
-	void			*content;
+	char			*value;
 }		t_token;
 
 typedef struct s_env
@@ -83,7 +83,15 @@ typedef struct s_minishell
 	char	**builtins;
 	char	**operators;
 	t_list	*envp;
+	t_list	*tokens;
 }		t_minishell;
+
+typedef struct s_cmd
+{
+	t_token_type	type;
+	char			**args;
+	void			(*call_cmd)(t_minishell *);
+}		t_cmd;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
