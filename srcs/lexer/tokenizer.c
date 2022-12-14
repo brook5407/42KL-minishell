@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 20:52:41 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 21:22:27 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	recognize_operator(t_minishell *ms, char *token)
 			return (1);
 		}
 	}
-	printf("INVALID TOKEN: %s\n", token);
+	check_operator_syntax(ms, token);
 	return (0);
 }
 

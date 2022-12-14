@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 20:55:33 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 21:37:39 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ int		only_contain_operator(char *token);
 void	add_token(t_minishell *ms, t_token_type type, char *token);
 void	list_all_token(t_minishell *ms);
 void	free_token(void	*content);
+
+void	check_operator_syntax(t_minishell *ms, char *token);
+void	check_incomplete_grammar(t_minishell *ms);
 
 int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);

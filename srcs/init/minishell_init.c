@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 20:37:25 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 21:24:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ static void	init_operators(t_minishell *ms)
 
 	operators = ft_calloc(OPERATORS_TOTAL + 1, sizeof(char *));
 	operators[0] = "|";
-	operators[1] = ">";
-	operators[2] = "<";
-	operators[3] = ">>";
-	operators[4] = "<<";
+	operators[1] = ">>";
+	operators[2] = "<<";
+	operators[3] = ">";
+	operators[4] = "<";
 	ms->operators = operators;
 }
 
