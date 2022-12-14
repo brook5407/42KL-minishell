@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   recognizer.c                                       :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 13:24:24 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:52:41 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int	recognize_external(t_minishell *ms, char *token)
 		if (access(extcmd, X_OK) == 0
 			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
 		{
-			printf("[EXT_CMD]: %s\n", extcmd);
-			free(extcmd);
+			add_token(ms, EXT_CMD, extcmd);
+			ft_freestrarr(paths);
 			return (1);
 		}
 		free(extcmd);
@@ -108,7 +108,7 @@ int	recognize_external(t_minishell *ms, char *token)
  *    built-in or external command.
  * 3. To check if it's a builtin, strcmp with each of the builtins command name
  *    in the list. If yes, add to data structure.
- * 4. 
+ * TODO: Memory handling here is not clean
  */
 int	recognize_cmd(t_minishell *ms, char *token)
 {
@@ -125,14 +125,13 @@ int	recognize_cmd(t_minishell *ms, char *token)
 	{
 		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
 		{
-			printf("[CMD]: %s\n", token);
-			free(token_copy); // might not need to free this
+			add_token(ms, CMD, token_copy);
 			return (1);
 		}
 	}
 	if (recognize_external(ms, token_copy) == 1)
 	{
-		free(token_copy); // might not need to free this
+		free(token_copy);
 		return (1);
 	}
 	free(token_copy);
@@ -148,18 +147,16 @@ int	recognize_operator(t_minishell *ms, char *token)
 	int	i;
 
 	i = -1;
-	(void)ms;
 	if (only_contain_operator(token) == 0)
 		return (0);
 	while (ms->operators[++i] != NULL)
 	{
 		if (ft_strcmp(token, ms->operators[i]) == 0)
 		{
-			printf("[OPR]: %s\n", token);
+			add_token(ms, OPR, ft_strdup(token));
 			return (1);
 		}
 	}
-	// here must reject the token
 	printf("INVALID TOKEN: %s\n", token);
 	return (0);
 }
@@ -170,7 +167,7 @@ void	recognize_token(t_minishell *ms, char *token)
 	{
 		if (recognize_operator(ms, token) == 0)
 		{
-			printf("[STR]: %s\n", token);
+			add_token(ms, STR, ft_strdup(token));
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 16:41:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:37:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	set_prompt(t_minishell *ms)
 void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
-	init_signal(ms);
+	ms->tokens = NULL;
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);

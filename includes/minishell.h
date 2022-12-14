@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 19:09:51 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:55:33 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef enum e_token_type
 	CMD,
 	EXT_CMD,
 	OPR,
-	LIT
+	STR
 }		t_token_type;
 
 // typedef enum e_operators
@@ -97,7 +97,7 @@ typedef struct s_cmd
 
 void	init_minishell(t_minishell *ms, char **ev);
 void	init_environment(t_minishell *ms, char **ev);
-void	init_signal(t_minishell *ms);
+void	init_signal(void);
 void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);
@@ -108,7 +108,9 @@ int		token_in_quote(char *token);
 char	*get_next_file(DIR *dir);
 int		only_contain_operator(char *token);
 
-char	*check_dangling_quote(char *cmds);
+void	add_token(t_minishell *ms, t_token_type type, char *token);
+void	list_all_token(t_minishell *ms);
+void	free_token(void	*content);
 
 int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/13 14:50:47 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:40:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,17 @@ static void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\n");
-		rl_replace_line("", 0);
+		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
-void	init_signal(t_minishell *ms)
+void	init_signal(void)
 {
 	struct termios		old_state;
 
-	(void)ms;
 	if (tcgetattr(STDIN_FILENO, &old_state) == -1)
 	{
 		printf("Get terminal control attribute failed.\n");

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   recognizer_helper.c                                :+:      :+:    :+:   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:11:31 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 14:21:05 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:13:52 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ int	token_in_quote(char *token)
 	return (0);
 }
 
+/**
+ * @brief Check if a token only consists of operators, so that
+ * 		  won't mistakenly check string as operator
+*/
 int	only_contain_operator(char *token)
 {
 	while (*token != '\0')

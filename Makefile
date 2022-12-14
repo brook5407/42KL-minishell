@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/14 19:09:30 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/14 20:55:21 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,10 +52,10 @@ SRCS		:= minishell.c \
 			   init/minishell_init.c \
 			   init/environment_init.c \
 			   init/signal_init.c \
-			   checking/check_dangling.c \
 			   lexer/lexer.c \
 			   lexer/tokenizer.c \
 			   lexer/tokenizer_utils.c \
+			   lexer/add_token.c \
 			   env_utilise.c \
 			   cmds/call_cd.c \
 			   cmds/call_pwd.c \
