@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_exit.c                                        :+:      :+:    :+:   */
+/*   check_valid.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/14 16:06:54 by chchin           ###   ########.fr       */
+/*   Created: 2022/12/14 12:03:25 by chchin            #+#    #+#             */
+/*   Updated: 2022/12/14 12:36:26 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	call_exit(t_minishell *ms, char *cmds)
+int	check_valid(char *cmds, char *args)
 {
-	free(cmds);
-	free_env(ms->envp);
-	system("leaks -q minishell");
-	exit(0);
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(*args) && *args != '_')
+	{
+			printf("%s: '%s': not a valid identifier\n", cmds, args);
+			return (1);
+	}
+	while (args[i])
+	{
+		if (ft_isalnum(args[i]) || ft_isalpha(args[i]) || args[i] == '_')
+			i++;
+		else
+		{
+			printf("%s: '%s': not a valid identifier\n", cmds, args);
+			return (1);
+		}
+	}
+	return (0);
 }

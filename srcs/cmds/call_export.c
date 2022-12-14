@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 21:31:33 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/14 12:15:07 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	ft_lstsort(t_list **list)
 	}
 }
 
+// Function to print out every node in enviroment list follow by export format
 void	print_export(t_minishell *ms)
 {
 	t_list	*export;
@@ -91,7 +92,7 @@ int	call_export(t_minishell *ms, char *s)
 	if (!s)
 		print_export(ms);
 	else
-	{
+	{	
 		value = ft_strchr(++s, '=');
 		if (value == NULL)
 		{
@@ -103,7 +104,13 @@ int	call_export(t_minishell *ms, char *s)
 			key = ft_strndup(s, value - s);
 			value = ft_strdup(value + 1);
 		}
-		edit_env_val(ms, key, value);
+		if (!check_valid("export", key))
+			edit_env_val(ms, key, value);
+		else
+		{
+			free(key);
+			free(value);
+		}
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
+#    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/13 13:57:30 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/14 12:11:01 by chchin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS		:= minishell.c \
 			   cmds/call_exit.c \
 			   cmds/call_unset.c \
 			   cmds/call_export.c \
+			   cmds/check_valid.c \
 			   free/free_env.c \
 
 

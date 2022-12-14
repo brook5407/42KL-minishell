@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/11 18:19:25 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/14 12:43:36 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	env_pair(t_minishell *ms, t_env *env)
 {
 	t_list	*prev;
+	t_list	*tmp;
 
 	prev = ms->envp;
 	if (prev->content == env)
@@ -26,7 +27,10 @@ void	env_pair(t_minishell *ms, t_env *env)
 	{
 		if (prev->next->content == env)
 		{
+			tmp = prev->next;
 			prev->next = prev->next->next;
+			free_env_var(env);
+			free(tmp);
 			return ;
 		}
 		prev = prev->next;
@@ -37,10 +41,11 @@ int	call_unset(t_minishell *ms, char *key)
 {
 	t_env	*env_load;
 
-	env_load = load_env_var(ms->envp, ++key);
+	if (check_valid("unset", ++key) == 1)
+		return (0);
+	env_load = load_env_var(ms->envp, key);
 	if (env_load == NULL)
 		return (0);
 	env_pair(ms, env_load);
-	free_env_var(env_load);
 	return (0);
 }
