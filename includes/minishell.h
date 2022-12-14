@@ -103,6 +103,7 @@ int		only_contain_operator(char *token);
 
 char	*check_dangling_quote(char *cmds);
 
+int		call_buildin(t_minishell *ms, char *cmds);
 int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);
 int		call_env(t_minishell *ms);

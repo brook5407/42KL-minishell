@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 16:15:40 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:31:33 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,7 @@ static void	*cpy_env(void *env)
 	return (copy);
 }
 
-// Function to delete elements when the linked list is no longer needed
-static void	del_env(void *env)
-{
-	t_env	*elem;
-
-	elem = env;
-	free(elem->key);
-	free(elem->value);
-	free(elem);
-}
-
-// Function to sort the linked list in acceding order by using bubble sort method.
+// Function to sort the linked list by using bubble sort method.
 static void	ft_lstsort(t_list **list)
 {
 	t_list	*a;
@@ -70,13 +59,13 @@ static void	ft_lstsort(t_list **list)
 	}
 }
 
-void print_export(t_minishell *ms)
+void	print_export(t_minishell *ms)
 {
 	t_list	*export;
 	t_list	*tmp;
 	t_env	*env_var;
 
-	export = ft_lstmap(ms->envp, cpy_env, del_env);
+	export = ft_lstmap(ms->envp, cpy_env, NULL);
 	ft_lstsort(&export);
 	while (export != NULL)
 	{
@@ -93,18 +82,17 @@ void print_export(t_minishell *ms)
 		export = tmp;
 	}
 }
+
 int	call_export(t_minishell *ms, char *s)
 {
-	// t_env	*env_var;
 	char	*key;
 	char	*value;
-	
+
 	if (!s)
 		print_export(ms);
 	else
 	{
-		s++;
-		value = ft_strchr(s, '=');
+		value = ft_strchr(++s, '=');
 		if (value == NULL)
 		{
 			value = strdup("");

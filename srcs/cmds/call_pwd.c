@@ -14,7 +14,7 @@
 
 int	call_pwd(t_minishell *ms)
 {
-	char	cwd[BUFFSIZE];
+	char	cwd[FILE_MAX];
 
 	(void)ms;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)

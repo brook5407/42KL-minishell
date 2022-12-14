@@ -37,7 +37,7 @@ int	call_unset(t_minishell *ms, char *key)
 {
 	t_env	*env_load;
 
-	env_load = load_env_var(ms->envp, key);
+	env_load = load_env_var(ms->envp, ++key);
 	if (env_load == NULL)
 		return (0);
 	env_pair(ms, env_load);

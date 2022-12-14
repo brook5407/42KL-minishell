@@ -37,7 +37,7 @@ void	edit_env_val(t_minishell *ms, char *key, char *value)
 	{
 		free(env->value);
 		env->value = value;
-		// free(key);
+		free(key);
 	}
 }
 
