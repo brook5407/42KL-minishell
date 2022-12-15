@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 12:14:05 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/15 18:28:55 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,15 @@ int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);
 int		call_env(t_minishell *ms);
 int		call_unset(t_minishell *ms, char *key);
-int		call_export(t_minishell *ms, char *key);
+void	call_export(t_minishell *ms, char *key);
+int		call_echo(t_minishell *ms, char *s);
 int		call_exit(t_minishell *ms, char *cmds);
 int		check_valid(char *cmds, char *args);
 
 t_env	*load_env_var(t_list *envp, char *var);
 void	edit_env_val(t_minishell *ms, char *key, char *value);
 char	*get_env_value(t_minishell *ms, char *key);
+char	**get_env_arry(t_minishell *ms);
 
 void	free_env_var(t_env *env_var);
 void	free_env(t_list *envp);

@@ -30,3 +30,10 @@ void	free_env(t_list	*envp)
 		envp = envp->next;
 	}
 }
+
+void	free_arry(char **arry)
+{
+	while (*arry)
+		free(*arry++);
+	free(arry);
+}

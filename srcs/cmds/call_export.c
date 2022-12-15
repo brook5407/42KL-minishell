@@ -60,12 +60,14 @@ static void	ft_lstsort(t_list **list)
 }
 
 // Function to print out every node in enviroment list follow by export format
-void	print_export(t_minishell *ms)
+int	print_export(t_minishell *ms, char *s)
 {
 	t_list	*export;
 	t_list	*tmp;
 	t_env	*env_var;
 
+	if (!s)
+		return (1);
 	export = ft_lstmap(ms->envp, cpy_env, NULL);
 	ft_lstsort(&export);
 	while (export != NULL)
@@ -82,35 +84,32 @@ void	print_export(t_minishell *ms)
 		free(export);
 		export = tmp;
 	}
+	return (0);
 }
 
-int	call_export(t_minishell *ms, char *s)
+void	call_export(t_minishell *ms, char *s)
 {
 	char	*key;
 	char	*value;
 
-	if (!s)
-		print_export(ms);
-	else
-	{	
-		value = ft_strchr(++s, '=');
-		if (value == NULL)
-		{
-			value = strdup("");
-			key = ft_strdup(s);
-		}
-		else
-		{
-			key = ft_strndup(s, value - s);
-			value = ft_strdup(value + 1);
-		}
-		if (!check_valid("export", key))
-			edit_env_val(ms, key, value);
-		else
-		{
-			free(key);
-			free(value);
-		}
+	if (!print_export(ms, s))
+		return ;
+	value = ft_strchr(++s, '=');
+	if (value == NULL)
+	{
+		key = ft_strdup(s);
+		value = strdup("");
 	}
-	return (0);
+	else
+	{
+		key = ft_strndup(s, value - s);
+		value = ft_strdup(value + 1);
+	}
+	if (!check_valid("export", key))
+		edit_env_val(ms, key, value);
+	else
+	{
+		free(key);
+		free(value);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: brook <brook@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 21:39:19 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/15 13:48:05 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ int	call_buildin(t_minishell *ms, char *cmds)
 		call_unset(ms, ft_strchr(cmds, ' '));
 	else if (ft_strcmp(cmds, "pwd") == 0)
 		call_pwd(ms);
+	else if (ft_strncmp(cmds, "echo", 4) == 0)
+		call_echo(ms, ft_strchr(cmds, ' ') + 1);
 	return (0);
 }

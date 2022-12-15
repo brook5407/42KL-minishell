@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/14 16:15:23 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/15 19:37:50 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ static char	*check_path(t_minishell *ms, char *path)
 {
 	t_env	*env_var;
 
-	if (!path || *path == '~')
+	if (!path || !ft_strcmp(path, "~"))
 	{
 		env_var = load_env_var(ms->envp, "HOME");
-		if (env_var == NULL && !path)
+		if (env_var == NULL && *path == '~')
+			return (getenv("HOME"));
+		if (env_var == NULL)
 		{
 			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
 			return (NULL);
 		}
-		if (env_var == NULL && *path =='~')
-			return(getenv("HOME"));
 		return (ft_strdup(env_var->value));
 	}
 	else if (!ft_strcmp(path, "-"))
@@ -64,7 +64,8 @@ int	call_cd(t_minishell *ms, char *path)
 	if (chdir(cur_path) != 0)
 	{
 		free(cur_path);
-		perror("cd");
+		ft_putstr_fd("cd: ", STDERR_FILENO);
+		perror(path);
 	}
 	else
 	{

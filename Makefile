@@ -65,6 +65,7 @@ SRCS		:= minishell.c \
 			   cmds/call_exit.c \
 			   cmds/call_unset.c \
 			   cmds/call_export.c \
+			   cmds/call_echo.c \
 			   cmds/check_valid.c \
 			   free/free_env.c \
 

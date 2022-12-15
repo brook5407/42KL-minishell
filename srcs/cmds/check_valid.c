@@ -19,8 +19,8 @@ int	check_valid(char *cmds, char *args)
 	i = 0;
 	if (!ft_isalpha(*args) && *args != '_')
 	{
-			printf("%s: '%s': not a valid identifier\n", cmds, args);
-			return (1);
+		printf("%s: '%s': not a valid identifier\n", cmds, args);
+		return (1);
 	}
 	while (args[i])
 	{
