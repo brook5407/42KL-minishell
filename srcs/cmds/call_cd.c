@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/15 19:37:50 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/16 14:20:43 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ static char	*check_path(t_minishell *ms, char *path)
 {
 	t_env	*env_var;
 
-	if (!path || !ft_strcmp(path, "~"))
+	if (!path)
 	{
 		env_var = load_env_var(ms->envp, "HOME");
-		if (env_var == NULL && *path == '~')
-			return (getenv("HOME"));
 		if (env_var == NULL)
 		{
 			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
