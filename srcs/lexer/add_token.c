@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:14:03 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 20:58:11 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:00:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_token(void	*content)
 
 void	add_token(t_minishell *ms, t_token_type type, char *token)
 {
-	t_token	*tok;
+	t_token		*tok;
 
 	tok = malloc(sizeof(t_token));
 	if (tok == NULL)

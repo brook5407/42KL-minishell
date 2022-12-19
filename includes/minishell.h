@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 21:37:39 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/19 12:21:20 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@
 
 /* ====== ENUMS ====== */
 
+/**
+ * Enum for token type
+ * CMD		: Builtins command
+ * EXT_CMD	: External program/command
+ * OPR		: Operator
+ * STR		: String literals
+*/
 typedef enum e_token_type
 {
 	CMD,
@@ -55,28 +62,66 @@ typedef enum e_token_type
 	STR
 }		t_token_type;
 
-// typedef enum e_operators
-// {
-// 	RDRIN,
-// 	RDROUT,
-// 	HEREDOC,
-// 	APPEND,
-// 	PIPE
-// }		t_operators;
+/**
+ * Enum for operators
+ * RDRIN	: Redirection in
+ * RDROUT	: Redirection out
+ * HEREDOC	: Heredoc
+ * APPEND	: Redirection append
+ * PIPE		: pipe
+ */
+typedef enum e_operators
+{
+	RDRIN,
+	RDROUT,
+	HEREDOC,
+	APPEND,
+	PIPE
+}		t_operators;
+
+/**
+ * Enum for error type, errno
+ * The type are descriptive enough hehe
+ */
+typedef enum e_error_type
+{
+	SYNTAX_ERROR = 258,
+	CMD_NOT_FOUND = 127,
+	FILE_NOT_FOUND = 1,
+	INVALID_ID = 1,
+}		t_error_type;
 
 /* ====== STRUCTS ====== */
+/**
+ * Struct for token
+ * @param type	: Token type (Check t_token_type)
+ * @param value	: Value of the token
+*/
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
 }		t_token;
 
+/**
+ * Struct for environment variable
+ * @param key	: ID
+ * @param value	: value
+*/
 typedef struct s_env
 {
 	char	*key;
 	char	*value;
 }		t_env;
-
+/**
+ * Struct for minishell (main struct)
+ * @param prompt	: Prompt message
+ * @param builins	: Name of the builtins
+ * @param operators : List of the operators
+ * @param envp		: Environment variable linked list
+ * @param tokens	: Token list
+ * @param cmds		: Command list 
+ */
 typedef struct s_minishell
 {
 	char	*prompt;
@@ -84,13 +129,26 @@ typedef struct s_minishell
 	char	**operators;
 	t_list	*envp;
 	t_list	*tokens;
+	t_list	*cmds;
 }		t_minishell;
 
+/**
+ * Struct for command
+ * @param type		: Type of the token, not sure if this is required
+ * @param builtins	: Function pointer to builtins
+ * @param cmd_path	: Path to command if it's an external program
+ * @param args		: Arguments to run the command
+ * @param infile	: name of infile
+ * @param outfile	: name of outfile
+ */
 typedef struct s_cmd
 {
 	t_token_type	type;
+	void			(builtins *)(t_minishell *);
+	char			*cmd_path;
 	char			**args;
-	void			(*call_cmd)(t_minishell *);
+	char			*infile;
+	char			*outfile;
 }		t_cmd;
 
 /* ====== FUNCTION PROTOTYPES ====== */
@@ -125,6 +183,8 @@ int		call_exit(t_minishell *ms, char *cmds);
 t_env	*load_env_var(t_list *envp, char *var);
 void	edit_env_val(t_minishell *ms, char *key, char *value);
 char	*get_env_value(t_minishell *ms, char *key);
+
+void	show_error(t_minishell *ms, t_error_type type, char *token);
 
 void	free_env_var(t_env *env_var);
 void	free_env(t_list *envp);

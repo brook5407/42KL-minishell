@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 21:22:27 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:05:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
  * 1. Join the path of PATH to the token
  * 2. Assuming it's a valid executable path, so just strdup
  * 3. Append the value of PWD infront of token
- * 
- * TODO: To handle this: ./, ../, ../../../
 */
 char	*get_extcmd_path(char *path, char *token)
 {

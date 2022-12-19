@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 21:40:43 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/16 18:01:07 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	main(int ac, char **av, char **ev)
 		// check for grammar here, if there's an error, continue the loop.
 		ft_lstclear(&ms.tokens, free_token);
 		free(cmds);
-		system("leaks -q minishell");
+		// system("leaks -q minishell");
 	}
 	free(ms.prompt);
 	return (0);

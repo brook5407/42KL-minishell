@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/14 21:11:34 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/16 14:05:36 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ SRCS		:= minishell.c \
 			   cmds/call_unset.c \
 			   cmds/call_export.c \
 			   free/free_env.c \
+			   free/error.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
