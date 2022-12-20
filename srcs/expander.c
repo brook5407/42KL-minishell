@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:31:40 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 12:32:53 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/20 23:00:10 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,64 +17,57 @@ size_t	key_len(char *str)
 	int	i;
 
 	i = 0;
-//	if (ft_strlen(str) < 1)
-//		return (0);
 	if (ft_isdigit(str[i]))
 		return (1);
 	while (str[i])
 	{
-		if (ft_isalnum(str[i]) || str[i] == '_')
-			i++;
-		else
+		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
 			break ;
+		i++;
 	}
 	return (i);
 }
 
-//char	*check_env_var(t_minishell *ms, char *str)
-//{
-//	size_t	len;
-//	char	*begin;
-//	char	*var;
-//	char	*new_str;
-//
-//	new_str = strdup(str);
-//	while (ft_strchr(new_str, '$'))
-//	{
-//		var = ft_strchr(new_str, '$');
-//		begin = ft_strndup(new_str, new_str - var);
-//		var = ft_strndup(var, key_len(var));
-//	}
-//	return (new_str);
-//}
+char	*expand_var(t_minishell *ms, char *str)
+{
+	size_t	len;
+	char	*key;
+	char	*value;
+
+	len = key_len(str);
+	key = ft_strndup(str, len);
+	value = get_env_value(ms, key);
+	free(key);
+	if (!value)
+	{
+		if (!len)
+			return (ft_strjoin("$", str));
+		return (ft_strdup(str + len));
+	}
+	else
+		return (ft_strjoin(value, str + len));
+}
 
 char	*check_env_var(t_minishell *ms, char *str)
 {
-	char	**split;
-	size_t	len;
-	char	*var;
-	char	*value;
 	char	*new_str;
+	char	*token;
+	char	*tmp;
 
-	split = ft_split(str, '$');
-	new_str = NULL;
-	while (*split)
+	token = ft_strtok(str, "$");
+	if (str[0] != '$')
 	{
-		len = key_len(*split);
-		var = ft_strndup(*split, len);
-		value = get_env_value(ms, var);
-		free(var);
-		var = *split;
-		if (value)
-			*split = ft_strjoin(value, *split + len);
-		else
-			*split = ft_strdup(*split + len);
-		free(var);
-		if (!new_str)
-			new_str = ft_strdup(*split);
-		else
-			new_str = ft_strjoin_free(new_str, *split);
-		free(*split++);
+		new_str = strdup(token);
+		token = ft_strtok(NULL, "$");
+	}
+	else
+		new_str = ft_strdup("");
+	while (token != NULL)
+	{
+		tmp = expand_var(ms, token);
+		new_str = ft_strjoin_free(new_str, tmp);
+		free(tmp);
+		token = ft_strtok(NULL, "$");
 	}
 	return (new_str);
 }
@@ -102,4 +95,5 @@ void	expand(t_minishell *ms, char *str)
 
 	test = check_env_var(ms, str);
 	printf("Before: %s, after: %s\n", str, test);
+	free(test);
 }
