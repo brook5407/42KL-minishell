@@ -58,6 +58,7 @@ SRCS		:= minishell.c \
 			   lexer/recognizer.c \
 			   lexer/recognizer_helper.c \
 			   env_utilise.c \
+			   expander.c \
 			   cmds/call_buildin.c \
 			   cmds/call_cd.c \
 			   cmds/call_pwd.c \

@@ -24,7 +24,7 @@ int	check_valid(char *cmds, char *args)
 	}
 	while (args[i])
 	{
-		if (ft_isalnum(args[i]) || ft_isalpha(args[i]) || args[i] == '_')
+		if (ft_isalnum(args[i]) || args[i] == '_')
 			i++;
 		else
 		{

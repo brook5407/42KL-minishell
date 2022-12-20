@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/15 17:48:22 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/19 13:20:15 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **ev)
 		cmds = check_dangling_quote(cmds);
 		if (cmds != NULL && *cmds != '\0')
 			add_history(cmds);
+		expand(&ms, cmds);
 		call_buildin(&ms, cmds);
 		// lexer(&ms, cmds);
 		free(cmds);
