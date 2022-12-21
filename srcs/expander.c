@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:31:40 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 23:00:10 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/21 10:35:22 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*expand_var(t_minishell *ms, char *str)
 		return (ft_strjoin(value, str + len));
 }
 
-char	*check_env_var(t_minishell *ms, char *str)
+char	*convrt_env_var(t_minishell *ms, char *str)
 {
 	char	*new_str;
 	char	*token;
@@ -60,6 +60,8 @@ char	*check_env_var(t_minishell *ms, char *str)
 		new_str = strdup(token);
 		token = ft_strtok(NULL, "$");
 	}
+	else if (str[0] == '$' && str[1] == '\0')
+		new_str = ft_strdup("$");
 	else
 		new_str = ft_strdup("");
 	while (token != NULL)
@@ -89,11 +91,13 @@ char	*check_env_var(t_minishell *ms, char *str)
 //		str = ft_strndup(arg, ft_strlen(arg - 2));
 //}
 
-void	expand(t_minishell *ms, char *str)
+char	*expand(t_minishell *ms, char *str)
 {
-	char	*test;
+	char	*tmp;
 
-	test = check_env_var(ms, str);
-	printf("Before: %s, after: %s\n", str, test);
-	free(test);
+	tmp = str;
+	str = convrt_env_var(ms, str);
+	printf("Before: %s, after: %s\n", tmp, str);
+	free(tmp);
+	return(str);
 }

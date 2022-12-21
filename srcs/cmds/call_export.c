@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/21 10:29:20 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	print_export(t_minishell *ms, char *s)
 	t_list	*tmp;
 	t_env	*env_var;
 
-	if (!s)
+	if (s)
 		return (1);
 	export = ft_lstmap(ms->envp, cpy_env, NULL);
 	ft_lstsort(&export);

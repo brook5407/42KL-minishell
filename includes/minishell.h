@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/21 10:35:40 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int		only_contain_operator(char *token);
 
 char	*check_dangling_quote(char *cmds);
 
-void	expand(t_minishell *ms, char *str);
+char	*expand(t_minishell *ms, char *str);
 
 int		call_buildin(t_minishell *ms, char *cmds);
 int		call_cd(t_minishell *ms, char *path);
