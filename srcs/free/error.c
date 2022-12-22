@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/16 14:50:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:24:23 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,4 @@ void	show_error(t_minishell *ms, t_error_type type, char *token)
 		ft_printf("%s: no such file or directory\n");
 	if (type == INVALID_ID)
 		ft_printf("export: `%s': not a valid identifier\n", token);
-	// set g_error_num here i guess
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/16 18:01:04 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:24:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,5 @@ int	call_exit(t_minishell *ms, char *cmds)
 {
 	free(cmds);
 	free_env(ms->envp);
-	// system("leaks -q minishell");
 	exit(0);
 }

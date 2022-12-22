@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   recognizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:21:14 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@
  * 1. Join the path of PATH to the token
  * 2. Assuming it's a valid executable path, so just strdup
  * 3. Append the value of PWD infront of token
+ * 
+ * TODO: To handle this: ./, ../, ../../../
 */
-char	*get_extcmd_path(char *path, char *token)
+char	*join_path(t_minishell *ms, char *path, char *token)
 {
 	char	*joined;
 	char	*start;
@@ -42,7 +44,14 @@ char	*get_extcmd_path(char *path, char *token)
 		joined = ft_strjoin(path, "/");
 		return (ft_strjoin_free(joined, token));
 	}
-	return (ft_strdup(token));
+	if (occurrence == start)
+		return (ft_strdup(token));
+	else if (occurrence > start)
+	{
+		joined = ft_strjoin(get_env_value(ms, "PWD"), "/");
+		return (ft_strjoin_free(joined, token));
+	}
+	return (NULL);
 }
 
 /**
@@ -64,25 +73,19 @@ char	*get_extcmd_path(char *path, char *token)
 */
 int	recognize_external(t_minishell *ms, char *token)
 {
-	int			i;
-	char		**paths;
-	char		*path_value;
-	char		*extcmd;
-	struct stat	file_stat;
+	int		i;
+	char	**paths;
+	char	*extcmd;
 
 	i = -1;
-	path_value = get_env_value(ms, "PATH");
-	if (path_value == NULL)
-		return (0);
 	paths = ft_split(get_env_value(ms, "PATH"), ':');
 	while (paths[++i] != NULL)
 	{
-		extcmd = get_extcmd_path(paths[i], token);
-		if (access(extcmd, X_OK) == 0
-			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
+		extcmd = join_path(ms, paths[i], token); // is it really needed?
+		if (access(extcmd, F_OK | X_OK) == 0)
 		{
-			add_token(ms, EXT_CMD, extcmd);
-			ft_freestrarr(paths);
+			printf("[EXT_CMD]: %s\n", extcmd);
+			free(extcmd);
 			return (1);
 		}
 		free(extcmd);
@@ -106,7 +109,7 @@ int	recognize_external(t_minishell *ms, char *token)
  *    built-in or external command.
  * 3. To check if it's a builtin, strcmp with each of the builtins command name
  *    in the list. If yes, add to data structure.
- * TODO: Memory handling here is not clean
+ * 4. 
  */
 int	recognize_cmd(t_minishell *ms, char *token)
 {
@@ -123,13 +126,14 @@ int	recognize_cmd(t_minishell *ms, char *token)
 	{
 		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
 		{
-			add_token(ms, CMD, token_copy);
+			printf("[CMD]: %s\n", token);
+			free(token_copy); // might not need to free this
 			return (1);
 		}
 	}
 	if (recognize_external(ms, token_copy) == 1)
 	{
-		free(token_copy);
+		free(token_copy); // might not need to free this
 		return (1);
 	}
 	free(token_copy);
@@ -145,27 +149,35 @@ int	recognize_operator(t_minishell *ms, char *token)
 	int	i;
 
 	i = -1;
+	(void)ms;
 	if (only_contain_operator(token) == 0)
 		return (0);
 	while (ms->operators[++i] != NULL)
 	{
 		if (ft_strcmp(token, ms->operators[i]) == 0)
 		{
-			add_token(ms, OPR, ft_strdup(token));
+			printf("[OPR]: %s\n", token);
 			return (1);
 		}
 	}
-	check_operator_syntax(ms, token);
+	printf("INVALID TOKEN: %s\n", token);
 	return (0);
 }
 
 void	recognize_token(t_minishell *ms, char *token)
 {
+	// Recognize command (Built-ins & External)
 	if (recognize_cmd(ms, token) == 0)
 	{
 		if (recognize_operator(ms, token) == 0)
 		{
-			add_token(ms, STR, ft_strdup(token));
+			// is a string literal, directly store as string
+			printf("[STR]: %s\n", token);
 		}
+		// an operator has been recognized
 	}
+	// a command has been recognized
+	
+	// at this point, the token has been recognized and store inside the linked list
+	// nothing to do after this point forward
 }

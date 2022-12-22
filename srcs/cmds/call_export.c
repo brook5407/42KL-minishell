@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/13 17:15:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:15:51 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,7 @@ static void	*cpy_env(void *env)
 	return (copy);
 }
 
-// Function to delete elements when the linked list is no longer needed
-static void	del_env(void *env)
-{
-	t_env	*elem;
-
-	elem = env;
-	free(elem->key);
-	free(elem->value);
-	free(elem);
-}
-
-// Function to sort the linked list in acceding order by using
-// bubble sort method.
+// Function to sort the linked list by using bubble sort method.
 static void	ft_lstsort(t_list **list)
 {
 	t_list	*a;
@@ -71,19 +59,24 @@ static void	ft_lstsort(t_list **list)
 	}
 }
 
-void	print_export(t_minishell *ms)
+// Function to print out every node in enviroment list follow by export format
+int	print_export(t_minishell *ms, char *s)
 {
 	t_list	*export;
 	t_list	*tmp;
 	t_env	*env_var;
 
-	export = ft_lstmap(ms->envp, cpy_env, del_env);
+	if (s)
+		return (1);
+	export = ft_lstmap(ms->envp, cpy_env, NULL);
 	ft_lstsort(&export);
 	while (export != NULL)
 	{
 		env_var = export->content;
-		if (env_var->value)
-			printf("declare -x %s=%s\n", env_var->key, env_var->value);
+		if (env_var->value[0])
+			printf("declare -x %s=\"%s\"\n", env_var->key, env_var->value);
+		else
+			printf("declare -x %s\n", env_var->key);
 		free(env_var->key);
 		free(env_var->value);
 		free(env_var);
@@ -91,20 +84,32 @@ void	print_export(t_minishell *ms)
 		free(export);
 		export = tmp;
 	}
+	return (0);
 }
 
-int	call_export(t_minishell *ms, char *s)
+void	call_export(t_minishell *ms, char *s)
 {
-	// t_env	*env_var;
-	// char	*key;
-	// char	*value;
+	char	*key;
+	char	*value;
 
-	if (!s)
-		print_export(ms);
-	// else
-	// {
-	// 	value = ft_strchr(s, '=') + 1;
-	// 	key = ft_strlcpy()
-	// }
-	return (0);
+	if (!print_export(ms, s))
+		return ;
+	value = ft_strchr(++s, '=');
+	if (value == NULL)
+	{
+		key = ft_strdup(s);
+		value = strdup("");
+	}
+	else
+	{
+		key = ft_strndup(s, value - s);
+		value = ft_strdup(value + 1);
+	}
+	if (!check_valid("export", key))
+		edit_env_val(ms, key, value);
+	else
+	{
+		free(key);
+		free(value);
+	}
 }

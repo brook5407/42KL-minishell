@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 21:24:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:23:53 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,4 @@ void	init_minishell(t_minishell *ms, char **ev)
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);
-	set_prompt(ms);
 }

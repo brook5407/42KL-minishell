@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   check_dangling_quote.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:21:24 by wricky-t         ###   ########.fr       */
+/*   Created: 2022/12/09 15:16:36 by wricky-t          #+#    #+#             */
+/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 /**
  * @brief Get the dangling quote
@@ -34,10 +34,7 @@ static char	get_dangling_quote(char *cmds)
 		{
 			end_quote = ft_strchr(cmds + 1, *cmds);
 			if (end_quote != NULL)
-			{
 				cmds = end_quote + 1;
-				continue ;
-			}
 			else if (end_quote == NULL)
 				return (*start_quote);
 		}
@@ -64,7 +61,7 @@ static char	get_dangling_quote(char *cmds)
  *    readline does not read '\n'
  * 8. Return the latest cmds str
 */
-static char	*check_dangling_quote(char *cmds)
+char	*check_dangling_quote(char *cmds)
 {
 	char	dang_quote;
 	char	*enclosed;
@@ -76,50 +73,13 @@ static char	*check_dangling_quote(char *cmds)
 	while (1)
 	{
 		cmds = ft_strjoin_free(cmds, "\n");
-		line = readline("quote > ");
+		line = readline("> ");
 		if (line == NULL)
 			break ;
 		enclosed = ft_strchr(line, dang_quote);
 		cmds = ft_strjoin_free(cmds, line);
-		free(line);
 		if (enclosed != NULL)
 			break ;
 	}
-	cmds = check_dangling_quote(cmds);
 	return (cmds);
-}
-
-/**
- * Minishell
- * 
- * 1. Read line from command line
- * 2. Lexical analysis
- * 3. Parser
- * 4. Executer
- */
-int	main(int ac, char **av, char **ev)
-{
-	char		*cmds;
-	t_minishell	ms;
-
-	(void)ac;
-	(void)av;
-	init_minishell(&ms, ev);
-	while (1)
-	{
-		init_signal();
-		set_prompt(&ms);
-		cmds = readline(ms.prompt);
-		if (cmds == NULL)
-			call_exit(&ms, NULL);
-		cmds = check_dangling_quote(cmds);
-		if (cmds != NULL && *cmds != '\0')
-			add_history(cmds);
-		lexer(&ms, cmds);
-		ft_lstclear(&ms.tokens, free_token);
-		free(cmds);
-		free(ms.prompt);
-	}
-	free(ms.prompt);
-	return (0);
 }

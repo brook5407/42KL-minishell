@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/09 10:57:59 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	call_env(t_minishell *ms)
 	while (envp != NULL)
 	{
 		env_var = envp->content;
-		if (env_var->value)
+		if (env_var->value[0])
 			printf("%s=%s\n", env_var->key, env_var->value);
 		envp = envp->next;
 	}

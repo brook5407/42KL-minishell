@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utilise.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/13 13:56:29 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	edit_env_val(t_minishell *ms, char *key, char *value)
 	else
 	{
 		free(env->value);
-		env->value = ft_strdup(value);
+		env->value = value;
+		free(key);
 	}
 }
 
@@ -54,4 +55,29 @@ char	*get_env_value(t_minishell *ms, char *key)
 		envp = envp->next;
 	}
 	return (NULL);
+}
+
+char	**get_env_arry(t_minishell *ms)
+{
+	t_list	*envp;
+	t_env	*env_var;
+	char	**env_arry;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	env_arry = malloc(sizeof(char *) * ft_lstsize(ms->envp));
+	envp = ms->envp;
+	while (envp != NULL)
+	{
+		env_var = envp->content;
+		if (env_var->value[0])
+		{
+			tmp = ft_strjoin(env_var->key, "=");
+			env_arry[i++] = ft_strjoin_free(tmp, env_var->value);
+		}
+		envp = envp->next;
+	}
+	env_arry[i] = NULL;
+	return (env_arry);
 }

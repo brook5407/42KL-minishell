@@ -1,51 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_unset.c                                       :+:      :+:    :+:   */
+/*   check_valid.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
+/*   Created: 2022/12/14 12:03:25 by chchin            #+#    #+#             */
 /*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	env_pair(t_minishell *ms, t_env *env)
+int	check_valid(char *cmds, char *args)
 {
-	t_list	*prev;
-	t_list	*tmp;
+	int	i;
 
-	prev = ms->envp;
-	if (prev->content == env)
+	i = 0;
+	if (!ft_isalpha(*args) && *args != '_')
 	{
-		ms->envp = prev->next;
-		return ;
+		printf("%s: '%s': not a valid identifier\n", cmds, args);
+		return (1);
 	}
-	while (prev->next != NULL)
+	while (args[i])
 	{
-		if (prev->next->content == env)
+		if (ft_isalnum(args[i]) || args[i] == '_')
+			i++;
+		else
 		{
-			tmp = prev->next;
-			prev->next = prev->next->next;
-			free_env_var(env);
-			free(tmp);
-			return ;
+			printf("%s: '%s': not a valid identifier\n", cmds, args);
+			return (1);
 		}
-		prev = prev->next;
 	}
-}
-
-int	call_unset(t_minishell *ms, char *key)
-{
-	t_env	*env_load;
-
-	if (check_valid("unset", ++key) == 1)
-		return (0);
-	env_load = load_env_var(ms->envp, key);
-	if (env_load == NULL)
-		return (0);
-	env_pair(ms, env_load);
 	return (0);
 }
