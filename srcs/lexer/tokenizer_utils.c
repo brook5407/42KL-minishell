@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   recognizer_helper.c                                :+:      :+:    :+:   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:11:31 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:21:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * @brief Takes in a dirent structure and read the entries of that directory
- * 
- * This function is meant to be used in a while loop like get_next_line
-*/
-char	*get_next_file(DIR *dir)
-{
-	struct dirent	*entity;
-
-	while (1)
-	{
-		entity = readdir(dir);
-		if (entity == NULL)
-			break ;
-		if (entity->d_type == DT_REG)
-			return (entity->d_name);
-	}
-	return (NULL);
-}
 
 /**
  * @brief Check if a token is in a set of quote
@@ -56,6 +36,10 @@ int	token_in_quote(char *token)
 	return (0);
 }
 
+/**
+ * @brief Check if a token only consists of operators, so that
+ * 		  won't mistakenly check string as operator
+*/
 int	only_contain_operator(char *token)
 {
 	while (*token != '\0')

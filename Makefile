@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
+#    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr        #
+#    Updated: 2022/12/22 18:14:24 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,11 +52,15 @@ SRCS		:= minishell.c \
 			   init/minishell_init.c \
 			   init/environment_init.c \
 			   init/signal_init.c \
-			   checking/check_dangling_quote.c \
 			   lexer/lexer.c \
 			   lexer/tokenizer.c \
-			   lexer/recognizer.c \
-			   lexer/recognizer_helper.c \
+			   lexer/tokenizer_utils.c \
+			   lexer/add_token.c \
+			   expander/expander.c \
+			   expander/expander_utils.c \
+			   parser/builder.c \
+			   parser/check_grammar.c \
+			   parser/check_syntax.c \
 			   env_utilise.c \
 			   cmds/call_buildin.c \
 			   cmds/call_cd.c \
@@ -68,6 +72,7 @@ SRCS		:= minishell.c \
 			   cmds/call_echo.c \
 			   cmds/check_valid.c \
 			   free/free_env.c \
+			   free/error.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)

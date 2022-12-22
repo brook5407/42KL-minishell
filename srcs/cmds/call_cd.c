@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:15:27 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static char	*check_path(t_minishell *ms, char *path)
 		ft_putendl_fd(env_var->value, 1);
 		return (ft_strdup(env_var->value));
 	}
-	else
-		return (ft_strdup(path));
+	return (ft_strdup(path));
 }
 
 static void	edit_oldpwd(t_minishell *ms)

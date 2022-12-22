@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:22:20 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:20:18 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,4 @@ void	free_env(t_list	*envp)
 		free_env_var(env_var);
 		envp = envp->next;
 	}
-}
-
-void	free_arry(char **arry)
-{
-	while (*arry)
-		free(*arry++);
-	free(arry);
 }

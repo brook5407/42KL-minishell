@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:23:53 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ static void	init_operators(t_minishell *ms)
 
 	operators = ft_calloc(OPERATORS_TOTAL + 1, sizeof(char *));
 	operators[0] = "|";
-	operators[1] = ">";
-	operators[2] = "<";
-	operators[3] = ">>";
-	operators[4] = "<<";
+	operators[1] = ">>";
+	operators[2] = "<<";
+	operators[3] = ">";
+	operators[4] = "<";
 	ms->operators = operators;
 }
 
@@ -66,12 +66,16 @@ void	set_prompt(t_minishell *ms)
 {
 	char	*user;
 	char	*dir;
+	char	*home;
 	char	*prompt;
 
 	user = get_env_value(ms, "USER");
 	if (user == NULL)
 		user = "user";
 	dir = get_env_value(ms, "PWD");
+	home = get_env_value(ms, "HOME");
+	if (home == NULL)
+		dir = "🤷";
 	if (dir != NULL && ft_strcmp(dir, get_env_value(ms, "HOME")) == 0)
 		dir = "~";
 	else if (dir != NULL)
@@ -95,9 +99,8 @@ void	set_prompt(t_minishell *ms)
 void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
-	init_signal(ms);
+	ms->tokens = NULL;
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);
-	// set_prompt(ms);
 }
