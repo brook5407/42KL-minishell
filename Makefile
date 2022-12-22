@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/16 14:05:36 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/19 22:07:30 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,8 @@ SRCS		:= minishell.c \
 			   lexer/tokenizer.c \
 			   lexer/tokenizer_utils.c \
 			   lexer/add_token.c \
+			   expander/expander.c \
+			   expander/expander_utils.c \
 			   parser/builder.c \
 			   parser/check_grammar.c \
 			   parser/check_syntax.c \

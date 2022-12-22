@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/14 19:25:59 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:10:53 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ char	*get_operator_token(char **word)
  * "'Hello"' - ["'Hello"], [']
  * 'echo "Hello"' - ['echo "Hello"']
 */
-// QUESTION: Should my tokenizer extract the "" / '' also?
 char	*get_token(char **word)
 {
 	char	*token;
@@ -152,15 +151,19 @@ char	*get_token(char **word)
 void	tokenizer(t_minishell *ms, char *word)
 {
 	char	*token;
+	char	*start;
 
+	(void)ms;
 	if (word == NULL)
 		return ;
+	start = word;
 	while (*word != '\0')
 	{
 		token = get_token(&word);
-		recognize_token(ms, token);
 		free(token);
 	}
+	if (start == word)
+		printf("");
 }
 
 /**
@@ -179,6 +182,7 @@ void	lexer(t_minishell *ms, char *cmds)
 	ori_words = words;
 	while (*words != NULL)
 	{
+		expander(ms, words);
 		tokenizer(ms, *words);
 		words++;
 	}

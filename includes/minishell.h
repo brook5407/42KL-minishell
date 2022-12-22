@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/19 12:21:20 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/22 16:46:07 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ typedef struct s_minishell
 typedef struct s_cmd
 {
 	t_token_type	type;
-	void			(builtins *)(t_minishell *);
+	void			(*builtin)(t_minishell *);
 	char			*cmd_path;
 	char			**args;
 	char			*infile;
@@ -160,7 +160,13 @@ void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
+void	expander(t_minishell *ms, char **token);
 void	recognize_token(t_minishell *ms, char *token);
+
+int		is_valid_id(char *id);
+char	*extract_ids(char **str);
+char	*get_parameter_value(t_minishell *ms, char *token);
+char	*join_expanded(char *str, char *prefix, char *id);
 
 int		token_in_quote(char *token);
 char	*get_next_file(DIR *dir);

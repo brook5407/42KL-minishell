@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:14:03 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/18 18:00:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:20:22 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	list_all_token(t_minishell *ms)
 
 	i = -1;
 	tokens = ms->tokens;
-	printf("CMD LIST\n");
 	while (tokens != NULL)
 	{
 		tok = tokens->content;
