@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 17:08:16 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 14:30:00 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,18 @@ int	is_valid_id(char *id)
  * parameter. This is to prevent the function to extract characters that are
  * not part of the id.
  */
-char	*extract_ids(char **str)
+char	*extract_ids(char **str, int ignore)
 {
 	char	*ids;
 	char	*next;
+	int		i;
 
 	next = (*str + 1);
+	i = 0;
 	if (ft_isdigit(*next) == 1)
 		next++;
+	else if ((*next == '\'' || *next == '"') && ignore == 1)
+		i = 1;
 	else if (*next == '$')
 		next++;
 	else
@@ -80,7 +84,7 @@ char	*extract_ids(char **str)
 			next++;
 		}	
 	}
-	ids = ft_strndup((*str), next - (*str));
+	ids = ft_strndup((*str), next - (*str) + i); // $
 	*str = next;
 	return (ids);
 }
