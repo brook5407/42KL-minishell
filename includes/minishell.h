@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 14:30:47 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/23 18:39:43 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int		is_valid_id(char *id);
 char	*extract_ids(char **str, int ignore);
 char	*get_parameter_value(t_minishell *ms, char *token);
 char	*join_expanded(char *str, char *prefix, char *id);
+void	remove_slash(char **str);
 
 int		token_in_quote(char *token);
 char	*get_next_file(DIR *dir);

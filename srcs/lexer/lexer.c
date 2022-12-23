@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 12:48:03 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 20:46:40 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ void	tokenizer(t_minishell *ms, char *word)
 	char	*token;
 	char	*start;
 
-	(void)ms;
 	if (word == NULL)
 		return ;
 	start = word;
@@ -162,10 +161,11 @@ void	tokenizer(t_minishell *ms, char *word)
 	{
 		token = get_token(&word);
 		printf("token: %s\n", token);
+		recognize_token(ms, token);
 		free(token);
 	}
 	if (start == word)
-		printf("token: %s\n", start);
+		add_token(ms, STR, ft_strdup(word));
 }
 
 /**
@@ -180,11 +180,13 @@ void	lexer(t_minishell *ms, char *cmds)
 	char	**words;
 	char	**ori_words;
 
-	words = ft_split_delims(cmds, "\"\'");
+	expander(ms, &cmds);
+	words = ft_split_delims(cmds, "\"\'\\");
 	ori_words = words;
 	while (*words != NULL)
 	{
-		expander(ms, words);
+		if (ft_strchr(*words, '\\') != NULL && ft_strchr(*words + 1, '\\'))
+			remove_slash(words);
 		tokenizer(ms, *words);
 		words++;
 	}

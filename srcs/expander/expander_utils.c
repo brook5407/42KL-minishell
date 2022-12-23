@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 14:30:00 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/23 21:02:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*extract_ids(char **str, int ignore)
 			next++;
 		}	
 	}
-	ids = ft_strndup((*str), next - (*str) + i); // $
+	ids = ft_strndup((*str), next - (*str) + i);
 	*str = next;
 	return (ids);
 }
@@ -127,4 +127,32 @@ char	*join_expanded(char *str, char *prefix, char *value)
 		str = ft_strjoin_free(str, suffix);
 	free(suffix);
 	return (str);
+}
+
+void	remove_slash(char **str)
+{
+	char	*token;
+	char	*prefix;
+	char	*new;
+	char	*value;
+
+	token = *str;
+	prefix = *str;
+	new = NULL;
+	while (*token != '\0')
+	{
+		if (*token == '\\')
+		{
+			prefix = ft_strndup(prefix, token - prefix);
+			value = ft_strndup(token + 1,
+					ft_strchr(token + 1, *token) - token - 1);
+			new = join_expanded(new, prefix, value);
+			token = ft_strchr(token + 1, *token) + 1;
+			prefix = token;
+			continue ;
+		}
+		token++;
+	}
+	free(*str);
+	*str = ft_strjoin_free(new, ft_strndup(prefix, token - prefix));
 }
