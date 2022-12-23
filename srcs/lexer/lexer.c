@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 12:22:08 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 12:48:03 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	*get_str_token(char **word)
 	quote = *(*word);
 	next = ft_strchr(*word + 1, quote);
 	if (next == NULL)
-		next = *word + ft_strlen(*word);
+		next = *word + ft_strlen(*word) - 1;
+	next++;
 	while (*next != '\0')
 	{
 		if (ft_strchr(OPERATORS, *next) != NULL)
@@ -162,7 +163,6 @@ void	tokenizer(t_minishell *ms, char *word)
 		token = get_token(&word);
 		printf("token: %s\n", token);
 		free(token);
-		word++;
 	}
 	if (start == word)
 		printf("token: %s\n", start);
@@ -185,7 +185,6 @@ void	lexer(t_minishell *ms, char *cmds)
 	while (*words != NULL)
 	{
 		expander(ms, words);
-		// printf("token: %s\n", *words);
 		tokenizer(ms, *words);
 		words++;
 	}
