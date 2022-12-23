@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 12:01:49 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 14:30:47 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	expander(t_minishell *ms, char **token);
 void	recognize_token(t_minishell *ms, char *token);
 
 int		is_valid_id(char *id);
-char	*extract_ids(char **str);
+char	*extract_ids(char **str, int ignore);
 char	*get_parameter_value(t_minishell *ms, char *token);
 char	*join_expanded(char *str, char *prefix, char *id);
 

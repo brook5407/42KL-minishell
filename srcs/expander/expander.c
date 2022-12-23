@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 12:16:45 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 14:31:39 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,11 @@ char	*expand_parameter(t_minishell *ms, char *token, int ignore)
 		if (*token == '$')
 		{
 			prefix = ft_strndup(prefix, token - prefix);
-			value = get_parameter_value(ms, extract_ids(&token));
+			value = get_parameter_value(ms, extract_ids(&token, ignore));
 			str = join_expanded(str, prefix, value);
 			prefix = token;
 			continue ;
 		}
-		if (*token == '\'' && ignore == 1)
-			token = ft_strchr(token + 1, '\'');
 		token++;
 	}
 	remaining = ft_strndup(prefix, token - prefix);
@@ -196,7 +194,7 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	}
 	else
 		*str = join_expanded(*str, prefix,
-				get_parameter_value(ms, extract_ids(&copy)));
+				get_parameter_value(ms, extract_ids(&copy, 1)));
 	prefix = copy;
 	*token = copy;
 	*pre = prefix;
