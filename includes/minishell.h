@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:29:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/23 12:01:49 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ typedef struct s_cmd
 	t_token_type	type;
 	void			(*builtin)(t_minishell *);
 	char			*cmd_path;
-	char			**args;
+	t_list			*args;
 	char			*infile;
 	char			*outfile;
 }		t_cmd;
@@ -155,7 +155,7 @@ typedef struct s_cmd
 
 void	init_minishell(t_minishell *ms, char **ev);
 void	init_environment(t_minishell *ms, char **ev);
-void	init_signal();
+void	init_signal(void);
 void	set_prompt(t_minishell *ms);
 void	add_env_var(t_minishell *ms, char *key, char *value);
 
