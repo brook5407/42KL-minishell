@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 14:31:39 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/23 18:38:51 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,15 @@ char	*expand_quotes(t_minishell *ms, char *token)
 	if (*token == '\'' || (*token == '"' && ft_strchr(token, '$') == NULL))
 	{
 		str = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
+		str = ft_strjoin_free(ft_strdup("\\"), str);
+		str = ft_strjoin_free(str, "\\");
 		free(temp);
 		return (str);
 	}
 	token = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
 	str = expand_parameter(ms, token, 0);
+	str = ft_strjoin_free(ft_strdup("\\"), str);
+	str = ft_strjoin_free(str, "\\");
 	free(token);
 	free(temp);
 	return (str);

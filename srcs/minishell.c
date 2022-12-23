@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 14:42:07 by chchin           ###   ########.fr       */
+/*   Updated: 2022/12/23 15:13:07 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int	main(int ac, char **av, char **ev)
 			add_history(cmds);
 		lexer(&ms, cmds);
 		ft_lstclear(&ms.tokens, free_token);
-		// call_buildin(&ms, cmds);
 		free(cmds);
 		free(ms.prompt);
 	}
