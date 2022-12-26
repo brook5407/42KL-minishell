@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/26 17:48:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/26 20:44:36 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,13 @@ char	*get_parameter_value(t_minishell *ms, char *token)
 	return (value);
 }
 
+/**
+ * @brief Join the prefix, the final string and the expanded value all together
+ * 
+ * @param str The final string
+ * @param prefix The substring before the expanded value in the ori string
+ * @param value The expanded value
+*/
 char	*join_expanded(char *str, char *prefix, char *value)
 {
 	char	*suffix;
@@ -128,36 +135,3 @@ char	*join_expanded(char *str, char *prefix, char *value)
 	free(suffix);
 	return (str);
 }
-
-// too many lines
-// void	remove_slash(char **str)
-// {
-// 	char	*token;
-// 	char	*prefix;
-// 	char	*new;
-// 	char	*value;
-// 	char	*remaining;
-
-// 	token = *str;
-// 	prefix = *str;
-// 	new = NULL;
-// 	while (*token != '\0')
-// 	{
-// 		if (*token == '\\')
-// 		{
-// 			prefix = ft_strndup(prefix, token - prefix);
-// 			value = ft_strndup(token + 1,
-// 					ft_strchr(token + 1, *token) - token - 1);
-// 			new = join_expanded(new, prefix, value);
-// 			token = ft_strchr(token + 1, *token) + 1;
-// 			prefix = token;
-// 			free(value);
-// 			continue ;
-// 		}
-// 		token++;
-// 	}
-// 	free(*str);
-// 	remaining = ft_strndup(prefix, token - prefix);
-// 	*str = ft_strjoin_free(new, remaining);
-// 	free(remaining);
-// }

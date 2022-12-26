@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/26 18:10:09 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/26 20:57:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,24 @@ char	*expand_quotes(t_minishell *ms, char *token)
 	return (value);
 }
 
+/**
+ * @brief The process of expander
+ * 
+ * 1. Get the prefix. Prefix is just the string before the expanded value.
+ * 	  Example: ec$B, "ec" is the prefix in this case.
+ * 2. If the current str starts with single or double quote, pass it to
+ * 	  expand quote to the the expaneded value. Before that, the str that
+ * 	  start and end with quote must be extracted out. The pointer should
+ *    point to the next extract point after the value expanded.
+ * 3. If the current str nor start or end with quote, it means it must
+ *    be a normal expansion. Get the parameter value and join it together
+ *    with the final str.
+ * 
+ * Noted that this function directly modify the pointer of the str. So if
+ * this function is called inside a loop, it should call continue after this
+ * function exit (if the loop is post-increment). So that it won't miss
+ * any of the character.
+ */
 void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 {
 	char	*copy;
@@ -142,32 +160,28 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	*pre = prefix;
 }
 
-// void	expander1(t_minishell *ms, char **token, t_expand_type type)
-// {
-// 	char	*copy;
-// 	char	*prefix;
-// 	char	*str;
-// 	char	*remaining;
-
-// 	copy = *token;
-// 	str = NULL;
-// 	prefix = copy;
-// 	while (*copy != '\0')
-// 	{
-		// if (*copy == '$' || *copy == '\'' || *copy == '"')
-		// {
-		// 	expander_process(ms, &str, &copy, &prefix);
-		// 	continue ;
-		// }
-// 		copy++;
-// 	}
-// 	if (str == NULL)
-// 		return ;
-// 	remaining = ft_strndup(prefix, copy - prefix);
-// 	*token = ft_strjoin_free(str, remaining);
-// 	free(remaining);
-// }
-
+/**
+ * @brief Expander. Expand the quotes and shell parameter ($).
+ * 
+ * @param token The pointer to the original string (double pointer)
+ * @param type The expansion type (PARAM, INQUOTE, BOTH)
+ * 
+ * Iterate through a string and perform expansion. Can either choose
+ * to expand certain type based on the "type" value.
+ * Available type:
+ * 1. PARAM - Expand only the shell parameter that are not in quotes
+ * 2. INQUOTE - Expand only the shell parameter in quotes, value in
+ *              single and double quotes.
+ * 3. BOTH - Do all.
+ * 
+ * If type is PARAM, when encounter a quote, the pointer to string will
+ * advance to the end of the quote.
+ * If type is BOTH or INQUOTES, when encounter a '$' that is not in a
+ * quote, don't expand it.
+ * 
+ * After everything is done, extract the remaining character and join it
+ * together with the final string.
+ */
 void	expander(t_minishell *ms, char **token, t_expand_type type)
 {
 	char	*copy;
@@ -182,7 +196,7 @@ void	expander(t_minishell *ms, char **token, t_expand_type type)
 	{
 		if (type == PARAM && ft_strchr(QUOTES, *copy))
 			copy = ft_strchr(copy + 1, *copy);
-		else if ((*copy == '$' && type == PARAM)
+		else if ((*copy == '$' && (type == PARAM || type == BOTH))
 			|| *copy == '\'' || *copy == '"')
 		{
 			expander_process(ms, &str, &copy, &prefix);
