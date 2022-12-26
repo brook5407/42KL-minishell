@@ -6,70 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 18:38:51 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:10:09 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * There are two expansion needed for our minishell.
- * 1. Tilde expansion "~" (extra)
- * 2. Shell parameter expansion "$" together with quote expansion
- * 
- * If the variable is not found in the environment variables, keep the original
- * form and just return it.
- * If the token merely just a "$", return the original token as well.
- * 
- * Naming convention for env var, ALPHABETS, DIGITS and UNDERSCORE. Other than
- * these, the character are not part of the VAR name.
- */
-
-/**
- * TILDE EXPANSION
- * 
- * If a word begins with an unquoted tilde character (‘~’), all of the characters
- * up to the first unquoted slash (or all characters, if there is no unquoted
- * slash) are considered a tilde-prefix. If HOME is unset, the home directory
- * of the user executing the shell is substituted instead. Otherwise, the
- * tilde-prefix is replaced with the home directory associated with the specified
- * login name.
- * 
- * 1. ~
- * 	  The value of $HOME
- * 2. ~/foo
- * 	  $HOME/foo
- * 
- * Idea:
- * Replace ~ to $HOME, and shell expansion will then do the shell expansion
- */
-
-/**
- * SHELL PARAMETER EXPANSION
- * 
- * 1. If the PARAMETER is not in the list yet, keep the ori name, return it.
- * 2. If the PARAMETER is in the list, get the value, replace it with the value.
- * 		a. If the value is NULL, join with nothing. NOTE: "" and NULL is two
- *         different thing.
- * 
- * To get the PARAMETER name, follow the naming convention for PARAMETER, when
- * encounter an invalid character for PARAMETER name, stop, that marks the end
- * of a ENV PARAMETER, get the value.
- * 
- * Whatever is between "", expand. Whatever is between '', don't expand. Quotes
- * are first come first serve. So if:
- * "'$TEST'", expand. Quotes in between will be treated as normal characters.
- * '"$TEST"', don't expand. Same as above for the quotes in between.
- * 
- * When getting the shell parameter, the delimiter between parameter is $, '\0'.
- * If the parameter does not have a valid parameter name, remove it.
- */
-
-/**
- * Expander should works like so:
- * 1. Check if there's a tilde in the token, expand it to "$HOME". (ON-HOLD)
- * 2. Expand the shell parameter.
-*/
 
 /**
  * @brief Expand the shell parameter to its value
@@ -160,24 +101,19 @@ char	*expand_parameter(t_minishell *ms, char *token, int ignore)
 char	*expand_quotes(t_minishell *ms, char *token)
 {
 	char	*temp;
-	char	*str;
+	char	*value;
 
 	temp = token;
 	if (*token == '\'' || (*token == '"' && ft_strchr(token, '$') == NULL))
+		value = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
+	else
 	{
-		str = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
-		str = ft_strjoin_free(ft_strdup("\\"), str);
-		str = ft_strjoin_free(str, "\\");
-		free(temp);
-		return (str);
+		token = ft_strndup(token +1, ft_strlen(token + 1) - 1);
+		value = expand_parameter(ms, token, 0);
+		free(token);
 	}
-	token = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
-	str = expand_parameter(ms, token, 0);
-	str = ft_strjoin_free(ft_strdup("\\"), str);
-	str = ft_strjoin_free(str, "\\");
-	free(token);
 	free(temp);
-	return (str);
+	return (value);
 }
 
 void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
@@ -185,6 +121,7 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	char	*copy;
 	char	*prefix;
 	char	*next;
+	char	*value;
 
 	copy = *token;
 	prefix = *pre;
@@ -192,8 +129,9 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	if (*copy == '\'' || *copy == '"')
 	{
 		next = ft_strchr(copy + 1, *copy) + 1;
-		*str = join_expanded(*str, prefix,
-				expand_quotes(ms, ft_strndup(copy, next - copy)));
+		value = expand_quotes(ms, ft_strndup(copy, next - copy));
+		*str = join_expanded(*str, prefix, value);
+		free(value);
 		copy = next;
 	}
 	else
@@ -204,18 +142,48 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	*pre = prefix;
 }
 
-void	expander(t_minishell *ms, char **token)
+// void	expander1(t_minishell *ms, char **token, t_expand_type type)
+// {
+// 	char	*copy;
+// 	char	*prefix;
+// 	char	*str;
+// 	char	*remaining;
+
+// 	copy = *token;
+// 	str = NULL;
+// 	prefix = copy;
+// 	while (*copy != '\0')
+// 	{
+		// if (*copy == '$' || *copy == '\'' || *copy == '"')
+		// {
+		// 	expander_process(ms, &str, &copy, &prefix);
+		// 	continue ;
+		// }
+// 		copy++;
+// 	}
+// 	if (str == NULL)
+// 		return ;
+// 	remaining = ft_strndup(prefix, copy - prefix);
+// 	*token = ft_strjoin_free(str, remaining);
+// 	free(remaining);
+// }
+
+void	expander(t_minishell *ms, char **token, t_expand_type type)
 {
 	char	*copy;
 	char	*prefix;
 	char	*str;
+	char	*remaining;
 
 	copy = *token;
 	str = NULL;
 	prefix = copy;
 	while (*copy != '\0')
 	{
-		if (*copy == '$' || *copy == '\'' || *copy == '"')
+		if (type == PARAM && ft_strchr(QUOTES, *copy))
+			copy = ft_strchr(copy + 1, *copy);
+		else if ((*copy == '$' && type == PARAM)
+			|| *copy == '\'' || *copy == '"')
 		{
 			expander_process(ms, &str, &copy, &prefix);
 			continue ;
@@ -224,5 +192,7 @@ void	expander(t_minishell *ms, char **token)
 	}
 	if (str == NULL)
 		return ;
-	*token = ft_strjoin_free(str, ft_strndup(prefix, copy - prefix));
+	remaining = ft_strndup(prefix, copy - prefix);
+	*token = ft_strjoin_free(str, remaining);
+	free(remaining);
 }

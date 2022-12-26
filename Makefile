@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2022/12/22 18:14:24 by wricky-t         ###   ########.fr        #
+#    Updated: 2022/12/26 12:47:53 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@
 
 NAME		:= minishell
 
-CC			:= gcc
+CC			:= gcc -g3
 
 CFLAGS		:= -Wall -Werror -Wextra
 
@@ -130,6 +130,9 @@ re: fclean all
 norm: $(SRCS)
 	@clear
 	@$(NORM) $(SRCS) $(INCLUDES) $(LIBFT)
+
+val: all
+	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --log-file=check.txt ./minishell
 
 .PHONY:
 	clean fclean re

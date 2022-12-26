@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 18:39:43 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/26 17:05:56 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ typedef enum e_token_type
 	OPR,
 	STR
 }		t_token_type;
+
+typedef enum e_expand_type
+{
+	PARAM,
+	INQUOTE,
+	BOTH
+}	t_expand_type;
 
 /**
  * Enum for operators
@@ -161,7 +168,7 @@ void	add_env_var(t_minishell *ms, char *key, char *value);
 
 void	lexer(t_minishell *ms, char *cmds);
 void	tokenizer(t_minishell *ms, char *word);
-void	expander(t_minishell *ms, char **token);
+void	expander(t_minishell *ms, char **token, t_expand_type type);
 void	recognize_token(t_minishell *ms, char *token);
 
 int		is_valid_id(char *id);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/23 20:46:40 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:17:28 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ void	tokenizer(t_minishell *ms, char *word)
 	while (*word != '\0')
 	{
 		token = get_token(&word);
-		printf("token: %s\n", token);
 		recognize_token(ms, token);
 		free(token);
 	}
@@ -179,17 +178,25 @@ void	lexer(t_minishell *ms, char *cmds)
 {
 	char	**words;
 	char	**ori_words;
+	char	*ori_cmds;
+	char	*temp;
 
-	expander(ms, &cmds);
-	words = ft_split_delims(cmds, "\"\'\\");
+	ori_cmds = cmds;
+	expander(ms, &cmds, PARAM);
+	words = ft_split_delims(cmds, "\"\'");
 	ori_words = words;
 	while (*words != NULL)
 	{
-		if (ft_strchr(*words, '\\') != NULL && ft_strchr(*words + 1, '\\'))
-			remove_slash(words);
+		temp = *words;
+		expander(ms, words, INQUOTE);
 		tokenizer(ms, *words);
+		if (temp != *words)
+			free(temp);
 		words++;
 	}
 	ft_freestrarr(ori_words);
 	list_all_token(ms);
+	free(cmds);
+	if (ori_cmds != cmds)
+		free(ori_cmds);
 }
