@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:20:35 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:23:03 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,9 @@ typedef struct s_cmd
 	t_list			*outfile;
 }		t_cmd;
 
+/* Global errno is defined here */
+int8_t	g_errno;
+
 /* ====== FUNCTION PROTOTYPES ====== */
 
 void			init_minishell(t_minishell *ms, char **ev);
@@ -210,7 +213,7 @@ int				call_cd(t_minishell *ms, char *path);
 int				call_pwd(t_minishell *ms);
 int				call_env(t_minishell *ms);
 int				call_unset(t_minishell *ms, char *key);
-void			call_export(t_minishell *ms, char *key);
+int				call_export(t_minishell *ms, char *key);
 int				call_echo(t_minishell *ms, char *s);
 int				call_exit(t_minishell *ms, char *cmds);
 int				check_valid(char *cmds, char *args);

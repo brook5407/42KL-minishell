@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brook <brook@student.42.fr>                +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2022/12/21 16:25:25 by brook            ###   ########.fr       */
+/*   Updated: 2022/12/27 15:51:52 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 int	call_buildin(t_minishell *ms, char *cmds)
 {
+	int	i;
+
+	i = 1;
 	if (ft_strncmp(cmds, "cd", 2) == 0)
-		call_cd(ms, ft_strchr(cmds, ' '));
+		i = call_cd(ms, ft_strchr(cmds, ' '));
 	else if (ft_strcmp(cmds, "env") == 0)
-		call_env(ms);
+		i = call_env(ms);
 	else if (ft_strncmp(cmds, "export", 6) == 0)
-		call_export(ms, ft_strchr(cmds, ' '));
+		i = call_export(ms, ft_strchr(cmds, ' '));
 	else if (ft_strncmp(cmds, "exit", 4) == 0)
-		call_exit(ms, ft_strchr(cmds, ' '));
+		i = call_exit(ms, ft_strchr(cmds, ' '));
 	else if (ft_strncmp(cmds, "unset", 5) == 0)
-		call_unset(ms, ft_strchr(cmds, ' '));
+		i = call_unset(ms, ft_strchr(cmds, ' '));
 	else if (ft_strcmp(cmds, "pwd") == 0)
-		call_pwd(ms);
+		i = call_pwd(ms);
 	else if (ft_strncmp(cmds, "echo", 4) == 0)
-		call_echo(ms, ft_strchr(cmds, ' ') + 1);
-	return (0);
+		i = call_echo(ms, ft_strchr(cmds, ' ') + 1);
+	return (i);
 }

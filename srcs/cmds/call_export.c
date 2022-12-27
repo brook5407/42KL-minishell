@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/22 18:15:51 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:18:26 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ int	print_export(t_minishell *ms, char *s)
 	return (0);
 }
 
-void	call_export(t_minishell *ms, char *s)
+int	call_export(t_minishell *ms, char *s)
 {
 	char	*key;
 	char	*value;
 
 	if (!print_export(ms, s))
-		return ;
+		return (0);
 	value = ft_strchr(++s, '=');
 	if (value == NULL)
 	{
@@ -112,4 +112,5 @@ void	call_export(t_minishell *ms, char *s)
 		free(key);
 		free(value);
 	}
+	return (0);
 }
