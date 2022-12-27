@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/26 17:05:56 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:12:15 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,12 +151,14 @@ typedef struct s_minishell
 typedef struct s_cmd
 {
 	t_token_type	type;
-	void			(*builtin)(t_minishell *);
-	char			*cmd_path;
-	t_list			*args;
-	char			*infile;
-	char			*outfile;
+	// t_operator_type	opr_type;
+	t_list			*args; // including builtin name/cmd path
+	t_list			*infile;
+	t_list			*outfile;
 }		t_cmd;
+
+/* Global errno is defined here */
+int8_t	g_errno;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
@@ -193,7 +195,7 @@ int		call_cd(t_minishell *ms, char *path);
 int		call_pwd(t_minishell *ms);
 int		call_env(t_minishell *ms);
 int		call_unset(t_minishell *ms, char *key);
-void	call_export(t_minishell *ms, char *key);
+int		call_export(t_minishell *ms, char *key);
 int		call_echo(t_minishell *ms, char *s);
 int		call_exit(t_minishell *ms, char *cmds);
 int		check_valid(char *cmds, char *args);
