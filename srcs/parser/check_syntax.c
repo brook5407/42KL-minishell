@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 21:01:19 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/16 14:18:59 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 15:57:00 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
  * 4. >>
  * 5. <<
 */
-void	check_operator_syntax(t_minishell *ms, char *token)
+int	check_operator_syntax(t_minishell *ms, char *token)
 {
 	int	i;
 	int	token_len;
@@ -74,24 +74,25 @@ void	check_operator_syntax(t_minishell *ms, char *token)
 	if (token_len != opr_len)
 	{
 		show_error(ms, SYNTAX_ERROR, token + opr_len);
-		return ;
+		return (0);
 	}
+	return (1);
 }
 
-void	check_incomplete_grammar(t_minishell *ms)
-{
-	t_list	*tokens;
-	t_token	*tok;
+// void	check_incomplete_grammar(t_minishell *ms)
+// {
+// 	t_list	*tokens;
+// 	t_token	*tok;
 
-	tokens = ms->tokens;
-	while (tokens != NULL)
-	{
-		tok = tokens->content;
-		if (tok->type == OPR && tokens->next == NULL)
-		{
-			show_error(ms, SYNTAX_ERROR, NULL);
-			return ;
-		}
-		tokens = tokens->next;
-	}
-}
+// 	tokens = ms->tokens;
+// 	while (tokens != NULL)
+// 	{
+// 		tok = tokens->content;
+// 		if (tok->type == OPR && tokens->next == NULL)
+// 		{
+// 			show_error(ms, SYNTAX_ERROR, NULL);
+// 			return ;
+// 		}
+// 		tokens = tokens->next;
+// 	}
+// }

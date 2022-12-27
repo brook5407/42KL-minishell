@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/26 18:17:28 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:18:52 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,6 @@ void	lexer(t_minishell *ms, char *cmds)
 	char	**words;
 	char	**ori_words;
 	char	*ori_cmds;
-	char	*temp;
 
 	ori_cmds = cmds;
 	expander(ms, &cmds, PARAM);
@@ -187,15 +186,11 @@ void	lexer(t_minishell *ms, char *cmds)
 	ori_words = words;
 	while (*words != NULL)
 	{
-		temp = *words;
-		expander(ms, words, INQUOTE);
 		tokenizer(ms, *words);
-		if (temp != *words)
-			free(temp);
 		words++;
 	}
 	ft_freestrarr(ori_words);
-	list_all_token(ms);
+	ft_lstiter(ms->tokens, list_all_token);
 	free(cmds);
 	if (ori_cmds != cmds)
 		free(ori_cmds);

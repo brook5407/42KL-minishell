@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:21:14 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:03:39 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,23 +139,28 @@ int	recognize_cmd(t_minishell *ms, char *token)
 /**
  * Operators are: | (Pipes), < (Redirect input), > (Redirect output),
  * 				  << (Heredoc) & >> (Append)
+ * 
+ * 1. Check if the length is greater and equal to 1 and less and equal to 2
 */
 int	recognize_operator(t_minishell *ms, char *token)
 {
-	int	i;
+	int				i;
+	int				len;
+	t_token_type	type;
 
 	i = -1;
-	if (only_contain_operator(token) == 0)
+	len = ft_strlen(token);
+	if (!(len >= 1 && len <= 2))
 		return (0);
 	while (ms->operators[++i] != NULL)
 	{
 		if (ft_strcmp(token, ms->operators[i]) == 0)
 		{
-			add_token(ms, OPR, ft_strdup(token));
+			type = get_operator_type(ms->operators[i]);
+			add_token(ms, type, ft_strdup(token));
 			return (1);
 		}
 	}
-	check_operator_syntax(ms, token);
 	return (0);
 }
 

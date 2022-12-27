@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:11:31 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:21:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 14:51:26 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,19 @@ int	only_contain_operator(char *token)
 		token++;
 	}
 	return (1);
+}
+
+t_token_type	get_operator_type(char *opr)
+{
+	if (ft_strcmp(opr, ">>") == 0)
+		return (APPEND);
+	if (ft_strcmp(opr, "<<") == 0)
+		return (HEREDOC);
+	if (ft_strcmp(opr, ">") == 0)
+		return (RDROUT);
+	if (ft_strcmp(opr, "<") == 0)
+		return (RDRIN);
+	if (ft_strcmp(opr, "|") == 0)
+		return (PIPE);
+	return (UNKNOWN);
 }
