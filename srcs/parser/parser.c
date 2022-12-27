@@ -6,11 +6,32 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 13:43:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:47:00 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+//testing
+void	visualize_expected(t_parse_hlpr *phlpr)
+{
+	printf("\nEXPECTING: \n");
+	printf("| ");
+	printf("%-6s", "CMD");
+	printf("%-6s", "E_CMD");
+	printf("%-6s", "STR");
+	printf("%-6s", "R_IN");
+	printf("%-6s", "R_OUT");
+	printf("%-6s", "HDOC");
+	printf("%-6s", "APPD");
+	printf("%-6s", "PIPE");
+	printf("|\n| ");
+	int i = -1;
+	while (++i < TYPE_TOTAL)
+		printf("%-6d", phlpr->expected[i]);
+	printf("|\n\n");
+}
+// testing
 
 /**
  * TODO:
@@ -27,3 +48,17 @@
  * 	  what's expected next.
  * 4. Error handler. Show error based on the incorrect grammar.
  */
+
+void	parser(t_minishell *ms)
+{
+	t_parse_hlpr	phlpr;
+	(void)ms;
+	init_parser_helper(&phlpr);
+	visualize_expected(&phlpr);
+	reset_all_type(&phlpr, 0);
+	visualize_expected(&phlpr);
+	printf("is RDRIN on? %s\n", (is_type_on(&phlpr, RDRIN) ? "YES" : "NO"));
+	toggle_type(&phlpr, RDRIN);
+	visualize_expected(&phlpr);
+	printf("is RDRIN on? %s\n", (is_type_on(&phlpr, RDRIN) ? "YES" : "NO"));
+}

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:23:03 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:52:30 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef enum e_token_type
 	HEREDOC,
 	APPEND,
 	PIPE,
-	TOTAL,
+	TYPE_TOTAL,
 	UNKNOWN
 }		t_token_type;
 
@@ -150,11 +150,11 @@ typedef struct s_minishell
 	t_list	*cmds;
 }		t_minishell;
 
-typedef struct s_parser_helper
+typedef struct s_parse_hlpr
 {
 	t_token_type	prev;
-	t_token_type	expected[TOTAL];
-}	t_parser_helper;
+	t_token_type	expected[TYPE_TOTAL];
+}	t_parse_hlpr;
 
 /**
  * Struct for command
@@ -204,6 +204,14 @@ t_token_type	get_operator_type(char *opr);
 void			add_token(t_minishell *ms, t_token_type type, char *token);
 void			list_all_token(void *content);
 void			free_token(void	*content);
+
+void			parser(t_minishell *ms);
+
+void			init_parser_helper(t_parse_hlpr *phlpr);
+void			reset_all_type(t_parse_hlpr *phlpr, int status);
+void			reject_type(t_parse_hlpr *phlpr, t_token_type type);
+void			toggle_type(t_parse_hlpr *phlpr, t_token_type type);
+int				is_type_on(t_parse_hlpr *phlpr, t_token_type type);
 
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
