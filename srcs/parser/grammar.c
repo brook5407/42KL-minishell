@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 13:12:41 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/28 15:42:03 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:52:55 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,6 @@
  *    reset_all_type(), status = 1
  *    TYPE: FREE_FORM_GRAMMAR
  */
-
-/**
- * @brief Initialize parser helper
- * 
- * @param phlpr pointer to parser helper
- */
-void	init_parser_helper(t_parse_hlpr *phlpr)
-{
-	int	i;
-
-	i = -1;
-	phlpr->has_cmd_name = 0;
-	phlpr->curr_grammar = START;
-	phlpr->prev = UNKNOWN;
-	apply_grammar(phlpr, START);
-}
 
 /**
  * @brief Reset all acceptable token to a status (1 = Accept, 0 = Reject)

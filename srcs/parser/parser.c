@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/28 15:43:07 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:22:35 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,35 @@ void	visualize_expected(t_parse_hlpr *phlpr)
  * 4. Error handler. Show error based on the incorrect grammar.
  */
 
+/**
+ * Parser process
+ * 
+ * 1. Initialize parser_helper (should pass to a grammar checker in every
+ *    iteration)
+ * 2. Iterate through the token_list
+ * 3. In each iteration
+ * 		i.	 Get the type of that token
+ *      ii.	 Check if the token match what's expected
+ *      iii. If...
+ * 			 a. ... it's expected
+ * 				- save it into the node
+ * 					- based on the grammar, where to stored the value
+ * 					  will be different as well (check previous token)
+ * 				- set next's token grammar rules
+ * 				- move on to the next token
+ *           b. ... it's not expected
+ * 				- handle error
+ *              - stop the current cmd block, move to the end
+ * 					- might have to free what's been saved in the node
+ *              - or stop when there's another pipeline and start
+ *                parsing again.
+ * 4. At the end of the whole process, the output is a cmd_list
+ * 
+ * IDEA:
+ * 1. Add prev_token in parser_helper
+ * 2. Create a function that visualize each node in cmd_list
+ * 3. Create functions that help building the cmd_list (builder functions)
+ */
 void	parser(t_minishell *ms)
 {
 	t_parse_hlpr	phlpr;
