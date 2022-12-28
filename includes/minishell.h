@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 17:52:30 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:03:38 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,21 @@ typedef enum e_expand_type
 }	t_expand_type;
 
 /**
- * Enum for operators
- * RDRIN	: Redirection in
- * RDROUT	: Redirection out
- * HEREDOC	: Heredoc
- * APPEND	: Redirection append
- * PIPE		: pipe
+ * Enum for different types of grammar
+ * START_GRAMMAR: Represent the acceptable tokens at the start of a grammar
+ * FREE_FORM_GRAMMAR: Not restricted tokens. Any type is ok.
+ * POST_PIPE_GRAMMAR: Represent the acceptable tokens after a pipe
+ * POST_RDR_GRAMMAR: Represent the acceptable tokens after a redirection
+ * CMD_ONLY_GRAMMAR: Only accepts CMD / EXT_CMD token.
  */
-// typedef enum e_operators
-// {
-// 	RDRIN,
-// 	RDROUT,
-// 	HEREDOC,
-// 	APPEND,
-// 	PIPE
-// }		t_operators;
+typedef enum e_grammar
+{
+	START,
+	FREE_FORM,
+	POST_RDR,
+	CMD_ONLY,
+	UNSET
+}		t_grammar;
 
 /**
  * Enum for error type, errno
@@ -152,6 +152,8 @@ typedef struct s_minishell
 
 typedef struct s_parse_hlpr
 {
+	int				has_cmd_name;
+	t_grammar		curr_grammar;
 	t_token_type	prev;
 	t_token_type	expected[TYPE_TOTAL];
 }	t_parse_hlpr;
@@ -212,6 +214,9 @@ void			reset_all_type(t_parse_hlpr *phlpr, int status);
 void			reject_type(t_parse_hlpr *phlpr, t_token_type type);
 void			toggle_type(t_parse_hlpr *phlpr, t_token_type type);
 int				is_type_on(t_parse_hlpr *phlpr, t_token_type type);
+
+void			apply_grammar(t_parse_hlpr *phlpr, t_grammar grammar);
+void			set_next_grammar(t_parse_hlpr *phlpr, t_token_type curr);
 
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
