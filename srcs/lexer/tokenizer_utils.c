@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:11:31 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 14:51:26 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/30 14:56:17 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,65 @@ t_token_type	get_operator_type(char *opr)
 	if (ft_strcmp(opr, "|") == 0)
 		return (PIPE);
 	return (UNKNOWN);
+}
+
+/**
+ * @brief Join the path of the external command before comparing
+ * 
+ * As mentioned below, the user can have three way to execute an external
+ * command:
+ * 1. Just the name of the command (ex: cat)
+ * 2. Fully specify the path to command (ex: /bin/cat)
+ * 3. Partially specify the path to command but must in that directory
+ *    (ex: munki/AppUsaged, but have to be at /usr/local/)
+ * 
+ * This function is to join the path based on the way the user specify.
+ * For:
+ * 1. Join the path of PATH to the token
+ * 2. Assuming it's a valid executable path, so just strdup
+ * 3. Append the value of PWD infront of token
+*/
+char	*get_extcmd_path(char *path, char *token)
+{
+	char	*joined;
+	char	*start;
+	char	*occurrence;
+
+	joined = NULL;
+	start = token;
+	occurrence = ft_strchr(start, '/');
+	if (occurrence == NULL)
+	{
+		joined = ft_strjoin(path, "/");
+		return (ft_strjoin_free(joined, token));
+	}
+	return (ft_strdup(token));
+}
+
+char	*get_ext_full_path(t_minishell *ms, char *token)
+{
+	int			i;
+	char		*path_value;
+	char		**paths;
+	char		*ext;
+	struct stat	file_stat;
+
+	path_value = get_env_value(ms, "PATH");
+	if (path_value == NULL)
+		return (NULL);
+	i = -1;
+	paths = ft_split(path_value, ':');
+	while (paths[++i] != NULL)
+	{
+		ext = get_extcmd_path(paths[i], token);
+		if (access(ext, X_OK) == 0
+			&& stat(ext, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
+		{
+			ft_freestrarr(paths);
+			return (ext);
+		}
+		free(ext);
+	}
+	ft_freestrarr(paths);
+	return (NULL);
 }

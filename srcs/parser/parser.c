@@ -6,14 +6,14 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/28 16:22:35 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:41:34 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 //testing
-void	visualize_expected(t_parse_hlpr *phlpr)
+void	visualize_expected(t_parse_hlpr *hlpr)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ void	visualize_expected(t_parse_hlpr *phlpr)
 	printf("%-6s", "PIPE");
 	printf("|\n| ");
 	while (++i < TYPE_TOTAL)
-		printf("%-6d", phlpr->expected[i]);
+		printf("%-6d", hlpr->expected[i]);
 	printf("|\n\n");
 }
 // testing
@@ -80,10 +80,34 @@ void	visualize_expected(t_parse_hlpr *phlpr)
  * 2. Create a function that visualize each node in cmd_list
  * 3. Create functions that help building the cmd_list (builder functions)
  */
+
+void	grammar_checker(t_minishell *ms, t_parse_hlpr *hlpr, t_token *token)
+{
+	(void)ms;
+	// apply guarding here
+	if (is_type_on(hlpr, token->type) == 1)
+		printf("Yeap, this is acceptable.\n");
+	else
+		printf("Nah bro what's this\n");
+}
+
 void	parser(t_minishell *ms)
 {
-	t_parse_hlpr	phlpr;
+	t_token			*token;
+	t_list			*token_lst;
+	t_parse_hlpr	hlpr;
 
-	(void)ms;
-	init_parser_helper(&phlpr);
+	token_lst = ms->tokens;
+	init_parser_helper(&hlpr);
+	visualize_expected(&hlpr);
+	while (token_lst != NULL)
+	{
+		// printf("current_grammar:\n");
+		token = token_lst->content;
+		grammar_checker(ms, &hlpr, token);
+		// this point forward, the token is acceptable
+		builder_helper(ms, &hlpr, token);
+		set_next_grammar(&hlpr, token->type);
+		token_lst = token_lst->next;
+	}
 }

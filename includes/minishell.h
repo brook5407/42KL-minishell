@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/28 15:03:38 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:37:04 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,14 +150,6 @@ typedef struct s_minishell
 	t_list	*cmds;
 }		t_minishell;
 
-typedef struct s_parse_hlpr
-{
-	int				has_cmd_name;
-	t_grammar		curr_grammar;
-	t_token_type	prev;
-	t_token_type	expected[TYPE_TOTAL];
-}	t_parse_hlpr;
-
 /**
  * Struct for command
  * @param type		: Type of the token, not sure if this is required
@@ -175,6 +167,15 @@ typedef struct s_cmd
 	t_list			*infile;
 	t_list			*outfile;
 }		t_cmd;
+
+typedef struct s_parse_hlpr
+{
+	int				has_cmd_name;
+	t_grammar		curr_grammar;
+	t_token_type	prev;
+	t_token_type	expected[TYPE_TOTAL];
+	t_cmd			*cmd;
+}	t_parse_hlpr;
 
 /* Global errno is defined here */
 int8_t	g_errno;
@@ -196,18 +197,20 @@ int				is_valid_id(char *id);
 char			*extract_ids(char **str, int ignore);
 char			*get_parameter_value(t_minishell *ms, char *token);
 char			*join_expanded(char *str, char *prefix, char *id);
-void			remove_slash(char **str);
 
 int				token_in_quote(char *token);
 char			*get_next_file(DIR *dir);
 int				only_contain_operator(char *token);
 t_token_type	get_operator_type(char *opr);
+char			*get_ext_full_path(t_minishell *ms, char *token);
 
 void			add_token(t_minishell *ms, t_token_type type, char *token);
 void			list_all_token(void *content);
 void			free_token(void	*content);
 
 void			parser(t_minishell *ms);
+
+void			builder_helper(t_minishell *ms, t_parse_hlpr *hlpr, t_token *token);
 
 void			init_parser_helper(t_parse_hlpr *phlpr);
 void			reset_all_type(t_parse_hlpr *phlpr, int status);

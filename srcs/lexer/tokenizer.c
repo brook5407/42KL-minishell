@@ -6,44 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:03:39 by wricky-t         ###   ########.fr       */
+/*   Updated: 2022/12/30 14:57:24 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * @brief Join the path of the external command before comparing
- * 
- * As mentioned below, the user can have three way to execute an external
- * command:
- * 1. Just the name of the command (ex: cat)
- * 2. Fully specify the path to command (ex: /bin/cat)
- * 3. Partially specify the path to command but must in that directory
- *    (ex: munki/AppUsaged, but have to be at /usr/local/)
- * 
- * This function is to join the path based on the way the user specify.
- * For:
- * 1. Join the path of PATH to the token
- * 2. Assuming it's a valid executable path, so just strdup
- * 3. Append the value of PWD infront of token
-*/
-char	*get_extcmd_path(char *path, char *token)
-{
-	char	*joined;
-	char	*start;
-	char	*occurrence;
-
-	joined = NULL;
-	start = token;
-	occurrence = ft_strchr(start, '/');
-	if (occurrence == NULL)
-	{
-		joined = ft_strjoin(path, "/");
-		return (ft_strjoin_free(joined, token));
-	}
-	return (ft_strdup(token));
-}
 
 /**
  * @brief To recognize if the token is a external command or not.
@@ -62,34 +29,35 @@ char	*get_extcmd_path(char *path, char *token)
  * The return value indicates whether a token has been recognized or not.
  * 1 = Yes, 0 = No
 */
-int	recognize_external(t_minishell *ms, char *token)
-{
-	int			i;
-	char		**paths;
-	char		*path_value;
-	char		*extcmd;
-	struct stat	file_stat;
+// int	recognize_external(t_minishell *ms, char *token)
+// {
+// 	int			i;
+// 	char		**paths;
+// 	char		*path_value;
+// 	char		*extcmd;
+// 	struct stat	file_stat;
 
-	i = -1;
-	path_value = get_env_value(ms, "PATH");
-	if (path_value == NULL)
-		return (0);
-	paths = ft_split(get_env_value(ms, "PATH"), ':');
-	while (paths[++i] != NULL)
-	{
-		extcmd = get_extcmd_path(paths[i], token);
-		if (access(extcmd, X_OK) == 0
-			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
-		{
-			add_token(ms, EXT_CMD, extcmd);
-			ft_freestrarr(paths);
-			return (1);
-		}
-		free(extcmd);
-	}
-	ft_freestrarr(paths);
-	return (0);
-}
+// 	i = -1;
+// 	path_value = get_env_value(ms, "PATH");
+// 	if (path_value == NULL)
+// 		return (0);
+// 	paths = ft_split(get_env_value(ms, "PATH"), ':');
+// 	while (paths[++i] != NULL)
+// 	{
+// 		extcmd = get_extcmd_path(paths[i], token);
+// 		if (access(extcmd, X_OK) == 0
+// 			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
+// 		{
+// 			free(extcmd);
+// 			add_token(ms, EXT_CMD, ft_strdup(token));
+// 			ft_freestrarr(paths);
+// 			return (1);
+// 		}
+// 		free(extcmd);
+// 	}
+// 	ft_freestrarr(paths);
+// 	return (0);
+// }
 
 /**
  * Recognize cmd
@@ -127,12 +95,11 @@ int	recognize_cmd(t_minishell *ms, char *token)
 			return (1);
 		}
 	}
-	if (recognize_external(ms, token_copy) == 1)
+	if (get_ext_full_path(ms, token_copy) != NULL)
 	{
-		free(token_copy);
+		add_token(ms, EXT_CMD, token_copy);
 		return (1);
 	}
-	free(token_copy);
 	return (0);
 }
 
