@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:20:40 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:19:40 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,29 @@
  * 3. Move the cursor to the start of the next line
  * 4. Redraw the current input line on the screen
 */
-static void	signal_handler(int sig)
+void	signal_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		ft_putchar_fd('\n', 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	if (sig != SIGINT)
+		return ;
+	ft_printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void	init_signal(void)
 {
-	struct termios		old_state;
+	struct termios		termios_current;
 
-	if (tcgetattr(STDIN_FILENO, &old_state) == -1)
+	if (tcgetattr(STDIN_FILENO, &termios_current) == -1)
 	{
-		printf("Get terminal control attribute failed.\n");
+		perror("tcgetattr failed\n");
 		exit(0);
 	}
-	old_state.c_cflag &= ~ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &old_state) == -1)
+	termios_current.c_cflag &= ~ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_current) == -1)
 	{
-		printf("Set terminal control attribute failed.\n");
+		perror("tcsetattr failed\n");
 		exit(0);
 	}
 	signal(SIGINT, signal_handler);

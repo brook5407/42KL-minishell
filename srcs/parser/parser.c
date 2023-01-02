@@ -6,14 +6,14 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/30 15:41:34 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:52:05 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//testing
-void	visualize_expected(t_parse_hlpr *hlpr)
+// testing
+void	visualize_expected(t_parser *hlpr)
 {
 	int	i;
 
@@ -53,7 +53,7 @@ void	visualize_expected(t_parse_hlpr *hlpr)
 
 /**
  * Parser process
- * 
+ *
  * 1. Initialize parser_helper (should pass to a grammar checker in every
  *    iteration)
  * 2. Iterate through the token_list
@@ -74,14 +74,14 @@ void	visualize_expected(t_parse_hlpr *hlpr)
  *              - or stop when there's another pipeline and start
  *                parsing again.
  * 4. At the end of the whole process, the output is a cmd_list
- * 
+ *
  * IDEA:
  * 1. Add prev_token in parser_helper
  * 2. Create a function that visualize each node in cmd_list
  * 3. Create functions that help building the cmd_list (builder functions)
  */
 
-void	grammar_checker(t_minishell *ms, t_parse_hlpr *hlpr, t_token *token)
+void	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
 	(void)ms;
 	// apply guarding here
@@ -93,20 +93,18 @@ void	grammar_checker(t_minishell *ms, t_parse_hlpr *hlpr, t_token *token)
 
 void	parser(t_minishell *ms)
 {
-	t_token			*token;
-	t_list			*token_lst;
-	t_parse_hlpr	hlpr;
+	t_token		*token;
+	t_list		*token_lst;
+	t_parser	hlpr;
 
 	token_lst = ms->tokens;
 	init_parser_helper(&hlpr);
-	visualize_expected(&hlpr);
 	while (token_lst != NULL)
 	{
-		// printf("current_grammar:\n");
 		token = token_lst->content;
 		grammar_checker(ms, &hlpr, token);
-		// this point forward, the token is acceptable
-		builder_helper(ms, &hlpr, token);
+		// make it so that from this point forward, the token is acceptable
+		// builder_helper(ms, &hlpr, token);
 		set_next_grammar(&hlpr, token->type);
 		token_lst = token_lst->next;
 	}

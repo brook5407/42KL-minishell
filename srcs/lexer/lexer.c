@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:18:52 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:24:03 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ void	lexer(t_minishell *ms, char *cmds)
 		words++;
 	}
 	ft_freestrarr(ori_words);
-	ft_lstiter(ms->tokens, list_all_token);
 	free(cmds);
 	if (ori_cmds != cmds)
 		free(ori_cmds);

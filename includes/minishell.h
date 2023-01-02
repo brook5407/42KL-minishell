@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/30 15:37:04 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:51:26 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
  * HEREDOC	: Heredoc
  * APPEND	: Redirection append
  * PIPE		: pipe
-*/
+ */
 typedef enum e_token_type
 {
 	CMD,
@@ -78,7 +78,7 @@ typedef enum e_expand_type
 	PARAM,
 	INQUOTE,
 	BOTH
-}	t_expand_type;
+}		t_expand_type;
 
 /**
  * Enum for different types of grammar
@@ -114,7 +114,7 @@ typedef enum e_error_type
  * Struct for token
  * @param type	: Token type (Check t_token_type)
  * @param value	: Value of the token
-*/
+ */
 typedef struct s_token
 {
 	t_token_type	type;
@@ -125,7 +125,7 @@ typedef struct s_token
  * Struct for environment variable
  * @param key	: ID
  * @param value	: value
-*/
+ */
 typedef struct s_env
 {
 	char	*key;
@@ -138,7 +138,7 @@ typedef struct s_env
  * @param operators : List of the operators
  * @param envp		: Environment variable linked list
  * @param tokens	: Token list
- * @param cmds		: Command list 
+ * @param cmds		: Command list
  */
 typedef struct s_minishell
 {
@@ -151,34 +151,42 @@ typedef struct s_minishell
 }		t_minishell;
 
 /**
+ * Struct for file
+ * @param rdr_type	: Redirection type (>, <, >>, <<)
+ * @param name		: The name of the file
+ */
+typedef struct s_file
+{
+	t_token_type	rdr_type;
+	char			*name;
+}		t_file;
+
+/**
  * Struct for command
- * @param type		: Type of the token, not sure if this is required
- * @param builtins	: Function pointer to builtins
  * @param cmd_path	: Path to command if it's an external program
  * @param args		: Arguments to run the command
- * @param infile	: name of infile
- * @param outfile	: name of outfile
+ * @param infile	: List of t_file (infile)
+ * @param outfile	: List of t_file (outfile)
  */
 typedef struct s_cmd
 {
-	char			*cmd_name;
-	t_token_type	rdr_type;
-	t_list			*args;
-	t_list			*infile;
-	t_list			*outfile;
+	char	*cmd_name;
+	t_list	*args;
+	t_list	*infile;
+	t_list	*outfile;
 }		t_cmd;
 
-typedef struct s_parse_hlpr
+typedef struct s_parser
 {
 	int				has_cmd_name;
 	t_grammar		curr_grammar;
-	t_token_type	prev;
+	t_token_type	rdr_mode;
 	t_token_type	expected[TYPE_TOTAL];
 	t_cmd			*cmd;
-}	t_parse_hlpr;
+}		t_parser;
 
 /* Global errno is defined here */
-int8_t	g_errno;
+int8_t			g_errno;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
@@ -206,20 +214,20 @@ char			*get_ext_full_path(t_minishell *ms, char *token);
 
 void			add_token(t_minishell *ms, t_token_type type, char *token);
 void			list_all_token(void *content);
-void			free_token(void	*content);
+void			free_token(void *content);
 
 void			parser(t_minishell *ms);
 
-void			builder_helper(t_minishell *ms, t_parse_hlpr *hlpr, t_token *token);
+void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
 
-void			init_parser_helper(t_parse_hlpr *phlpr);
-void			reset_all_type(t_parse_hlpr *phlpr, int status);
-void			reject_type(t_parse_hlpr *phlpr, t_token_type type);
-void			toggle_type(t_parse_hlpr *phlpr, t_token_type type);
-int				is_type_on(t_parse_hlpr *phlpr, t_token_type type);
+void			init_parser_helper(t_parser *phlpr);
+void			reset_all_type(t_parser *phlpr, int status);
+void			reject_type(t_parser *phlpr, t_token_type type);
+void			toggle_type(t_parser *phlpr, t_token_type type);
+int				is_type_on(t_parser *phlpr, t_token_type type);
 
-void			apply_grammar(t_parse_hlpr *phlpr, t_grammar grammar);
-void			set_next_grammar(t_parse_hlpr *phlpr, t_token_type curr);
+void			apply_grammar(t_parser *phlpr, t_grammar grammar);
+void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);

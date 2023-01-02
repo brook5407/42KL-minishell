@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 13:12:41 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/30 15:27:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:53:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@
 /**
  * @brief Reset all acceptable token to a status (1 = Accept, 0 = Reject)
  */
-void reset_all_type(t_parse_hlpr *hlpr, int status)
+void	reset_all_type(t_parser *hlpr, int status)
 {
-	int i;
+	int	i;
 
 	if (status != 0 && status != 1)
-		return;
+		return ;
 	i = -1;
 	while (++i < TYPE_TOTAL)
 		hlpr->expected[i] = status;
@@ -97,10 +97,10 @@ void reset_all_type(t_parse_hlpr *hlpr, int status)
  * Reject will become Accept
  * Accept will become Reject
  */
-void toggle_type(t_parse_hlpr *hlpr, t_token_type type)
+void	toggle_type(t_parser *hlpr, t_token_type type)
 {
 	if (!(type >= 0 && type < TYPE_TOTAL))
-		return;
+		return ;
 	hlpr->expected[type] = !hlpr->expected[type];
 }
 
@@ -112,7 +112,7 @@ void toggle_type(t_parse_hlpr *hlpr, t_token_type type)
  *
  * Return 1 if it's acceptable, 0 if it's not acceptable.
  */
-int is_type_on(t_parse_hlpr *hlpr, t_token_type type)
+int	is_type_on(t_parser *hlpr, t_token_type type)
 {
 	if (!(type >= 0 && type < TYPE_TOTAL))
 		return (-1);
@@ -131,7 +131,7 @@ int is_type_on(t_parse_hlpr *hlpr, t_token_type type)
  * 3. CMD_ONLY - Accept only CMD/EXT_CMD token
  * 4. FREE_FORM - Accept any types of token
  */
-void apply_grammar(t_parse_hlpr *hlpr, t_grammar grammar)
+void	apply_grammar(t_parser *hlpr, t_grammar grammar)
 {
 	if (grammar == POST_RDR || grammar == CMD_ONLY)
 		reset_all_type(hlpr, 0);
@@ -158,12 +158,13 @@ void apply_grammar(t_parse_hlpr *hlpr, t_grammar grammar)
  * @param hlpr pointer to parser helper
  * @param curr type of the current token
  */
-void set_next_grammar(t_parse_hlpr *hlpr, t_token_type curr)
+void	set_next_grammar(t_parser *hlpr, t_token_type curr)
 {
-	t_grammar grammar;
+	t_grammar	grammar;
 
 	grammar = UNSET;
-	if ((curr == STR || curr == CMD || curr == EXT_CMD) && hlpr->has_cmd_name == 1)
+	if ((curr == STR || curr == CMD || curr == EXT_CMD)
+		&& hlpr->has_cmd_name == 1)
 		grammar = FREE_FORM;
 	else
 		grammar = CMD_ONLY;

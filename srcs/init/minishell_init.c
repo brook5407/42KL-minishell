@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/30 13:26:58 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:50:23 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
  * This is to avoid the if else ft_strcmp chain. Can just iterate
  * through this list using a loop and do whatever you want.
  */
-static void init_builtins(t_minishell *ms)
+static void	init_builtins(t_minishell *ms)
 {
-	char **builtins;
+	char	**builtins;
 
 	builtins = ft_calloc(BUILTINS_TOTAL + 1, sizeof(char *));
 	builtins[0] = "echo";
@@ -39,9 +39,9 @@ static void init_builtins(t_minishell *ms)
  * This is to avoid the if else ft_strcmp chain. Can just iterate
  * through this list using a loop and do whatever you want.
  */
-static void init_operators(t_minishell *ms)
+static void	init_operators(t_minishell *ms)
 {
-	char **operators;
+	char	**operators;
 
 	operators = ft_calloc(OPERATORS_TOTAL + 1, sizeof(char *));
 	operators[0] = "|";
@@ -62,12 +62,12 @@ static void init_operators(t_minishell *ms)
  * 2. If PWD is not set, current_directory set as "🤷"
  * 3. If PWD is set, dir's pointer set to the last '/'
  */
-void set_prompt(t_minishell *ms)
+void	set_prompt(t_minishell *ms)
 {
-	char *user;
-	char *dir;
-	char *home;
-	char *prompt;
+	char	*user;
+	char	*dir;
+	char	*home;
+	char	*prompt;
 
 	user = get_env_value(ms, "USER");
 	if (user == NULL)
@@ -96,7 +96,7 @@ void set_prompt(t_minishell *ms)
  * 3. Initialize builtins name
  * 4. Set the prompt
  */
-void init_minishell(t_minishell *ms, char **ev)
+void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
 	ms->tokens = NULL;
@@ -110,14 +110,13 @@ void init_minishell(t_minishell *ms, char **ev)
  *
  * @param hlpr pointer to parser helper
  */
-void init_parser_helper(t_parse_hlpr *hlpr)
+void	init_parser_helper(t_parser *hlpr)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	hlpr->has_cmd_name = 0;
 	hlpr->curr_grammar = START;
-	hlpr->prev = UNKNOWN;
 	hlpr->cmd = NULL;
 	apply_grammar(hlpr, START);
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 17:07:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 14:28:02 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ int	main(int ac, char **av, char **ev)
 	init_minishell(&ms, ev);
 	while (1)
 	{
-		init_signal();
 		set_prompt(&ms);
+		init_signal();
 		cmds = readline(ms.prompt);
 		if (cmds == NULL)
 			call_exit(&ms, NULL);
@@ -116,6 +116,7 @@ int	main(int ac, char **av, char **ev)
 		if (cmds != NULL && *cmds != '\0')
 			add_history(cmds);
 		lexer(&ms, cmds);
+		ft_lstiter(ms.tokens, list_all_token);
 		parser(&ms);
 		ft_lstclear(&ms.tokens, free_token);
 		free(ms.prompt);
