@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:23:03 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 16:16:08 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ typedef struct s_parser_helper
 typedef struct s_cmd
 {
 	char			*cmd_name;
-	t_token_type	rdr_type;
+	t_token_type	rrdr_type;
 	t_list			*args;
 	t_list			*infile;
 	t_list			*outfile;
@@ -222,6 +222,9 @@ t_env			*load_env_var(t_list *envp, char *var);
 void			edit_env_val(t_minishell *ms, char *key, char *value);
 char			*get_env_value(t_minishell *ms, char *key);
 char			**get_env_arry(t_minishell *ms);
+
+char			**lst_to_array(t_list *lst);
+int				executor(t_list *cmds, char **envp);
 
 void			show_error(t_minishell *ms, t_error_type type, char *token);
 
