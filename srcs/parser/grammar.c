@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 13:12:41 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:53:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 17:18:57 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,7 @@ void	apply_grammar(t_parser *hlpr, t_grammar grammar)
 	else
 		reset_all_type(hlpr, 1);
 	if (grammar == START)
-	{
-		hlpr->has_cmd_name = 0;
 		toggle_type(hlpr, PIPE);
-	}
 	if (grammar == POST_RDR || grammar == CMD_ONLY)
 	{
 		toggle_type(hlpr, CMD);
@@ -164,7 +161,7 @@ void	set_next_grammar(t_parser *hlpr, t_token_type curr)
 
 	grammar = UNSET;
 	if ((curr == STR || curr == CMD || curr == EXT_CMD)
-		&& hlpr->has_cmd_name == 1)
+		&& hlpr->cmd->cmd_name != NULL)
 		grammar = FREE_FORM;
 	else
 		grammar = CMD_ONLY;

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:54:37 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 17:52:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,154 @@
  *    TOKEN_TYPE: PIPE
  */
 
-// void	add_as_redirection(t_parser *hlpr, t_token_type type)
-// {
-// 	if (type == APPEND || type == HEREDOC)
-// 		hlpr->cmd->rdr_mode = type;
-// 	hlpr->rdr_mode = type;
-// }
+void	print_grammar(t_grammar type)
+{
+	if (type == START)
+		printf("[START]\n");
+	else if (type == POST_RDR)
+		printf("[POST_RDR]\n");
+	else if (type == CMD_ONLY)
+		printf("[CMD_ONLY]\n");
+	else if (type == FREE_FORM)
+		printf("[FREE_FORM]\n");
+}
 
-/**
- * TODO: Need to discuss with Brook
- */
-// void	add_as_file(t_parser *hlpr, char *value)
-// {
-// 	t_token_type	rdr;
+void	print_rdr_type(t_token_type type)
+{
+	if (type == HEREDOC)
+		printf("[HEREDOC]: ");
+	else if (type == APPEND)
+		printf("[APPEND]: ");
+	else if (type == RDRIN)
+		printf("[RDRIN]: ");
+	else if (type == RDROUT)
+		printf("[RDROUT]: ");
+}
 
-// 	// rdr = hlpr->cmd->rdr_mode;
-// 	if (rdr == RDROUT || rdr == APPEND)
-// 		ft_lstadd_back(hlpr->cmd->outfile, ft_lstnew(value));
-// 	else if (rdr == RDRIN || rdr == HEREDOC)
-// 		ft_lstadd_back(hlpr->cmd->infile, ft_lstnew(value));
-// }
+void	show_cmd_block(t_parser *hlpr, t_grammar type)
+{
+	t_list	*args;
+	t_file	*file;
+	t_list	*infile;
+	t_list	*outfile;
+	
+	printf("= = = = = = = = = =\n");
+	printf("CURRENT GRAMMAR:\n");
+	print_grammar(type);
+	printf("= = = = = = = = = =\n");
+	printf("CMD: %s\n", hlpr->cmd->cmd_name);
+	printf("\n");
+	printf("ARGS:\n");
+	args = hlpr->cmd->args;
+	if (args == NULL)
+		printf("%s\n\n", NULL);
+	else
+	{
+		while (args != NULL)
+		{
+			printf(" | %s\n", (char *)args->content);
+			args = args->next;
+		}
+	}
+	printf("\n");
+	printf("INFILE:\n");
+	infile = hlpr->cmd->infile;
+	if (infile == NULL)
+		printf("%s\n", NULL);
+	else
+	{
+		while (infile != NULL)
+		{
+			file = infile->content;
+			printf(" | ");
+			print_rdr_type(file->rdr_type);
+			printf("%s\n", file->name);
+			infile = infile->next;
+		}
+	}
+	printf("\n");
+	printf("OUTFILE:\n");
+	outfile = hlpr->cmd->outfile;
+	if (outfile == NULL)
+		printf("%s\n", NULL);
+	else
+	{
+		while (outfile != NULL)
+		{
+			file = outfile->content;
+			printf(" | ");
+			print_rdr_type(file->rdr_type);
+			printf("%s\n", file->name);
+			outfile = outfile->next;
+		}
+	}
+	printf("= = = = = = = = = =\n");
+}
 
-// void	add_as_args(t_parser *hlpr, char *value)
-// {
-// 	ft_lstadd_back(hlpr->cmd->args, ft_lstnew(value));
-// }
+void	add_as_args(t_parser *hlpr, char *value)
+{
+	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(value));
+}
+
+void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
+{
+	char	*temp;
+
+	if (token->type == EXT_CMD)
+	{
+		temp = token->value;
+		token->value = get_ext_full_path(ms, token->value);
+		free(temp);
+	}
+	hlpr->cmd->cmd_name = token->value;
+	add_as_args(hlpr, token->value);
+}
+
+void	add_as_redirection(t_parser *hlpr, t_token_type type)
+{
+	t_file	*iofile;
+	t_list	**iolst;
+
+	iolst = NULL;
+	iofile = malloc(sizeof(t_file));
+	if (iofile == NULL)
+	{
+		perror("Initialize iofile failed!\n");
+		return ;
+	}
+	iofile->rdr_type = type;
+	iofile->name = NULL;
+	if (type == HEREDOC || type == RDRIN)
+		iolst = &hlpr->cmd->infile;
+	else if (type == APPEND || type == RDROUT)
+		iolst = &hlpr->cmd->outfile;
+	ft_lstadd_back(iolst, ft_lstnew(iofile));
+	hlpr->rdr_mode = type;
+}
+
+void	add_as_file(t_parser *hlpr, char *value)
+{
+	t_list	*last_added;
+	t_list	*iolst;
+	t_file	*iofile;
+
+	iolst = NULL;
+	if (hlpr->rdr_mode == HEREDOC || hlpr->rdr_mode == RDRIN)
+		iolst = hlpr->cmd->infile;
+	else if (hlpr->rdr_mode == APPEND || hlpr->rdr_mode == RDROUT)
+		iolst = hlpr->cmd->outfile;
+	last_added = ft_lstlast(iolst);
+	if (last_added == NULL)
+		return ;
+	iofile = last_added->content;
+	iofile->name = value;
+}
+
+void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr)
+{
+	ft_lstadd_back(&ms->cmds, ft_lstnew(hlpr->cmd));
+	init_parser(hlpr, 1);
+}
 
 /**
  * @brief Help building the cmd_list by checking the current grammar and token
@@ -101,21 +224,19 @@ void	builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token)
 
 	gram = hlpr->curr_grammar;
 	type = token->type;
-	(void)ms;
-	if ((gram == START || gram == CMD_ONLY) && (type == CMD || type == EXT_CMD))
-	{
-		hlpr->has_cmd_name = 1;
-		hlpr->cmd->cmd_name = token->value;
-	}
-	if (gram == POST_RDR)
-		printf("add as file\n");
-	if ((gram == START || gram == FREE_FORM)
+	if ((gram == START || gram == CMD_ONLY) && (type == CMD || type == EXT_CMD)
+		&& hlpr->cmd->cmd_name == NULL)
+		add_as_cmd(ms, hlpr, token);
+	else if ((gram == START || gram == FREE_FORM)
+		&& (type == CMD || type == EXT_CMD || type == STR))
+		add_as_args(hlpr, token->value);
+	else if ((gram == START || gram == FREE_FORM)
 		&& (type == RDRIN || type == RDROUT
 			|| type == HEREDOC || type == APPEND))
-		printf("add as rdr\n");
-	if ((gram == START || gram == FREE_FORM)
-		&& (type == CMD || type == EXT_CMD || type == STR))
-		printf("add as args\n");
+		add_as_redirection(hlpr, token->type);
+	else if (gram == POST_RDR)
+		add_as_file(hlpr, token->value);
 	if (gram == FREE_FORM && type == PIPE)
-		printf("marks the end of one command block\n");
+		add_as_cmd_block(ms, hlpr);
+	show_cmd_block(hlpr, gram);
 }

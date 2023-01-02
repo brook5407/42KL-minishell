@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:51:26 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 17:51:44 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ typedef struct s_cmd
 
 typedef struct s_parser
 {
-	int				has_cmd_name;
 	t_grammar		curr_grammar;
 	t_token_type	rdr_mode;
 	t_token_type	expected[TYPE_TOTAL];
@@ -220,7 +219,7 @@ void			parser(t_minishell *ms);
 
 void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
 
-void			init_parser_helper(t_parser *phlpr);
+void			init_parser(t_parser *phlpr, int reset);
 void			reset_all_type(t_parser *phlpr, int status);
 void			reject_type(t_parser *phlpr, t_token_type type);
 void			toggle_type(t_parser *phlpr, t_token_type type);

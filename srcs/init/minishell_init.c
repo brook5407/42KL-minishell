@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:50:23 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 15:17:59 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,4 @@ void	init_minishell(t_minishell *ms, char **ev)
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);
-}
-
-/**
- * @brief Initialize parser helper
- *
- * @param hlpr pointer to parser helper
- */
-void	init_parser_helper(t_parser *hlpr)
-{
-	int	i;
-
-	i = -1;
-	hlpr->has_cmd_name = 0;
-	hlpr->curr_grammar = START;
-	hlpr->cmd = NULL;
-	apply_grammar(hlpr, START);
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:28:02 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 17:56:46 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	main(int ac, char **av, char **ev)
 		lexer(&ms, cmds);
 		ft_lstiter(ms.tokens, list_all_token);
 		parser(&ms);
-		ft_lstclear(&ms.tokens, free_token);
+		// ft_lstclear(&ms.tokens, free_token);
 		free(ms.prompt);
 	}
 	return (0);
