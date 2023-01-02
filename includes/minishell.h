@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:51:44 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:02:09 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,9 @@ t_env			*load_env_var(t_list *envp, char *var);
 void			edit_env_val(t_minishell *ms, char *key, char *value);
 char			*get_env_value(t_minishell *ms, char *key);
 char			**get_env_arry(t_minishell *ms);
+
+char			**lst_to_array(t_list *lst);
+int				executor(t_list *cmds, char **envp);
 
 void			show_error(t_minishell *ms, t_error_type type, char *token);
 
