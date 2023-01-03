@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:52:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:42:26 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,21 @@ void	print_rdr_type(t_token_type type)
 		printf("[RDROUT]: ");
 }
 
-void	show_cmd_block(t_parser *hlpr, t_grammar type)
+void	show_cmd_block(void *content)
 {
+	t_cmd	*cmd;
 	t_list	*args;
 	t_file	*file;
 	t_list	*infile;
 	t_list	*outfile;
 	
+	cmd = content;
 	printf("= = = = = = = = = =\n");
-	printf("CURRENT GRAMMAR:\n");
-	print_grammar(type);
-	printf("= = = = = = = = = =\n");
-	printf("CMD: %s\n", hlpr->cmd->cmd_name);
+	printf("THIS CMD BLOCK AT: %p\n", cmd);
+	printf("CMD: %s\n", cmd->cmd_name);
 	printf("\n");
 	printf("ARGS:\n");
-	args = hlpr->cmd->args;
+	args = cmd->args;
 	if (args == NULL)
 		printf("%s\n\n", NULL);
 	else
@@ -116,7 +116,7 @@ void	show_cmd_block(t_parser *hlpr, t_grammar type)
 	}
 	printf("\n");
 	printf("INFILE:\n");
-	infile = hlpr->cmd->infile;
+	infile = cmd->infile;
 	if (infile == NULL)
 		printf("%s\n", NULL);
 	else
@@ -132,7 +132,7 @@ void	show_cmd_block(t_parser *hlpr, t_grammar type)
 	}
 	printf("\n");
 	printf("OUTFILE:\n");
-	outfile = hlpr->cmd->outfile;
+	outfile = cmd->outfile;
 	if (outfile == NULL)
 		printf("%s\n", NULL);
 	else
@@ -151,21 +151,19 @@ void	show_cmd_block(t_parser *hlpr, t_grammar type)
 
 void	add_as_args(t_parser *hlpr, char *value)
 {
-	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(value));
+	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(ft_strdup(value)));
 }
 
 void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
-	char	*temp;
+	char	*value;
 
 	if (token->type == EXT_CMD)
-	{
-		temp = token->value;
-		token->value = get_ext_full_path(ms, token->value);
-		free(temp);
-	}
-	hlpr->cmd->cmd_name = token->value;
-	add_as_args(hlpr, token->value);
+		value = ft_strdup(get_ext_full_path(ms, token->value));
+	else
+		value = ft_strdup(token->value);
+	hlpr->cmd->cmd_name = value;
+	add_as_args(hlpr, value);
 }
 
 void	add_as_redirection(t_parser *hlpr, t_token_type type)
@@ -205,13 +203,13 @@ void	add_as_file(t_parser *hlpr, char *value)
 	if (last_added == NULL)
 		return ;
 	iofile = last_added->content;
-	iofile->name = value;
+	iofile->name = ft_strdup(value);
 }
 
 void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr)
 {
 	ft_lstadd_back(&ms->cmds, ft_lstnew(hlpr->cmd));
-	init_parser(hlpr, 1);
+	init_parser(hlpr);
 }
 
 /**
@@ -238,5 +236,4 @@ void	builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token)
 		add_as_file(hlpr, token->value);
 	if (gram == FREE_FORM && type == PIPE)
 		add_as_cmd_block(ms, hlpr);
-	show_cmd_block(hlpr, gram);
 }

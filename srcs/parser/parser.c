@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:51:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:31:34 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,13 @@ void	parser(t_minishell *ms)
 	t_parser	hlpr;
 
 	token_lst = ms->tokens;
-	init_parser(&hlpr, 0);
+	init_parser(&hlpr); // get ready for parsing, handle one cmd_block (simple command)
 	while (token_lst != NULL)
 	{
-		token = token_lst->content;
-		// grammar_checker(ms, &hlpr, token);
-		// make it so that from this point forward, the token is acceptable
-		builder_helper(ms, &hlpr, token);
-		set_next_grammar(&hlpr, token->type);
-		token_lst = token_lst->next;
+		token = token_lst->content; // typecast content to t_token
+		builder_helper(ms, &hlpr, token); // build the cmd block
+		set_next_grammar(&hlpr, token->type); // set the grammar of next token
+		token_lst = token_lst->next; // iterate through the token list
 	}
+	add_as_cmd_block(ms, &hlpr); // add the cmd block to the cmd list
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 18:02:09 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:38:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,10 +216,13 @@ void			list_all_token(void *content);
 void			free_token(void *content);
 
 void			parser(t_minishell *ms);
+void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr);
+void			show_cmd_block(void *content);
+void			free_cmd_block(void *content);
 
 void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
 
-void			init_parser(t_parser *phlpr, int reset);
+void			init_parser(t_parser *phlpr);
 void			reset_all_type(t_parser *phlpr, int status);
 void			reject_type(t_parser *phlpr, t_token_type type);
 void			toggle_type(t_parser *phlpr, t_token_type type);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:56:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:37:55 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,13 @@ void	free_arg(void *content)
 	free(name);
 }
 
-void	free_cmd_block(t_cmd *cmd)
+void	free_cmd_block(void *content)
 {
-	cmd->cmd_name = NULL;
-	ft_lstclear(&cmd->args, free_arg);
+	t_cmd	*cmd;
+
+	cmd = content;
+	free(cmd->cmd_name);
+	ft_lstclear(&cmd->args, free);
 	ft_lstclear(&cmd->infile, free_iofile);
 	ft_lstclear(&cmd->outfile, free_iofile);
 }
@@ -89,11 +92,9 @@ void	free_cmd_block(t_cmd *cmd)
  *
  * @param hlpr pointer to parser helper
  */
-void	init_parser(t_parser *hlpr, int reset)
+void	init_parser(t_parser *hlpr)
 {
 	hlpr->curr_grammar = START;
-	if (reset == 1)
-		free_cmd_block(hlpr->cmd);
 	hlpr->cmd = init_cmd();
 	apply_grammar(hlpr, START);
 }
