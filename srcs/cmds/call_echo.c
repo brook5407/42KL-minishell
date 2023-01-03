@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:39:24 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2023/01/03 12:37:32 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,26 @@ int	check_flag(char *s)
 	return (0);
 }
 
-int	call_echo(t_minishell *ms, char *s)
+int	call_echo(t_minishell *ms, char **cmds)
 {
 	int	i;
 
-	i = check_flag(s);
-	(void)ms;
-	if (!i)
-		printf("%s\n", s);
-	else
-		printf("%s", s + i);
+	while (*cmds)
+	{
+		if (check_flag(*cmds) > 0)
+		{
+			i = 1;
+			cmds++;
+		}
+	}
+	while (*cmds)
+	{
+		if (!i)
+			printf("%s\n", *cmds);
+		else
+			printf("%s", *cmds);
+		printf(" ");
+		cmds++;
+	}
 	return (0);
 }

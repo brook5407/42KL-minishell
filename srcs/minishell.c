@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:43:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:46:20 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	main(int ac, char **av, char **ev)
 	init_minishell(&ms, ev);
 	while (1)
 	{
+		ev = get_env_arry(&ms);
 		set_prompt(&ms);
 		init_signal();
 		cmds = readline(ms.prompt);
@@ -117,9 +118,11 @@ int	main(int ac, char **av, char **ev)
 			add_history(cmds);
 		lexer(&ms, cmds);
 		parser(&ms);
+		executor(ms.cmds, ev);
 		ft_lstclear(&ms.tokens, free_token);
 		ft_lstclear(&ms.cmds, free_cmd_block);
 		free(ms.prompt);
+		free(ev);
 	}
 	return (0);
 }

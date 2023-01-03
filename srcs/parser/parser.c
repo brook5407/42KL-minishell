@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:31:34 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:47:12 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,5 @@ void	parser(t_minishell *ms)
 		set_next_grammar(&hlpr, token->type); // set the grammar of next token
 		token_lst = token_lst->next; // iterate through the token list
 	}
-	add_as_cmd_block(ms, &hlpr); // add the cmd block to the cmd list
+	add_as_cmd_block(ms, &hlpr);
 }
