@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:46:20 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 14:18:29 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @brief Get the dangling quote
- * 
+ *
  * Iterate through the string and look for QUOTES (" & '). If there's, check for
  * another one to ensure that the found quote is enclosed. If there's, ignore the
  * characters in between the found quotes and increment the pointer to (2nd found
@@ -50,7 +50,7 @@ static char	get_dangling_quote(char *cmds)
 
 /**
  * @brief Check if there's a dangling quote
- * 
+ *
  * 1. Get the dangling quote first if have. If no, get_dangling_quote
  * 	  will return 0.
  * 2. Manually add newline after the current command. Readline function does not
@@ -91,7 +91,7 @@ static char	*check_dangling_quote(char *cmds)
 
 /**
  * Minishell
- * 
+ *
  * 1. Read line from command line
  * 2. Lexical analysis
  * 3. Parser
@@ -107,7 +107,6 @@ int	main(int ac, char **av, char **ev)
 	init_minishell(&ms, ev);
 	while (1)
 	{
-		ev = get_env_arry(&ms);
 		set_prompt(&ms);
 		init_signal();
 		cmds = readline(ms.prompt);
@@ -122,7 +121,6 @@ int	main(int ac, char **av, char **ev)
 		ft_lstclear(&ms.tokens, free_token);
 		ft_lstclear(&ms.cmds, free_cmd_block);
 		free(ms.prompt);
-		free(ev);
 	}
 	return (0);
 }

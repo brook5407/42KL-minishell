@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2023/01/03 13:53:17 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	env_pair(t_minishell *ms, t_env *env)
 	}
 }
 
-int	call_unset(t_minishell *ms, char *key)
+int	call_unset(t_minishell *ms, char **key)
 {
 	t_env	*env_load;
 
-	if (check_valid("unset", ++key) == 1)
+	if (check_valid("unset", *key) == 1)
 		return (0);
-	env_load = load_env_var(ms->envp, key);
+	env_load = load_env_var(ms->envp, *key);
 	if (env_load == NULL)
 		return (0);
 	env_pair(ms, env_load);

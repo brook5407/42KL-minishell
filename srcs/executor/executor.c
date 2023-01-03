@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/01/03 10:42:34 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/03 14:26:08 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	executor(t_list *cmds, char **envp)
 	if (!cmds->next)
 	{
 		set_io(STDIN_FILENO, STDOUT_FILENO);
-		execve(cmd_args[0], cmd_args, envp);
+		execve(cmd->cmd_name, cmd_args, envp);
 	}
 	else
 		pipe_exec(cmds, cmd, cmd_args, envp);

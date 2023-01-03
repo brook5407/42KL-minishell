@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/27 14:55:59 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/03 13:52:18 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ static void	edit_oldpwd(t_minishell *ms)
 		edit_env_val(ms, strdup("OLDPWD"), ft_strdup(pwd->value));
 }
 
-int	call_cd(t_minishell *ms, char *path)
+int	call_cd(t_minishell *ms, char **path)
 {
 	char	*cur_path;
 
-	cur_path = check_path(ms, ++path);
+	cur_path = check_path(ms, *path);
 	if (cur_path == NULL)
 		return (-1);
 	if (chdir(cur_path) != 0)
 	{
 		free(cur_path);
 		ft_putstr_fd("cd: ", STDERR_FILENO);
-		perror(path);
+		perror(*path);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2022/12/27 16:18:26 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/03 13:54:47 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,22 @@ int	print_export(t_minishell *ms, char *s)
 	return (0);
 }
 
-int	call_export(t_minishell *ms, char *s)
+int	call_export(t_minishell *ms, char **s)
 {
 	char	*key;
 	char	*value;
 
-	if (!print_export(ms, s))
+	if (!print_export(ms, *s))
 		return (0);
-	value = ft_strchr(++s, '=');
+	value = ft_strchr(*s, '=');
 	if (value == NULL)
 	{
-		key = ft_strdup(s);
+		key = ft_strdup(*s);
 		value = strdup("");
 	}
 	else
 	{
-		key = ft_strndup(s, value - s);
+		key = ft_strndup(*s, value - *s);
 		value = ft_strdup(value + 1);
 	}
 	if (!check_valid("export", key))

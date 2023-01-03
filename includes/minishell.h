@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:46:39 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:51:03 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,14 +234,14 @@ void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
-int				call_buildin(t_minishell *ms, char *cmds);
-int				call_cd(t_minishell *ms, char *path);
+int				call_buildin(t_minishell *ms, char **cmds);
+int				call_cd(t_minishell *ms, char **path);
 int				call_pwd(t_minishell *ms);
 int				call_env(t_minishell *ms);
-int				call_unset(t_minishell *ms, char *key);
-int				call_export(t_minishell *ms, char *key);
-int				call_echo(t_minishell *ms, char *s);
-int				call_exit(t_minishell *ms, char *cmds);
+int				call_unset(t_minishell *ms, char **key);
+int				call_export(t_minishell *ms, char **key);
+int				call_echo(t_minishell *ms, char **s);
+int				call_exit(t_minishell *ms, char **cmds);
 int				check_valid(char *cmds, char *args);
 
 t_env			*load_env_var(t_list *envp, char *var);
