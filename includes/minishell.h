@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 18:02:09 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:45:05 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void			list_all_token(void *content);
 void			free_token(void *content);
 
 void			parser(t_minishell *ms);
+void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr);
 
 void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
 

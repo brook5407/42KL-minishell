@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 18:01:12 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 12:17:51 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	main(int ac, char **av, char **ev)
 	init_minishell(&ms, ev);
 	while (1)
 	{
+		ev = get_env_arry(&ms);
 		set_prompt(&ms);
 		init_signal();
 		cmds = readline(ms.prompt);
@@ -116,10 +117,12 @@ int	main(int ac, char **av, char **ev)
 		if (cmds != NULL && *cmds != '\0')
 			add_history(cmds);
 		lexer(&ms, cmds);
-		ft_lstiter(ms.tokens, list_all_token);
+		// ft_lstiter(ms.tokens, list_all_token);
 		parser(&ms);
+		executor(ms.cmds, ev);
 		// ft_lstclear(&ms.tokens, free_token);
 		free(ms.prompt);
+		free(ev);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/01/02 16:14:03 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/03 10:42:34 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_io(int infd, int outfd)
 	}
 }
 
-void	pipe_exec(t_list cmds, t_cmd *cmd, char **cmd_args, char **envp)
+void	pipe_exec(t_list *cmds, t_cmd *cmd, char **cmd_args, char **envp)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -39,7 +39,7 @@ void	pipe_exec(t_list cmds, t_cmd *cmd, char **cmd_args, char **envp)
 	{
 		cmd_args = lst_to_array(cmd->args);
 		close(pipefd[0]);
-		setIO(STDIN_FILENO, pipefd[1]);
+		set_io(STDIN_FILENO, pipefd[1]);
 		execve(cmd->cmd_name, cmd_args, envp);
 	}
 	else
@@ -47,8 +47,8 @@ void	pipe_exec(t_list cmds, t_cmd *cmd, char **cmd_args, char **envp)
 		wait(NULL);
 		cmds = cmds->next;
 		close(pipefd[1]);
-		setIO(pipefd[0], STDOUT_FILENO);
-		executer(cmds, envp);
+		set_io(pipefd[0], STDOUT_FILENO);
+		executor(cmds, envp);
 	}
 	free(cmd_args);
 }
@@ -58,12 +58,12 @@ int	executor(t_list *cmds, char **envp)
 	char	**cmd_args;
 	t_cmd	*cmd;
 
-	cmd = ms->cmds->content;
+	cmd = cmds->content;
 	cmd_args = lst_to_array(cmd->args);
 	if (!cmds->next)
 	{
 		set_io(STDIN_FILENO, STDOUT_FILENO);
-		execve(cmd->cmd_name, cmd_args, envp);
+		execve(cmd_args[0], cmd_args, envp);
 	}
 	else
 		pipe_exec(cmds, cmd, cmd_args, envp);

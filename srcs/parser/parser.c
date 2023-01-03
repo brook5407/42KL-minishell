@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:51:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:44:52 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,5 @@ void	parser(t_minishell *ms)
 		set_next_grammar(&hlpr, token->type);
 		token_lst = token_lst->next;
 	}
+	add_as_cmd_block(ms, &hlpr);
 }
