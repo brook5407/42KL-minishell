@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:24:23 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/07 17:58:48 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	show_error(t_minishell *ms, t_error_type type, char *token)
 		if (token == NULL)
 			ft_printf("`newline'\n");
 		else
-			ft_printf("`%c'\n", *token);
+			ft_printf("`%s'\n", token);
 	}
 	if (type == CMD_NOT_FOUND)
 		ft_printf("%s: command not found\n", token);

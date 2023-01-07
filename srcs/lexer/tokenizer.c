@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/30 14:57:24 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:17:20 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,21 @@ int	recognize_cmd(t_minishell *ms, char *token)
 	char	*token_copy;
 
 	i = -1;
-	if (token_in_quote(token) == 1)
-		token_copy = ft_strndup(token + 1, ft_strlen(token + 1) - 1);
-	else
-		token_copy = ft_strdup(token);
+	token_copy = ft_strdup(token);
 	token_copy = ft_strlower(token_copy);
 	while (ms->builtins[++i] != NULL)
 	{
 		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
 		{
-			add_token(ms, CMD, token_copy);
+			add_token(ms, CMD, ft_strdup(token_copy));
+			free(token_copy);
 			return (1);
 		}
 	}
 	if (get_ext_full_path(ms, token_copy) != NULL)
 	{
-		add_token(ms, EXT_CMD, token_copy);
+		add_token(ms, EXT_CMD, ft_strdup(token_copy));
+		free(token_copy);
 		return (1);
 	}
 	return (0);

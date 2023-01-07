@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:37:55 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:31:54 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
  *    CMD_ONLY: store to cmd name
 */
 
+/**
+ * @brief Malloc a cmd block
+ * 
+ * Set cmd_name, args, infile and outfile as NULL.
+ */
 t_cmd	*init_cmd(void)
 {
 	t_cmd	*cmd;
@@ -49,6 +54,9 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+/**
+ * @brief Utils to free iofile struct
+ */
 void	free_iofile(void *content)
 {
 	t_file	*iofile;
@@ -57,14 +65,14 @@ void	free_iofile(void *content)
 	free(iofile->name);
 }
 
-void	free_arg(void *content)
-{
-	char	*name;
-
-	name = content;
-	free(name);
-}
-
+/**
+ * @brief Free the cmd block
+ * 
+ * 1. Free the cmd name
+ * 2. Free the args list
+ * 3. Free the infile list
+ * 4. Free the outfile list
+ */
 void	free_cmd_block(void *content)
 {
 	t_cmd	*cmd;
