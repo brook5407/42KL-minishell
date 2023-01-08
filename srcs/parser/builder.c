@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 15:27:18 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:14:26 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,95 +64,6 @@
  *    GRAMMAR: FREE_FORM
  *    TOKEN_TYPE: PIPE
  */
-
-void	print_grammar(t_grammar type)
-{
-	if (type == START)
-		printf("[START]\n");
-	else if (type == POST_RDR)
-		printf("[POST_RDR]\n");
-	else if (type == CMD_ONLY)
-		printf("[CMD_ONLY]\n");
-	else if (type == FREE_FORM)
-		printf("[FREE_FORM]\n");
-}
-
-void	print_rdr_type(t_token_type type)
-{
-	if (type == HEREDOC)
-		printf("[HEREDOC]: ");
-	else if (type == APPEND)
-		printf("[APPEND]: ");
-	else if (type == RDRIN)
-		printf("[RDRIN]: ");
-	else if (type == RDROUT)
-		printf("[RDROUT]: ");
-}
-
-void	show_cmd_block(void *content)
-{
-	t_cmd	*cmd;
-	t_list	*args;
-	t_file	*file;
-	t_list	*infile;
-	t_list	*outfile;
-	
-	cmd = content;
-	printf("= = = = = = = = = =\n");
-	printf("THIS CMD BLOCK AT: %p\n", cmd);
-	printf("CMD: %s\n", cmd->cmd_name);
-	printf("\n");
-	printf("ARGS:\n");
-	args = cmd->args;
-	if (args == NULL)
-		printf("%s\n\n", NULL);
-	else
-	{
-		while (args != NULL)
-		{
-			printf(" | %s\n", (char *)args->content);
-			args = args->next;
-		}
-	}
-	printf("\n");
-	printf("INFILE:\n");
-	infile = cmd->infile;
-	if (infile == NULL)
-		printf("%s\n", NULL);
-	else
-	{
-		while (infile != NULL)
-		{
-			file = infile->content;
-			printf(" | ");
-			print_rdr_type(file->rdr_type);
-			printf("%s\n", file->name);
-			infile = infile->next;
-		}
-	}
-	printf("\n");
-	printf("OUTFILE:\n");
-	outfile = cmd->outfile;
-	if (outfile == NULL)
-		printf("%s\n", NULL);
-	else
-	{
-		while (outfile != NULL)
-		{
-			file = outfile->content;
-			printf(" | ");
-			print_rdr_type(file->rdr_type);
-			printf("%s\n", file->name);
-			outfile = outfile->next;
-		}
-	}
-	printf("= = = = = = = = = =\n");
-}
-
-void	add_as_args(t_parser *hlpr, char *value)
-{
-	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(ft_strdup(value)));
-}
 
 void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
@@ -227,7 +138,7 @@ void	builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token)
 		add_as_cmd(ms, hlpr, token);
 	else if ((gram == START || gram == FREE_FORM)
 		&& (type == CMD || type == EXT_CMD || type == STR))
-		add_as_args(hlpr, token->value);
+		ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(ft_strdup(token->value)));
 	else if ((gram == START || gram == FREE_FORM)
 		&& (type == RDRIN || type == RDROUT
 			|| type == HEREDOC || type == APPEND))

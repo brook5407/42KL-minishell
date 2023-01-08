@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 21:01:19 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 15:57:00 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 17:29:20 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	check_operator_syntax(t_minishell *ms, char *token)
 	}
 	if (token_len != opr_len)
 	{
-		show_error(ms, SYNTAX_ERROR, token + opr_len);
+		show_error(SYNTAX_ERROR, token + opr_len);
 		return (0);
 	}
 	return (1);

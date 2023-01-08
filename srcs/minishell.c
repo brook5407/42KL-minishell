@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/07 19:23:02 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:15:28 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	main(int ac, char **av, char **ev)
 			add_history(cmds);
 		lexer(&ms, cmds);
 		parser(&ms);
-		// executor(ms.cmds, ev);
-		// ft_lstiter(ms.cmds, show_cmd_block);
+		executor(ms.cmds, ev);
+		ft_lstiter(ms.cmds, show_cmd_block);
 		ft_lstclear(&ms.tokens, free_token);
 		ft_lstclear(&ms.cmds, free_cmd_block);
 		free(ms.prompt);

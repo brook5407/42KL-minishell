@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 13:12:41 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 17:18:57 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 17:46:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	apply_grammar(t_parser *hlpr, t_grammar grammar)
 		reset_all_type(hlpr, 0);
 	else
 		reset_all_type(hlpr, 1);
-	if (grammar == START)
+	if (grammar == START || grammar == CMD_ONLY)
 		toggle_type(hlpr, PIPE);
 	if (grammar == POST_RDR || grammar == CMD_ONLY)
 	{

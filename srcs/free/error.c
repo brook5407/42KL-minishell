@@ -6,15 +6,16 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/07 17:58:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:03:14 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	show_error(t_minishell *ms, t_error_type type, char *token)
+void	show_error(t_error_type type, char *token)
 {
-	(void)ms;
+	if (type == SUCCESS)
+		return ;
 	ft_printf("minishell: ");
 	if (type == SYNTAX_ERROR)
 	{

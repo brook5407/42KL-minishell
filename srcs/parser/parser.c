@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/07 19:22:25 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:15:17 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,34 +94,75 @@
  * And since parser will process one cmd block at a time, if any error happens,
  * clear up the current processed cmd block as well. So that it won't be added
  * into the cmd list and get executed.
+ * 
+ * If you look at the parser function, there are two calls of grammar_checker.
+ * The first call has already explained above. How about the second call? The
+ * second call is to make sure that the processed command list does not
+ * end with unexpected token like redirection and pipe.
+ * 
+ * Since we are checking the end of the cmd list, there's nothing to deal with
+ * the token. We just have to check the grammar at the end is what's expected.
+ * If the cmd_list ends with PIPE, meaning the next grammar should be START.
+ * If the cmd_list ends with Redirections, meaning the next grammar should be
+ * POST_RDR.
+ * Hence, if the ending grammar is either one, it's a SYNTAX_ERROR.
+ * Whatever has been stored inside the cmd list should be discarded and the 
+ * current cmd block should be freed as well.
 */
 int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
 	t_grammar		gram;
-	t_token_type	type;
 	int				error;
 
 	gram = hlpr->curr_grammar;
-	type = token->type;
-	if (is_type_on(hlpr, type) == 1)
-		return (1);
-	if ((gram == START || gram == CMD_ONLY) && type == STR)
-		error = CMD_NOT_FOUND;
-	else if ((gram == START && type == PIPE) || gram == POST_RDR)
-		error = SYNTAX_ERROR;
-	// when command not found, clear the current processed cmd block
-	// advance the pointer of linked list to the last node or the
-	// next node of pipe
-	// might have to clear up the cmd list as well.
-	
-	// when syntax error, clear the current processed cmd block
-	// and the cmd list
-	// stop parsing as well
-	show_error(ms, error, token->value);
-	if (error == SYNTAX_ERROR)
-		ft_lstclear(ms->cmds, free_cmd_block);
-	free_cmd_block((void *)hlpr->cmd);
+	error = SUCCESS;
+	if (token != NULL)
+	{
+		if (is_type_on(hlpr, token->type) == 1)
+			return (error);
+		if ((gram == START || gram == CMD_ONLY) && token->type == STR)
+			error = CMD_NOT_FOUND;
+		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
+			error = SYNTAX_ERROR;
+		show_error(error, token->value);
+		free_cmd_block((void *)hlpr->cmd);
+	}
+	else
+	{
+		if (gram == POST_RDR || gram == START)
+			error = SYNTAX_ERROR;
+		show_error(error, NULL);
+	}
+	ft_lstclear(&ms->cmds, free_cmd_block);
 	return (error);
+}
+
+/**
+ * @brief Skip to the next simple command block
+ * 
+ * @details
+ * Iterate through the linked list and check if the value
+ * stored inside the token struct is a PIPE. If yes, return
+ * that address.
+ * If not found, the while loop will continue until it hits
+ * NULL. So just return NULL.
+ * In parser, when this function return NULL, it means
+ * the whole parsing process is terminated.
+*/
+t_list	*skip_to_next_cmd_block(t_list *curr)
+{
+	t_list	*new_start;
+	t_token	*token;
+
+	new_start = curr;
+	while (new_start != NULL)
+	{
+		token = new_start->content;
+		if (ft_strcmp(token->value, "|") == 0 && token->type == PIPE)
+			return (new_start->next);
+		new_start = new_start->next;
+	}
+	return (NULL);
 }
 
 /**
@@ -143,9 +184,6 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
  */
 /** TODO: Make parser to return a value so that the main function could
  * do something about it
- * TODO: A function to increment the pointer to lst to the next pipe.
- * 		 If not, just keep increment it until it's at the end.
- * 		 Takes in a double pointer to the lst and a value to found.
 */
 void	parser(t_minishell *ms)
 {
@@ -164,12 +202,13 @@ void	parser(t_minishell *ms)
 			return ;
 		else if (error == CMD_NOT_FOUND)
 		{
-			// advance to pipe + 1 or end of the list here
-			continue;
+			token_lst = skip_to_next_cmd_block(token_lst);
+			continue ;
 		}
 		builder_helper(ms, &hlpr, token);
 		set_next_grammar(&hlpr, token->type);
 		token_lst = token_lst->next;
 	}
+	grammar_checker(ms, &hlpr, NULL);
 	add_as_cmd_block(ms, &hlpr);
 }

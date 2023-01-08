@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 13:51:03 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:29:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef enum e_error_type
 	CMD_NOT_FOUND = 127,
 	FILE_NOT_FOUND = 1,
 	INVALID_ID = 1,
+	SUCCESS = 0
 }		t_error_type;
 
 /* ====== STRUCTS ====== */
@@ -252,7 +253,7 @@ char			**get_env_arry(t_minishell *ms);
 char			**lst_to_array(t_list *lst);
 int				executor(t_list *cmds, char **envp);
 
-void			show_error(t_minishell *ms, t_error_type type, char *token);
+void			show_error(t_error_type type, char *token);
 
 void			free_env_var(t_env *env_var);
 void			free_env(t_list *envp);
