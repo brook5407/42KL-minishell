@@ -6,14 +6,13 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/03 15:31:54 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:29:41 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /**
- * TODO:
  * 1. Grammar checker
  * 		- check if the token is expected.
  * 			- if it's expected, store to cmd_list
