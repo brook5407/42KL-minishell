@@ -6,13 +6,13 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/03 13:49:33 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:23:24 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	call_exit(t_minishell *ms, char **cmds)
+void	call_exit(t_minishell *ms, char **cmds)
 {
 	free(cmds);
 	free_env(ms->envp);

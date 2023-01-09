@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:39:24 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/03 13:55:08 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:23:48 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_flag(char *s)
 	return (0);
 }
 
-int	call_echo(t_minishell *ms, char **cmds)
+void	call_echo(t_minishell *ms, char **cmds)
 {
 	int	i;
 
@@ -55,5 +55,4 @@ int	call_echo(t_minishell *ms, char **cmds)
 		printf(" ");
 		cmds++;
 	}
-	return (0);
 }
