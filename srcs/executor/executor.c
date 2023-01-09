@@ -6,66 +6,80 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/01/03 14:26:08 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:08:27 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	set_io(int infd, int outfd)
+void	set_io(int rfd, int wfd)
 {
-	if (infd != STDIN_FILENO)
+	if (rfd != STDIN_FILENO)
 	{
-		dup2(infd, STDIN_FILENO);
-		close(infd);
+		dup2(rfd, STDIN_FILENO);
+		close(rfd);
 	}
-	if (outfd != STDOUT_FILENO)
+	if (wfd != STDOUT_FILENO)
 	{
-		dup2(outfd, STDOUT_FILENO);
-		close(outfd);
+		dup2(wfd, STDOUT_FILENO);
+		close(wfd);
 	}
 }
 
-void	pipe_exec(t_list *cmds, t_cmd *cmd, char **cmd_args, char **envp)
+void	exec_child_process(t_minishell *ms, int *fd, t_cmd *cmd)
 {
-	int		pipefd[2];
-	pid_t	pid;
-
-	pipe(pipefd);
-	pid = fork();
-	if (pid > 0)
-		;
-	else if (pid == 0)
-	{
-		cmd_args = lst_to_array(cmd->args);
-		close(pipefd[0]);
-		set_io(STDIN_FILENO, pipefd[1]);
-		execve(cmd->cmd_name, cmd_args, envp);
-	}
-	else
-	{
-		wait(NULL);
-		cmds = cmds->next;
-		close(pipefd[1]);
-		set_io(pipefd[0], STDOUT_FILENO);
-		executor(cmds, envp);
-	}
-	free(cmd_args);
-}
-
-int	executor(t_list *cmds, char **envp)
-{
+	int		ret;
 	char	**cmd_args;
-	t_cmd	*cmd;
+	char	**envp;
 
-	cmd = cmds->content;
+	ret = EXIT_SUCCESS;
 	cmd_args = lst_to_array(cmd->args);
-	if (!cmds->next)
+	envp = get_env_arry(ms);
+	set_io(STDIN_FILENO, fd[1]);
+	if (call_buildin(ms, cmd_args) == 1)
+		ret = execve(cmd_args[0], cmd_args, envp);
+	exit(ret);
+}
+
+int	exec_pipe(t_minishell *ms, t_list *cmds)
+{
+	int		ret;
+	pid_t	pid;
+	int		status;
+	int		pipefd[2];
+
+	ret = EXIT_SUCCESS;
+	if (cmds->next != NULL)
+		pipe(pipefd);
+	pid = fork();
+	if (pid == 0)
+		exec_child_process(ms, pipefd, cmds->content);
+	waitpid(pid, &status, 0);
+	if (pipefd[1] == 1)
+		close(pipefd[1]);
+	if (pipefd[0] != 0)
+		close(pipefd[0]);
+	return (ret);
+}
+
+int	executor(t_minishell *ms)
+{
+	t_list	*cmds;
+	t_cmd	*cmd;
+	char	**cmd_args;
+
+	cmds = ms->cmds;
+	while (cmds != NULL)
 	{
-		set_io(STDIN_FILENO, STDOUT_FILENO);
-		execve(cmd->cmd_name, cmd_args, envp);
+		cmd = ms->cmds->content;
+		cmd_args = lst_to_array(cmd->args);
+		if (cmd_args[0])
+		{
+			if (call_buildin(ms, cmd_args) == 1)
+				exec_pipe(ms, cmds);
+		}
+		cmds = cmds->next;
+		free(cmd_args);
 	}
-	else
-		pipe_exec(cmds, cmd, cmd_args, envp);
 	return (0);
 }
