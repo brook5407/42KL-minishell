@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 18:01:19 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/09 14:40:56 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ char	*get_operator_token(char **word)
 {
 	char	*token;
 	char	*next;
+	int		is_pipe;
+	char	opr;
 
 	next = *word;
-	while (*next != '\0')
-	{
-		if (ft_strchr(OPERATORS, *next) == NULL)
-			break ;
+	is_pipe = (*next == '|');
+	opr = *(next++);
+	if (*next == opr && is_pipe == 0)
 		next++;
-	}
 	token = ft_strndup(*word, next - *word);
 	*word = next;
 	return (token);

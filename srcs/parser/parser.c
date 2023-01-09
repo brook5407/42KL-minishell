@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 18:15:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/09 14:09:31 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
  * In parser, when this function return NULL, it means
  * the whole parsing process is terminated.
 */
-t_list	*skip_to_next_cmd_block(t_list *curr)
+t_list	*skip_to_next_cmd_block(t_list *curr, t_parser *hlpr)
 {
 	t_list	*new_start;
 	t_token	*token;
@@ -159,10 +159,14 @@ t_list	*skip_to_next_cmd_block(t_list *curr)
 	{
 		token = new_start->content;
 		if (ft_strcmp(token->value, "|") == 0 && token->type == PIPE)
+		{
+			hlpr->curr_grammar = START;
 			return (new_start->next);
+		}
 		new_start = new_start->next;
 	}
-	return (NULL);
+	hlpr->curr_grammar = FREE_FORM;
+	return (new_start);
 }
 
 /**
@@ -202,7 +206,7 @@ void	parser(t_minishell *ms)
 			return ;
 		else if (error == CMD_NOT_FOUND)
 		{
-			token_lst = skip_to_next_cmd_block(token_lst);
+			token_lst = skip_to_next_cmd_block(token_lst, &hlpr);
 			continue ;
 		}
 		builder_helper(ms, &hlpr, token);
@@ -210,5 +214,5 @@ void	parser(t_minishell *ms)
 		token_lst = token_lst->next;
 	}
 	grammar_checker(ms, &hlpr, NULL);
-	add_as_cmd_block(ms, &hlpr);
+	add_as_cmd_block(ms, &hlpr, 0);
 }

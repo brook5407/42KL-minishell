@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 18:14:26 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/09 14:05:02 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
 	else
 		value = ft_strdup(token->value);
 	hlpr->cmd->cmd_name = value;
-	add_as_args(hlpr, value);
+	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(ft_strdup(value)));
 }
 
 void	add_as_redirection(t_parser *hlpr, t_token_type type)
@@ -117,10 +117,11 @@ void	add_as_file(t_parser *hlpr, char *value)
 	iofile->name = ft_strdup(value);
 }
 
-void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr)
+void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr, int reset)
 {
 	ft_lstadd_back(&ms->cmds, ft_lstnew(hlpr->cmd));
-	init_parser(hlpr);
+	if (reset == 1)
+		init_parser(hlpr);
 }
 
 /**
@@ -146,5 +147,5 @@ void	builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token)
 	else if (gram == POST_RDR)
 		add_as_file(hlpr, token->value);
 	if (gram == FREE_FORM && type == PIPE)
-		add_as_cmd_block(ms, hlpr);
+		add_as_cmd_block(ms, hlpr, 1);
 }
