@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 18:29:41 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:51:41 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,36 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+void	*copy_iofile(void *old)
+{
+	t_file	*iofile;
+	t_file	*old_io;
+
+	old_io = old;
+	iofile = malloc(sizeof(t_file));
+	if (iofile == NULL)
+		return (NULL);
+	iofile->rdr_type = old_io->rdr_type;
+	iofile->name = ft_strdup(old_io->name);	
+	return ((void *)iofile);
+}
+
+void	*copy_cmd_block(void *old)
+{
+	t_cmd	*new_block;
+	t_cmd	*old_block;
+
+	old_block = old;
+	new_block = malloc(sizeof(t_cmd));
+	if (new_block == NULL)
+		return (NULL);
+	new_block->cmd_name = ft_strdup(old_block->cmd_name);
+	new_block->args = ft_lstcopy(old_block->args, (void *)ft_strdup);
+	new_block->infile = ft_lstcopy(old_block->infile, copy_iofile);
+	new_block->outfile = ft_lstcopy(old_block->outfile, copy_iofile);
+	return ((void *)new_block);
+}
+
 /**
  * @brief Utils to free iofile struct
  */
@@ -81,6 +111,7 @@ void	free_cmd_block(void *content)
 	ft_lstclear(&cmd->args, free);
 	ft_lstclear(&cmd->infile, free_iofile);
 	ft_lstclear(&cmd->outfile, free_iofile);
+	free(cmd);
 }
 
 /**

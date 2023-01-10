@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/02 19:18:25 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:54:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ char	**lst_to_array(t_list *lst)
 		array[i++] = lst->content;
 		lst = lst->next;
 	}
+	array[i] = NULL;
 	return (array);
 }

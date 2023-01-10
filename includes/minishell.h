@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:45:54 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:42:38 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*infile;
 	t_list	*outfile;
-	int		fd[2];
 }		t_cmd;
 
 typedef struct s_parser
@@ -221,6 +220,8 @@ void			parser(t_minishell *ms);
 void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr, int reset);
 void			show_cmd_block(void *content);
 void			free_cmd_block(void *content);
+t_cmd			*init_cmd(void);
+void			*copy_cmd_block(void *old);
 
 void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
 

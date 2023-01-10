@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:05:02 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:41:01 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,19 @@
 void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
 	char	*value;
+	char	*ext_path;
 
 	if (token->type == EXT_CMD)
-		value = ft_strdup(get_ext_full_path(ms, token->value));
+	{
+		ext_path = get_ext_full_path(ms, token->value);
+		value = ft_strdup(ext_path);
+		free(ext_path);
+	}
 	else
 		value = ft_strdup(token->value);
-	hlpr->cmd->cmd_name = value;
+	hlpr->cmd->cmd_name = value; // this is as cmd name
 	ft_lstadd_back(&hlpr->cmd->args, ft_lstnew(ft_strdup(value)));
+	// this is as args, strdup another one is because to prevent double free
 }
 
 void	add_as_redirection(t_parser *hlpr, t_token_type type)
@@ -119,7 +125,14 @@ void	add_as_file(t_parser *hlpr, char *value)
 
 void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr, int reset)
 {
-	ft_lstadd_back(&ms->cmds, ft_lstnew(hlpr->cmd));
+	t_cmd	*copy;
+
+	copy = copy_cmd_block(hlpr->cmd);
+	// printf("COPY\n");
+	// show_cmd_block(copy); /** TESTING: check if copy is successful and is at different address */
+	// printf("ORI\n");
+	// show_cmd_block(hlpr->cmd); /** TESTING: original cmd block */
+	ft_lstadd_back(&ms->cmds, ft_lstnew(copy));
 	if (reset == 1)
 		init_parser(hlpr);
 }

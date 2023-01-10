@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:09:31 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:46:03 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,27 +113,27 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 {
 	t_grammar		gram;
 	int				error;
+	char			*unexpected;
 
 	gram = hlpr->curr_grammar;
 	error = SUCCESS;
-	if (token != NULL)
+	unexpected = NULL;
+	if (token == NULL && (gram == POST_RDR || gram == START))
+		error = SYNTAX_ERROR;
+	else if (token != NULL && is_type_on(hlpr, token->type) == 0)
 	{
-		if (is_type_on(hlpr, token->type) == 1)
-			return (error);
 		if ((gram == START || gram == CMD_ONLY) && token->type == STR)
 			error = CMD_NOT_FOUND;
 		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
 			error = SYNTAX_ERROR;
-		show_error(error, token->value);
-		free_cmd_block((void *)hlpr->cmd);
+		unexpected = token->value;
 	}
-	else
+	if (error == CMD_NOT_FOUND || error == SYNTAX_ERROR)
 	{
-		if (gram == POST_RDR || gram == START)
-			error = SYNTAX_ERROR;
-		show_error(error, NULL);
+		show_error(error, unexpected);
+		free_cmd_block(hlpr->cmd);
+		ft_lstclear(&ms->cmds, free_cmd_block);
 	}
-	ft_lstclear(&ms->cmds, free_cmd_block);
 	return (error);
 }
 
