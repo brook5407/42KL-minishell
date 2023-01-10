@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/01/09 14:44:59 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:14:50 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,18 @@ void	set_io(int rfd, int wfd)
 	}
 }
 
-void	exec_child_process(t_minishell *ms, int *fd, t_cmd *cmd)
+void	exec_child(t_minishell *ms, int *fd, char **cmd, char **envp)
 {
 	int		ret;
-	char	**cmd_args;
-	char	**envp;
 
 	ret = EXIT_SUCCESS;
-	cmd_args = lst_to_array(cmd->args);
-	envp = get_env_arry(ms);
 	set_io(STDIN_FILENO, fd[1]);
-	if (call_buildin(ms, cmd_args) == 1)
-		ret = execve(cmd_args[0], cmd_args, envp);
+	if (call_buildin(ms, cmd) == 1)
+		ret = execve(cmd[0], cmd, envp);
 	exit(ret);
 }
 
-int	exec_pipe(t_minishell *ms, t_list *cmds)
+int	exec_pipe(t_minishell *ms, t_list *cmds, char **cmd, char **envp)
 {
 	int		ret;
 	pid_t	pid;
@@ -53,7 +49,7 @@ int	exec_pipe(t_minishell *ms, t_list *cmds)
 		pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
-		exec_child_process(ms, pipefd, cmds->content);
+		exec_child(ms, pipefd, cmd, envp);
 	waitpid(pid, &status, 0);
 	if (pipefd[1] == 1)
 		close(pipefd[1]);
@@ -67,16 +63,21 @@ int	executor(t_minishell *ms)
 	t_list	*cmds;
 	t_cmd	*cmd;
 	char	**cmd_args;
+	char	**envp;
 
 	cmds = ms->cmds;
 	while (cmds != NULL)
 	{
-		cmd = ms->cmds->content;
+		cmd = cmds->content;
 		cmd_args = lst_to_array(cmd->args);
 		if (cmd_args[0])
 		{
-			if (call_buildin(ms, cmd_args) == 1)
-				exec_pipe(ms, cmds);
+			if (cmds->next == NULL && call_buildin(ms, cmd_args) == 1)
+			{
+				envp = get_env_arry(ms);
+				exec_pipe(ms, cmds, cmd_args, envp);
+				free(envp);
+			}
 		}
 		cmds = cmds->next;
 		free(cmd_args);

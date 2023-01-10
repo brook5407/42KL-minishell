@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/26 20:44:36 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:14:23 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /**
- * @brief Check if the given id is a valid parameter name that follows the 
+ * @brief Check if the given id is a valid parameter name that follows the
  *        naming convention of shell parameter.
- * 
+ *
  * @param id Should only consists of the name of the id, excluding the '$'
- * 
+ *
  * @note Naming convention:
  * 1. Acceptable characters: UNDERSCORE (_), ALPHABETS (A-Za-z), DIGITS (0-9)
  * 2. Parameter should not start with DIGITS & any other unacceptable characters.
  * 3. Parameter can start with ALPHABETS or UNDERSCORE.
  * 4. What's follow after the first character does not matter as long as
  * 	  it's constructed using the acceptable characters.
- * 
+ *
  * This function first check if the first character follows the guideline.
  * Then check the rest of the characters to make sure follows the naming
  * convention. If the function is able to iterate through the id string,
@@ -44,19 +44,19 @@ int	is_valid_id(char *id)
 
 /**
  * @brief Extract the id or id chain.
- * 
+ *
  * @param str: The string inside the double quote, because only double quote
  *             should expand the ids, not single quotes. Using double point,
  * 	           so that the str can point to the next substring to extract.
- * 
+ *
  * Output will be either:
  * 1. $HEY$HO$HE$HA - id chain
  * 2. $SINGLE - single id
- * 
+ *
  * If the input is something like this:
  * 1. "$HEY$HO      $BABA". This function will extract "$HEY$HO" and return it
  * .  then mark the starting point of next substring to "      $BABA"
- * 
+ *
  * Notice that this function will also consider the naming convention of shell
  * parameter. This is to prevent the function to extract characters that are
  * not part of the id.
@@ -82,7 +82,7 @@ char	*extract_ids(char **str, int ignore)
 			if ((ft_isalnum(*next) == 0 && *next != '_'))
 				break ;
 			next++;
-		}	
+		}
 	}
 	ids = ft_strndup((*str), next - (*str) + i);
 	*str = next;
@@ -91,9 +91,9 @@ char	*extract_ids(char **str, int ignore)
 
 /**
  * @brief Get the shell parameter value
- * 
+ *
  * @param token string that in a form of $VAR
- * 
+ *
  * Get the value of the parameter from environment variable.
  * If the parameter is not set, meaning NULL, return value should be an
  * empty string. The return value of this function is not malloced.
@@ -118,7 +118,7 @@ char	*get_parameter_value(t_minishell *ms, char *token)
 
 /**
  * @brief Join the prefix, the final string and the expanded value all together
- * 
+ *
  * @param str The final string
  * @param prefix The substring before the expanded value in the ori string
  * @param value The expanded value

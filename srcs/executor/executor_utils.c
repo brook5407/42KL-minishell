@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 16:14:30 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/10 12:51:56 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**lst_to_array(t_list *lst)
 	int		size;
 	char	**array;
 
-	size = ft_lstsize(lst);
+	size = ft_lstsize(lst) + 1;
 	array = malloc(sizeof(char *) * size);
 	if (!array)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:45:54 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:58:55 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*infile;
 	t_list	*outfile;
-	int		fd[2];
 }		t_cmd;
 
 typedef struct s_parser
