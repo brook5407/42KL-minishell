@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:40:56 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/12 15:58:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,10 @@ void	tokenizer(t_minishell *ms, char *word)
 		free(token);
 	}
 	if (start == word)
+	{
+		printf("yo\n");
 		add_token(ms, STR, ft_strdup(word));
+	}
 }
 
 /**

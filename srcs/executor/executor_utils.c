@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 14:54:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:23:24 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**lst_to_array(t_list *lst)
 	char	**array;
 
 	size = ft_lstsize(lst);
-	array = malloc(sizeof(char *) * size);
+	array = malloc(sizeof(char *) * (size + 1));
 	if (!array)
 		return (NULL);
 	i = 0;

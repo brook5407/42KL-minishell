@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/10 17:42:38 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:10:23 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ typedef struct s_parser
 	t_grammar		curr_grammar;
 	t_token_type	rdr_mode;
 	t_token_type	expected[TYPE_TOTAL];
-	t_cmd			*cmd;
+	t_cmd			cmd;
 }		t_parser;
 
 /* Global errno is defined here */
@@ -217,13 +217,11 @@ void			list_all_token(void *content);
 void			free_token(void *content);
 
 void			parser(t_minishell *ms);
-void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr, int reset);
+void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr);
 void			show_cmd_block(void *content);
 void			free_cmd_block(void *content);
-t_cmd			*init_cmd(void);
-void			*copy_cmd_block(void *old);
 
-void			builder_helper(t_minishell *ms, t_parser *hlpr, t_token *token);
+void			builder(t_minishell *ms, t_parser *hlpr, t_token *token);
 
 void			init_parser(t_parser *phlpr);
 void			reset_all_type(t_parser *phlpr, int status);
@@ -251,6 +249,7 @@ t_env			*load_env_var(t_list *envp, char *var);
 void			edit_env_val(t_minishell *ms, char *key, char *value);
 char			*get_env_value(t_minishell *ms, char *key);
 char			**get_env_arry(t_minishell *ms);
+void			clear_env_var(void *content);
 
 char			**lst_to_array(t_list *lst);
 int				executor(t_minishell *ms);

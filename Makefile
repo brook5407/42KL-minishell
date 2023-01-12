@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/01/09 17:45:18 by wricky-t         ###   ########.fr        #
+#    Updated: 2023/01/12 16:31:46 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,6 @@ SRCS		:= minishell.c \
 			   parser/parser.c \
 			   parser/grammar.c \
 			   parser/parser_helper.c \
-			   parser/check_syntax.c \
 			   parser/builder.c \
 			   env_utilise.c \
 			   cmds/call_buildin.c \
@@ -80,8 +79,6 @@ SRCS		:= minishell.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
-
-SRCS		+= bin.c
 
 OBJS		:= $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 

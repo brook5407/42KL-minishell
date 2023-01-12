@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/10 19:30:32 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:33:19 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,6 @@ static char	*check_dangling_quote(char *cmds)
 	return (cmds);
 }
 
-void	clear_tokens(t_list **tokens)
-{
-	t_list	*token;
-	t_token	*tok;
-
-	token = *tokens;
-	while (token != NULL)
-	{
-		tok = token->content;
-		free((char *)tok->value);
-		free(tok);
-		token = token->next;
-	}
-	// tokens = NULL;
-}
-
 /**
  * Minishell
  *
@@ -132,13 +116,12 @@ int	main(int ac, char **av, char **ev)
 		if (cmds != NULL && *cmds != '\0')
 			add_history(cmds);
 		lexer(&ms, cmds);
-		parser(&ms);
-		// executor(&ms);
-		ft_lstiter(ms.cmds, show_cmd_block);
-		ft_lstclear(&ms.tokens, free_token);
+		if (ms.tokens != NULL)
+			parser(&ms);
+		executor(&ms);
 		ft_lstclear(&ms.cmds, free_cmd_block);
+		ft_lstclear(&ms.tokens, free_token);
 		free(ms.prompt);
-		// system("leaks -q minishell");
 	}
 	return (0);
 }
