@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/10 12:58:55 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/31 13:33:21 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*infile;
 	t_list	*outfile;
+	int		pipefd[2];
 }		t_cmd;
 
 typedef struct s_parser
@@ -235,7 +236,7 @@ void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
-int				call_buildin(t_minishell *ms, char **cmds);
+int				call_buildin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
 void			call_env(t_minishell *ms);
