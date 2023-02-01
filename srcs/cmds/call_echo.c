@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:39:24 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 14:23:48 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/10 19:17:33 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,33 @@ int	check_flag(char *s)
 	i = 0;
 	if (s[i] == '-' && s[i + 1] == 'n')
 	{
-		i++;
+		i += 2;
 		while (s[i] == 'n')
 			i++;
-		if (s[i] == ' ' || !s[i])
-		{
-			if (s[i] == ' ')
-				return (++i);
-			else
-				return (i);
-		}
+		if (s[i] == '\0')
+			return (i);
 	}
 	return (0);
 }
 
 void	call_echo(t_minishell *ms, char **cmds)
 {
-	int	i;
+	int	next_line;
 
 	(void)ms;
-	while (*cmds)
+	next_line = 1;
+	while (check_flag(*cmds) > 0)
 	{
-		if (check_flag(*cmds) > 0)
-		{
-			i = 1;
-			cmds++;
-		}
-	}
-	while (*cmds)
-	{
-		if (!i)
-			printf("%s\n", *cmds);
-		else
-			printf("%s", *cmds);
-		printf(" ");
+		next_line = 0;
 		cmds++;
 	}
+	while (*cmds != NULL)
+	{
+		printf("%s", *cmds);
+		cmds++;
+		if (*cmds != NULL)
+			printf(" ");
+	}
+	if (next_line == 1)
+		printf("\n");
 }

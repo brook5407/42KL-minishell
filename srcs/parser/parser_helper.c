@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/12 16:10:14 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/01 17:27:20 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_iofile(void *content)
 
 /**
  * @brief Free the cmd block
- * 
+ *
  * 1. Free the cmd name
  * 2. Free the args list
  * 3. Free the infile list

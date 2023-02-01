@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2023/01/09 14:27:13 by chchin           ###   ########.fr       */
+/*   Updated: 2023/01/10 19:25:23 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,22 +94,26 @@ void	call_export(t_minishell *ms, char **s)
 
 	if (!print_export(ms, *s))
 		return ;
-	value = ft_strchr(*s, '=');
-	if (value == NULL)
+	while (*s != NULL)
 	{
-		key = ft_strdup(*s);
-		value = strdup("");
-	}
-	else
-	{
-		key = ft_strndup(*s, value - *s);
-		value = ft_strdup(value + 1);
-	}
-	if (!check_valid("export", key))
-		edit_env_val(ms, key, value);
-	else
-	{
-		free(key);
-		free(value);
+		value = ft_strchr(*s, '=');
+		if (value == NULL)
+		{
+			key = ft_strdup(*s);
+			value = strdup("");
+		}
+		else
+		{
+			key = ft_strndup(*s, value - *s);
+			value = ft_strdup(value + 1);
+		}
+		if (!check_valid("export", key))
+			edit_env_val(ms, key, value);
+		else
+		{
+			free(key);
+			free(value);
+		}
+		s++;
 	}
 }

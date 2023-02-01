@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2022/12/20 19:31:36 by brook            ###   ########.fr       */
+/*   Updated: 2023/01/10 12:51:02 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**get_env_arry(t_minishell *ms)
 	int		i;
 
 	i = 0;
-	env_arry = malloc(sizeof(char *) * ft_lstsize(ms->envp));
+	env_arry = malloc(sizeof(char *) * (ft_lstsize(ms->envp) + 1));
 	envp = ms->envp;
 	while (envp != NULL)
 	{
