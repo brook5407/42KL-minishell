@@ -6,24 +6,16 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/01/31 16:15:57 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/01 16:44:57 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	set_io(int rfd, int wfd)
+void	set_io(int fd, int std_fileno)
 {
-	if (rfd != STDIN_FILENO)
-	{
-		dup2(rfd, STDIN_FILENO);
-		close(rfd);
-	}
-	if (wfd != STDOUT_FILENO)
-	{
-		dup2(wfd, STDOUT_FILENO);
-		close(wfd);
-	}
+	dup2(fd, std_fileno);
+	close(fd);
 }
 
 void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
@@ -34,13 +26,14 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 
 	ret = EXIT_SUCCESS;
 	cur_cmd = cur_proc->content;
-	if (cur_proc->next != NULL)
+	if (cur_proc->next)
 	{
 		next_cmd = cur_proc->next->content;
-		set_io(STDIN_FILENO, next_cmd->pipefd[1]);
+		close(next_cmd->pipefd[0]);
+		set_io(next_cmd->pipefd[1], STDOUT_FILENO);
 	}
 	if (cur_cmd->pipefd[0] != 0)
-		set_io(cur_cmd->pipefd[0], STDOUT_FILENO);
+		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
 	if (call_buildin(ms, cur_cmd) == 1)
 		ret = execve(cmd[0], cmd, envp);
 	exit(ret);
@@ -57,7 +50,7 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 	cur_cmd = cur_proc->content;
 	next_cmd = cur_proc->content;
 	cmd = lst_to_array(cur_cmd->args);
-	if (cur_proc->next != NULL)
+	if (cur_proc->next)
 	{
 		next_cmd = cur_proc->next->content;
 		pipe(next_cmd->pipefd);
@@ -74,23 +67,50 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 	return (EXIT_SUCCESS);
 }
 
+// int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
+// {
+// 	int		pipefd[2];
+// 	pid_t	pid;
+// 	t_cmd	*cur_cmd;
+// 	char	**cmd;
+
+// 	cur_cmd = cur_proc->content;
+// 	cmd = lst_to_array(cur_cmd->args);
+// 	if (pipe(pipefd) == -1)
+// 		perror("pipe");
+// 	pid = fork();
+// 	if (pid == -1)
+// 		perror("PID");
+// 	if (pid == 0)
+// 	{
+// 		close(pipefd[0]);
+// 		dup2(pipefd[1], STDOUT_FILENO);
+// 		close(pipefd[1]);
+// 		if (call_buildin(ms, cur_cmd) == 1)
+// 			execve(cur_cmd->cmd_name, cmd, envp);
+// 		exit(EXIT_SUCCESS);
+// 	}
+// 	wait(NULL);
+// 	close(pipefd[1]);
+// }
+
 int	executor(t_minishell *ms)
 {
-	t_list	*cmds;
+	t_list	*cur_proc;
 	char	**envp;
 
-	cmds = ms->cmds;
-	while (cmds != NULL)
+	cur_proc = ms->cmds;
+	while (cur_proc != NULL)
 	{
-		if (cmds->next == NULL && call_buildin(ms, cmds->content) == 0)
+		if (cur_proc->next == NULL && call_buildin(ms, cur_proc->content) == 0)
 			;
 		else
 		{
 			envp = get_env_arry(ms);
-			exec_pipe(ms, cmds, envp);
+			exec_pipe(ms, cur_proc, envp);
 			free(envp);
 		}
-		cmds = cmds->next;
+		cur_proc = cur_proc->next;
 	}
 	return (0);
 }

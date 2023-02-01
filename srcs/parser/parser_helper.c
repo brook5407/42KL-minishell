@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 18:29:41 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:35:36 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 
 /**
  * @brief Malloc a cmd block
- * 
+ *
  * Set cmd_name, args, infile and outfile as NULL.
  */
 t_cmd	*init_cmd(void)
@@ -50,6 +50,7 @@ t_cmd	*init_cmd(void)
 	cmd->args = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
+	// cmd->pipefd[0] = -1;
 	return (cmd);
 }
 
@@ -66,7 +67,7 @@ void	free_iofile(void *content)
 
 /**
  * @brief Free the cmd block
- * 
+ *
  * 1. Free the cmd name
  * 2. Free the args list
  * 3. Free the infile list
