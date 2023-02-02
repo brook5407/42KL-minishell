@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 16:00:59 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 18:57:30 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
-int				call_buildin(t_minishell *ms, t_cmd *cmd);
+int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
 void			call_env(t_minishell *ms);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 18:55:43 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 18:59:02 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**lst_to_array(t_list *lst)
 // 	return (EXIT_SUCCESS);
 // }
 
-void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
+static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 {
 	args++;
 	if (ft_strcmp(cmd_name, "cd") == 0)
@@ -81,7 +81,7 @@ void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 		call_echo(ms, args);
 }
 
-int	is_builtin(t_minishell *ms, char *cmd_name)
+static int	is_builtin(t_minishell *ms, char *cmd_name)
 {
 	char	**builtins;
 
