@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/02 11:14:52 by wricky-t         ###   ########.fr        #
+#    Updated: 2023/02/02 18:12:55 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ SRCS		:= minishell.c \
 			   parser/parser_helper.c \
 			   parser/builder.c \
 			   env_utilise.c \
-			   cmds/call_buildin.c \
+			   cmds/call_builtin.c \
 			   cmds/call_cd.c \
 			   cmds/call_pwd.c \
 			   cmds/call_env.c \

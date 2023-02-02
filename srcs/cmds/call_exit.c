@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/12 16:33:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:57:33 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	call_exit(t_minishell *ms, char **cmds)
 {
-	free(cmds);
+	(void)cmds;
 	free(ms->prompt);
 	free_env(ms->envp);
 	exit(0);

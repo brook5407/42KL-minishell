@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:06:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/01 11:38:41 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 18:52:36 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,15 @@ void	set_prompt(t_minishell *ms)
 	home = get_env_value(ms, "HOME");
 	if (home == NULL)
 		dir = "🤷";
-	if (dir != NULL && ft_strcmp(dir, get_env_value(ms, "HOME")) == 0)
-		dir = "~";
-	else if (dir != NULL)
-		dir = ft_strrchr(dir, '/');
 	else
-		dir = "🤷";
+	{
+		if (dir != NULL && ft_strcmp(dir, home) == 0)
+			dir = "~";
+		else if (dir != NULL)
+			dir = ft_strrchr(dir, '/');
+		else
+			dir = "🤷";
+	}
 	prompt = ft_strjoin(user, " @ ");
 	prompt = ft_strjoin_free(prompt, dir);
 	prompt = ft_strjoin_free(prompt, " $ ");
@@ -100,7 +103,7 @@ void	init_minishell(t_minishell *ms, char **ev)
 {
 	ms->envp = NULL;
 	ms->tokens = NULL;
-	ms->cmds = NULL; 
+	ms->cmds = NULL;
 	init_environment(ms, ev);
 	init_builtins(ms);
 	init_operators(ms);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/12 16:21:28 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 18:12:55 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,9 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
  * 		iii.	Set the next grammar to ensure that the next token
  * 				is expected
  * 3. When iterating through the token list, it's possible that there
- * 	  is no pipe in it, which means the cmd block we are building might
+ * 	  is no pipe in it, which means the cmd block we are builting might
  *    not be able to add into the cmd list. So when reach the end of
- *    token list, add the cmd block we are building into the cmd list.
+ *    token list, add the cmd block we are builting into the cmd list.
  */
 void	parser(t_minishell *ms)
 {
