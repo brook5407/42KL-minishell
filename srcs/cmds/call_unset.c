@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/02 17:45:05 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:14:11 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,26 +67,26 @@ static void	del_env_var(t_minishell *ms, t_env *env)
  * 
  * If the key is valid and existed, delete it from the environment variable list.
  */
-void	call_unset(t_minishell *ms, char **key)
+void	call_unset(t_minishell *ms, char **keys)
 {
 	t_env	*env;
 
-	if (*key == NULL)
+	if (*keys == NULL)
 		return ;
-	while (*key != NULL)
+	while (*keys != NULL)
 	{
-		if (is_valid_id(*key) == 0)
+		if (is_valid_id(*keys) == 0)
 		{
-			show_error(INVALID_ID_UNS, *(key++));
+			show_error(INVALID_ID_UNS, *(keys++));
 			continue ;
 		}
-		env = load_env_var(ms->envp, *key);
+		env = load_env_var(ms->envp, *keys);
 		if (env == NULL)
 		{
-			key++;
+			keys++;
 			continue ;
 		}
 		del_env_var(ms, env);
-		key++;
+		keys++;
 	}
 }

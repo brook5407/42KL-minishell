@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 18:05:20 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:14:56 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,24 @@ int	print_export(t_minishell *ms, char *s)
 }
 
 /** TODO: Refactor this */
-void	call_export(t_minishell *ms, char **s)
+void	call_export(t_minishell *ms, char **args)
 {
 	char	*key;
 	char	*value;
 
-	if (!print_export(ms, *s))
+	if (!print_export(ms, *args))
 		return ;
-	while (*s != NULL)
+	while (*args != NULL)
 	{
-		value = ft_strchr(*s, '=');
+		value = ft_strchr(*args, '=');
 		if (value == NULL)
 		{
-			key = ft_strdup(*s);
+			key = ft_strdup(*args);
 			value = strdup("");
 		}
 		else
 		{
-			key = ft_strndup(*s, value - *s);
+			key = ft_strndup(*args, value - *args);
 			value = ft_strdup(value + 1);
 		}
 		if (!check_valid("export", key))
@@ -115,6 +115,6 @@ void	call_export(t_minishell *ms, char **s)
 			free(key);
 			free(value);
 		}
-		s++;
+		args++;
 	}
 }

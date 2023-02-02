@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 18:57:30 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:14:19 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,10 +241,10 @@ int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
 void			call_env(t_minishell *ms);
-void			call_unset(t_minishell *ms, char **key);
-void			call_export(t_minishell *ms, char **key);
-void			call_echo(t_minishell *ms, char **s);
-void			call_exit(t_minishell *ms, char **cmds);
+void			call_unset(t_minishell *ms, char **keys);
+void			call_export(t_minishell *ms, char **args);
+void			call_echo(t_minishell *ms, char **args);
+void			call_exit(t_minishell *ms, char **args);
 int				check_valid(char *cmds, char *args);
 
 t_env			*load_env_var(t_list *envp, char *var);

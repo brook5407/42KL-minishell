@@ -6,51 +6,48 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:39:24 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/02 16:00:41 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:33:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_flag(char *s)
+int	is_option(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (s[i] == '-' && s[i + 1] == 'n')
-	{
+	if (arg[i] == '-' && arg[i + 1] == 'n')
 		i += 2;
-		while (s[i] == 'n')
-			i++;
-		if (s[i] == '\0')
-			return (i);
-	}
+	while (arg[i] == 'n')
+		i++;
+	if (arg[i] == '\0')
+		return (i);
 	return (0);
 }
 
-void	call_echo(t_minishell *ms, char **cmds)
+void	call_echo(t_minishell *ms, char **args)
 {
-	int	next_line;
+	int	omit_nl;
 
 	(void)ms;
-	next_line = 1;
-	if (*cmds == NULL)
+	omit_nl = 0;
+	if (*args == NULL)
 	{
-		printf("\n");
+		ft_printf("\n");
 		return ;
 	}
-	while (check_flag(*cmds) > 0)
+	while (*args != NULL && is_option(*args) > 0)
 	{
-		next_line = 0;
-		cmds++;
+		omit_nl = 1;
+		args++;
 	}
-	while (*cmds != NULL)
+	while (*args != NULL)
 	{
-		printf("%s", *cmds);
-		cmds++;
-		if (*cmds != NULL)
-			printf(" ");
+		ft_printf("%s", *(args++));
+		if (*args != NULL)
+			ft_printf(" ");
 	}
-	if (next_line == 1)
-		printf("\n");
+	if (omit_nl == 0)
+		ft_printf("\n");
 }
