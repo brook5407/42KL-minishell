@@ -6,11 +6,31 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 11:17:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 16:00:51 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	**lst_to_array(t_list *lst)
+{
+	int		i;
+	int		size;
+	char	**array;
+
+	size = ft_lstsize(lst) + 1;
+	array = malloc(sizeof(char *) * size);
+	if (!array)
+		return (NULL);
+	i = 0;
+	while (lst)
+	{
+		array[i++] = lst->content;
+		lst = lst->next;
+	}
+	array[i] = NULL;
+	return (array);
+}
 
 int	call_buildin(t_minishell *ms, t_cmd *cmd)
 {

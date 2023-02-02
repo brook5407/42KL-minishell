@@ -6,17 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 10:21:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 16:00:14 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	set_io(int fd, int std_fileno)
-{
-	dup2(fd, std_fileno);
-	close(fd);
-}
 
 void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 {
@@ -30,10 +24,16 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	{
 		next_cmd = cur_proc->next->content;
 		close(next_cmd->pipefd[0]);
-		set_io(next_cmd->pipefd[1], STDOUT_FILENO);
+		dup2(next_cmd->pipefd[1], STDOUT_FILENO);
+		close(next_cmd->pipefd[1]);
 	}
 	if (cur_cmd->pipefd[0] != 0)
-		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
+	{
+		dup2(cur_cmd->pipefd[0], STDIN_FILENO);
+		close(cur_cmd->pipefd[0]);
+	}
+	exec_redirt_in(cur_cmd);
+	exec_redirt_out(cur_cmd);
 	if (call_buildin(ms, cur_cmd) == 1)
 		ret = execve(cmd[0], cmd, envp);
 	exit(ret);
