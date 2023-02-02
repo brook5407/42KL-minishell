@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 14:26:19 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 10:49:46 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ static void	edit_oldpwd(t_minishell *ms)
 
 	pwd = load_env_var(ms->envp, "PWD");
 	if (pwd == NULL)
-		edit_env_val(ms, strdup("OLDPWD"), ft_strdup(" "));
+		edit_env_val(ms, ft_strdup("OLDPWD"), ft_strdup(" "));
 	else
-		edit_env_val(ms, strdup("OLDPWD"), ft_strdup(pwd->value));
+		edit_env_val(ms, ft_strdup("OLDPWD"), ft_strdup(pwd->value));
 }
 
 void	call_cd(t_minishell *ms, char **path)
@@ -69,6 +69,6 @@ void	call_cd(t_minishell *ms, char **path)
 		edit_oldpwd(ms);
 		free(cur_path);
 		cur_path = getcwd(NULL, 0);
-		edit_env_val(ms, strdup("PWD"), cur_path);
+		edit_env_val(ms, ft_strdup("PWD"), cur_path);
 	}
 }

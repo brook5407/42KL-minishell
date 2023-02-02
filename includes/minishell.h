@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/01 17:25:12 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:36:00 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ typedef enum e_error_type
 	SYNTAX_ERROR = 258,
 	CMD_NOT_FOUND = 127,
 	FILE_NOT_FOUND = 1,
-	INVALID_ID = 1,
+	INVALID_ID_EXP = 2,
+	INVALID_ID_UNS = 3,
 	SUCCESS = 0
 }		t_error_type;
 

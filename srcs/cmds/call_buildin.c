@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/01 16:28:38 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 11:17:15 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	call_buildin(t_minishell *ms, t_cmd *cmd)
 {
 	char	**cmds;
 
+	// show_cmd_block(cmd);
 	cmds = lst_to_array(cmd->args);
 	if (ft_strcmp(*cmds, "cd") == 0)
 		call_cd(ms, ++cmds);

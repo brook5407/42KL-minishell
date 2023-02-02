@@ -6,11 +6,21 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 18:03:14 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:37:02 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static void	set_errno(t_error_type type)
+{
+	if (type == INVALID_ID_EXP || type == INVALID_ID_UNS)
+	{
+		g_errno = 1;
+		return ;
+	}
+	g_errno = type;
+}
 
 void	show_error(t_error_type type, char *token)
 {
@@ -29,6 +39,9 @@ void	show_error(t_error_type type, char *token)
 		ft_printf("%s: command not found\n", token);
 	if (type == FILE_NOT_FOUND)
 		ft_printf("%s: no such file or directory\n");
-	if (type == INVALID_ID)
+	if (type == INVALID_ID_EXP)
 		ft_printf("export: `%s': not a valid identifier\n", token);
+	if (type == INVALID_ID_UNS)
+		ft_printf("unset: `%s': not a valid identifier\n", token);
+	set_errno(type);
 }
