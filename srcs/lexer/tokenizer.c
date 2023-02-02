@@ -6,58 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 17:10:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:31:29 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * @brief To recognize if the token is a external command or not.
- * 
- * External command can be executed in two ways:
- * 1. [EXT_CMD] args
- * 2. /full/path/to/[EXT_CMD] args
- * 3. path/to/[EXT_CMD] args (part of the path, if the user is at the
- *    directory, then the command can be executed)
- * 
- * To be safe, it's better to get the full path of the command before
- * checking if the file exists and can be executed.
- * After that, just check if the file exists and can be executed. If so,
- * store it into command list as a EXT_CMD and return 1.
- * 
- * The return value indicates whether a token has been recognized or not.
- * 1 = Yes, 0 = No
-*/
-// int	recognize_external(t_minishell *ms, char *token)
-// {
-// 	int			i;
-// 	char		**paths;
-// 	char		*path_value;
-// 	char		*extcmd;
-// 	struct stat	file_stat;
-
-// 	i = -1;
-// 	path_value = get_env_value(ms, "PATH");
-// 	if (path_value == NULL)
-// 		return (0);
-// 	paths = ft_split(get_env_value(ms, "PATH"), ':');
-// 	while (paths[++i] != NULL)
-// 	{
-// 		extcmd = get_extcmd_path(paths[i], token);
-// 		if (access(extcmd, X_OK) == 0
-// 			&& stat(extcmd, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
-// 		{
-// 			free(extcmd);
-// 			add_token(ms, EXT_CMD, ft_strdup(token));
-// 			ft_freestrarr(paths);
-// 			return (1);
-// 		}
-// 		free(extcmd);
-// 	}
-// 	ft_freestrarr(paths);
-// 	return (0);
-// }
 
 /**
  * Recognize cmd
@@ -83,21 +36,22 @@ int	recognize_cmd(t_minishell *ms, char *token)
 	char	*ext_path;
 
 	i = -1;
-	token_copy = ft_strdup(token);
-	token_copy = ft_strlower(token_copy);
+	token_copy = ft_strlower(ft_strdup(token));
 	while (ms->builtins[++i] != NULL)
 	{
 		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
 		{
-			add_token(ms, CMD, token_copy);
+			add_token(ms, CMD, ft_strdup(token));
+			free(token_copy);
 			return (1);
 		}
 	}
 	ext_path = get_ext_full_path(ms, token_copy);
 	if (ext_path != NULL)
 	{
-		add_token(ms, EXT_CMD, token_copy);
+		add_token(ms, EXT_CMD, ft_strdup(token));
 		free(ext_path);
+		free(token_copy);
 		return (1);
 	}
 	free(token_copy);

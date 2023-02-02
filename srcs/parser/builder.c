@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/12 16:27:54 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:21:56 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token)
 
 	if (token->type == EXT_CMD)
 	{
-		ext_path = get_ext_full_path(ms, token->value);
+		ext_path = get_ext_full_path(ms, ft_strlower(token->value));
 		value = ft_strdup(ext_path);
 		free(ext_path);
 	}
 	else
-		value = ft_strdup(token->value);
+		value = ft_strlower(ft_strdup(token->value));
 	hlpr->cmd.cmd_name = value;
 	ft_lstadd_back(&hlpr->cmd.args, ft_lstnew(ft_strdup(value)));
 }
