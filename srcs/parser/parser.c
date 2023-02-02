@@ -6,136 +6,11 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 14:09:31 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:21:28 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * TODO:
- * 1. A function to iterate through the token list and parse [V]
- * 2. A function that expect a token. If the token is not expected, meaning
- *    grammar is wrong. [V]
- * 		a. First token of a grammar can be either a command, redirection.
- * 		b. The token after a redirection confirm is a file. The next token
- *         of redirection must be a [STR], cannot be a pipe.
- * 		c. After a file, can be pipe, another redirection, argument.
- *         If the argument list is empty, the [STR] could be the command.
- *      d. Pipe marks a new beginning of a simple grammar.
- * 3. A struct as a parser helper. [V]
- * 4. Error handler. Show error based on the incorrect grammar.
- */
-
-/**
- * Parser process
- *
- * 1. Initialize parser_helper (should pass to a grammar checker in every
- *    iteration)
- * 2. Iterate through the token_list
- * 3. In each iteration
- * 		i.	 Get the type of that token
- *      ii.	 Check if the token match what's expected
- *      iii. If...
- * 			 a. ... it's expected
- * 				- save it into the node
- * 					- based on the grammar, where to stored the value
- * 					  will be different as well (check previous token)
- * 				- set next's token grammar rules
- * 				- move on to the next token
- *           b. ... it's not expected
- * 				- handle error
- *              - stop the current cmd block, move to the end
- * 					- might have to free what's been saved in the node
- *              - or stop when there's another pipeline and start
- *                parsing again.
- * 4. At the end of the whole process, the output is a cmd_list
- *
- * IDEA:
- * 2. Create a function that visualize each node in cmd_list
- * 3. Create functions that help building the cmd_list (builder functions)
- */
-
-/**
- * When the grammar is:
- * 1. START
- * 		- the token is STR means cmd not found
- * 		- the token is PIPE means parse error
- * 2. POST_RDR
- * 		- Any redirection token (>, <, <<, >>) means parser error
- * 		- PIPE means parse error
- * 		- Basically means if the following token is not expected, it's parse error
- * 3. CMD_ONLY
- * 		- If token is a STR, meaning cmd not found
-*/
-
-/**
- * @brief Grammar checker. Checks the token if it's expected. If not expected,
- * 		  identify the error type.
- * 
- * @details
- * Firstly, check if the current token type is on in the current grammar. If
- * yes, return 1 indicating grammar no error. The rest of the procedure will
- * be to identify which error type.
- * If the grammar is START or CMD_ONLY and the current token type is a STR,
- * meaning it's a CMD_NOT_FOUND error.
- * If the grammar is POST_RDR and anything passed in is not expected, it's a
- * SYNTAX ERROR. Or if the grammar is START and the type is PIPE.
- * 
- * According to Bash behavior on CMD_NOT_FOUND & SYNTAX ERROR, when encounter
- * CMD_NOT_FOUND, the shell should continue parse what's behind the pipe if have.
- * When encounter SYNTAX_ERROR, stop parsing and do not execute anything. Also,
- * when any of these happens, output the error in STDERR.
- * 
- * Since the executor will try to iterate through the cmd list, and to let
- * executor don't execute, the best way would probably be clearing out the
- * cmd list so that executor won't even run.
- * 
- * And since parser will process one cmd block at a time, if any error happens,
- * clear up the current processed cmd block as well. So that it won't be added
- * into the cmd list and get executed.
- * 
- * If you look at the parser function, there are two calls of grammar_checker.
- * The first call has already explained above. How about the second call? The
- * second call is to make sure that the processed command list does not
- * end with unexpected token like redirection and pipe.
- * 
- * Since we are checking the end of the cmd list, there's nothing to deal with
- * the token. We just have to check the grammar at the end is what's expected.
- * If the cmd_list ends with PIPE, meaning the next grammar should be START.
- * If the cmd_list ends with Redirections, meaning the next grammar should be
- * POST_RDR.
- * Hence, if the ending grammar is either one, it's a SYNTAX_ERROR.
- * Whatever has been stored inside the cmd list should be discarded and the 
- * current cmd block should be freed as well.
-*/
-int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
-{
-	t_grammar		gram;
-	int				error;
-
-	gram = hlpr->curr_grammar;
-	error = SUCCESS;
-	if (token != NULL)
-	{
-		if (is_type_on(hlpr, token->type) == 1)
-			return (error);
-		if ((gram == START || gram == CMD_ONLY) && token->type == STR)
-			error = CMD_NOT_FOUND;
-		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
-			error = SYNTAX_ERROR;
-		show_error(error, token->value);
-		free_cmd_block((void *)hlpr->cmd);
-	}
-	else
-	{
-		if (gram == POST_RDR || gram == START)
-			error = SYNTAX_ERROR;
-		show_error(error, NULL);
-	}
-	ft_lstclear(&ms->cmds, free_cmd_block);
-	return (error);
-}
 
 /**
  * @brief Skip to the next simple command block
@@ -170,6 +45,68 @@ t_list	*skip_to_next_cmd_block(t_list *curr, t_parser *hlpr)
 }
 
 /**
+ * @brief Grammar checker. Checks the token if it's expected. If not expected,
+ * 		  identify the error type.
+ * 
+ * @details
+ * There are two use case for grammar checker:
+ * i. When iterate through the token list to check if a token is expected
+ * 	  or accepted by the grammar. (token is NOT NULL)
+ * ii. To check the ending of a "simple command" (token is NULL)
+ * 
+ * By default, grammar checker assume the token is acceptable, hence status
+ * is SUCCESS. The "unexpected" variable is used to store the unexpected
+ * token so that can be outputted to the screen if there's an error.
+ * 
+ * Use case (i):
+ * If the token is not expected, there are two possible error. Either it's
+ * SYNTAX_ERROR or CMD_NOT_FOUND. CMD_NOT_FOUND occurs when the token is a
+ * STR and the grammar does not accept any STR. SYNTAX ERROR occurs when
+ * the grammar is POST_RDR, which the following token should either be
+ * EXT_CMD, CMD or STR but it's other type.
+ * 
+ * Use case (ii):
+ * Since we only add the cmd block to the cmd list when we encounter a PIPE,
+ * which means if we already iterated through the token list, the current
+ * cmd block in parser will not be added into the cmd list. Hence, if that's
+ * the case, check the grammar to see if it's POST_RDR (meaning it ends
+ * with redirections) or START (meaning it ends with PIPE).
+ * 
+ * When there's SYNTAX ERROR or CMD_NOT_FOUND, all the cmd in cmd list will
+ * be freed and the parser will be reset.
+ * 
+ * This function will return the status of grammar_checker, whether it's
+ * SUCCESS, CMD_NOT_FOUND or SYNTAX_ERROR.
+ */
+int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
+{
+	t_grammar	gram;
+	int			status;
+	char		*unexpected;
+
+	status = SUCCESS;
+	gram = hlpr->curr_grammar;
+	unexpected = NULL;
+	if (token == NULL && (gram == POST_RDR || gram == START))
+		status = SYNTAX_ERROR;
+	else if (token != NULL && is_type_on(hlpr, token->type) == 0)
+	{
+		if ((gram == START || gram == CMD_ONLY) && token->type == STR)
+			status = CMD_NOT_FOUND;
+		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
+			status = SYNTAX_ERROR;
+		unexpected = token->value;
+	}
+	if (status == CMD_NOT_FOUND || status == SYNTAX_ERROR)
+	{
+		show_error(status, unexpected);
+		init_parser(hlpr);
+		ft_lstclear(&ms->cmds, free_cmd_block);
+	}
+	return (status);
+}
+
+/**
  * @brief Parse the list of token and build a cmd list
  * 
  * @details
@@ -186,33 +123,29 @@ t_list	*skip_to_next_cmd_block(t_list *curr, t_parser *hlpr)
  *    not be able to add into the cmd list. So when reach the end of
  *    token list, add the cmd block we are building into the cmd list.
  */
-/** TODO: Make parser to return a value so that the main function could
- * do something about it
-*/
 void	parser(t_minishell *ms)
 {
-	t_token		*token;
 	t_list		*token_lst;
 	t_parser	hlpr;
-	int			error;
+	int			status;
 
 	token_lst = ms->tokens;
 	init_parser(&hlpr);
 	while (token_lst != NULL)
 	{
-		token = token_lst->content;
-		error = grammar_checker(ms, &hlpr, token);
-		if (error == SYNTAX_ERROR)
+		status = grammar_checker(ms, &hlpr, token_lst->content);
+		if (status == SYNTAX_ERROR)
 			return ;
-		else if (error == CMD_NOT_FOUND)
+		else if (status == CMD_NOT_FOUND)
 		{
 			token_lst = skip_to_next_cmd_block(token_lst, &hlpr);
 			continue ;
 		}
-		builder_helper(ms, &hlpr, token);
-		set_next_grammar(&hlpr, token->type);
+		builder(ms, &hlpr, token_lst->content);
+		set_next_grammar(&hlpr, ((t_token *)token_lst->content)->type);
 		token_lst = token_lst->next;
 	}
-	grammar_checker(ms, &hlpr, NULL);
-	add_as_cmd_block(ms, &hlpr, 0);
+	status = grammar_checker(ms, &hlpr, NULL);
+	if (status != SYNTAX_ERROR && status != CMD_NOT_FOUND)
+		add_as_cmd_block(ms, &hlpr);
 }

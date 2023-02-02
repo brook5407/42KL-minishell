@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:05:04 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/22 18:20:28 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:11:36 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,14 @@ void	init_environment(t_minishell *ms, char **ev)
 		add_env_var(ms, key, value);
 		ev++;
 	}
+}
+
+void	clear_env_var(void *content)
+{
+	t_env	*env;
+
+	env = content;
+	free(env->key);
+	free(env->value);
+	free(env);
 }

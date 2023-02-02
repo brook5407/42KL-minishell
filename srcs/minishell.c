@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/10 11:36:29 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/01 17:27:49 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,11 @@ int	main(int ac, char **av, char **ev)
 		if (cmds != NULL && *cmds != '\0')
 			add_history(cmds);
 		lexer(&ms, cmds);
-		parser(&ms);
+		if (ms.tokens != NULL)
+			parser(&ms);
 		executor(&ms);
-		ft_lstclear(&ms.tokens, free_token);
 		ft_lstclear(&ms.cmds, free_cmd_block);
+		ft_lstclear(&ms.tokens, free_token);
 		free(ms.prompt);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 13:12:41 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/08 17:46:25 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:30:30 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,8 @@
  *    reset_all_type(), status = 1.
  *    TYPE: FREE_FORM_GRAMMAR
  *
- * 6. In the case where redirection go first, the following must be a
- *    file. If the next token of file is a CMD or EXT_CMD, then it's valid.
- *    If it's a string, error: invalid command.
- *    CODE:
- *    if cmd_name == NULL
- *          reset_all_type(), status = 0
- *          toggle_type(CMD) // should be 1
- *          toggle_type(EXT_CMD) // should be 1
- *          TYPE: CMD_ONLY_GRAMMAR
- *    else
- *          reset_all_type(), status = 1.
- *          TYPE: FREE_FORM_GRAMMAR
  *
- * 7. After a CMD or EXT_CMD, whatever behind it will be valid.
+ * 6. After a CMD or EXT_CMD, whatever behind it will be valid.
  *    CODE:
  *    reset_all_type(), status = 1
  *    TYPE: FREE_FORM_GRAMMAR
@@ -133,13 +121,13 @@ int	is_type_on(t_parser *hlpr, t_token_type type)
  */
 void	apply_grammar(t_parser *hlpr, t_grammar grammar)
 {
-	if (grammar == POST_RDR || grammar == CMD_ONLY)
+	if (grammar == POST_RDR)
 		reset_all_type(hlpr, 0);
 	else
 		reset_all_type(hlpr, 1);
-	if (grammar == START || grammar == CMD_ONLY)
+	if (grammar == START)
 		toggle_type(hlpr, PIPE);
-	if (grammar == POST_RDR || grammar == CMD_ONLY)
+	if (grammar == POST_RDR)
 	{
 		toggle_type(hlpr, CMD);
 		toggle_type(hlpr, EXT_CMD);
@@ -160,11 +148,8 @@ void	set_next_grammar(t_parser *hlpr, t_token_type curr)
 	t_grammar	grammar;
 
 	grammar = UNSET;
-	if ((curr == STR || curr == CMD || curr == EXT_CMD)
-		&& hlpr->cmd->cmd_name != NULL)
+	if ((curr == STR || curr == CMD || curr == EXT_CMD))
 		grammar = FREE_FORM;
-	else
-		grammar = CMD_ONLY;
 	if (curr == PIPE)
 		grammar = START;
 	if (curr == RDRIN || curr == RDROUT || curr == APPEND || curr == HEREDOC)

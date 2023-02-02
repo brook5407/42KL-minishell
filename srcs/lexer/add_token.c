@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:14:03 by wricky-t          #+#    #+#             */
-/*   Updated: 2022/12/27 16:11:52 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:15:04 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	list_all_token(void *content)
 
 	tok = content;
 	printf(" | ");
+	printf("at: %p ", tok);
 	print_token_type(tok->type, tok->value);
 }
 

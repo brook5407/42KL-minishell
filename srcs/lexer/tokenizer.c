@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/07 16:17:20 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:10:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	recognize_cmd(t_minishell *ms, char *token)
 {
 	int		i;
 	char	*token_copy;
+	char	*ext_path;
 
 	i = -1;
 	token_copy = ft_strdup(token);
@@ -88,17 +89,18 @@ int	recognize_cmd(t_minishell *ms, char *token)
 	{
 		if (ft_strcmp(ms->builtins[i], token_copy) == 0)
 		{
-			add_token(ms, CMD, ft_strdup(token_copy));
-			free(token_copy);
+			add_token(ms, CMD, token_copy);
 			return (1);
 		}
 	}
-	if (get_ext_full_path(ms, token_copy) != NULL)
+	ext_path = get_ext_full_path(ms, token_copy);
+	if (ext_path != NULL)
 	{
-		add_token(ms, EXT_CMD, ft_strdup(token_copy));
-		free(token_copy);
+		add_token(ms, EXT_CMD, token_copy);
+		free(ext_path);
 		return (1);
 	}
+	free(token_copy);
 	return (0);
 }
 
