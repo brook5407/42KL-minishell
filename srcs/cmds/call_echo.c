@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:39:24 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/10 19:17:33 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:24:25 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	call_echo(t_minishell *ms, char **cmds)
 
 	(void)ms;
 	next_line = 1;
+	if (!*cmds)
+		return ;
 	while (check_flag(*cmds) > 0)
 	{
 		next_line = 0;

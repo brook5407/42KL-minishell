@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/01 17:25:12 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:31:38 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,5 +259,8 @@ void			show_error(t_error_type type, char *token);
 
 void			free_env_var(t_env *env_var);
 void			free_env(t_list *envp);
+
+void			exec_redirt_in(t_cmd *cur_cmd);
+void			exec_redirt_out(t_cmd *cur_cmd);
 
 #endif

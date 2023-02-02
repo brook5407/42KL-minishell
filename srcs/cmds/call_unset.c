@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 14:26:36 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 11:11:57 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,13 @@ void	call_unset(t_minishell *ms, char **key)
 
 	if (check_valid("unset", *key) == 1)
 		return ;
-	env_load = load_env_var(ms->envp, *key);
-	if (env_load == NULL)
-		return ;
-	env_pair(ms, env_load);
+	while (*key)
+	{
+		printf("%s\n", *key);
+		env_load = load_env_var(ms->envp, *key);
+		if (env_load == NULL)
+			return ;
+		env_pair(ms, env_load);
+		key++;
+	}
 }
