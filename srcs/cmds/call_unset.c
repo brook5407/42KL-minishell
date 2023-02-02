@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   call_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/09 14:26:36 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/02 14:35:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	env_pair(t_minishell *ms, t_env *env)
+static void	del_env_var(t_minishell *ms, t_env *env)
 {
 	t_list	*prev;
 	t_list	*tmp;
@@ -39,12 +39,24 @@ void	env_pair(t_minishell *ms, t_env *env)
 
 void	call_unset(t_minishell *ms, char **key)
 {
-	t_env	*env_load;
+	t_env	*env;
 
-	if (check_valid("unset", *key) == 1)
+	if (*key == NULL)
 		return ;
-	env_load = load_env_var(ms->envp, *key);
-	if (env_load == NULL)
-		return ;
-	env_pair(ms, env_load);
+	while (*key != NULL)
+	{
+		if (is_valid_id(*key) == 0)
+		{
+			show_error(INVALID_ID_UNS, *(key++));
+			continue ;
+		}
+		env = load_env_var(ms->envp, *key);
+		if (env == NULL)
+		{
+			key++;
+			continue ;
+		}
+		del_env_var(ms, env);
+		key++;
+	}
 }
