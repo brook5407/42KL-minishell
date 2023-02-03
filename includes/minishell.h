@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 19:14:19 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 11:29:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ void			init_environment(t_minishell *ms, char **ev);
 void			init_signal(void);
 void			set_prompt(t_minishell *ms);
 void			add_env_var(t_minishell *ms, char *key, char *value);
+void			*cpy_env(void *env);
 
 void			lexer(t_minishell *ms, char *cmds);
 void			tokenizer(t_minishell *ms, char *word);
