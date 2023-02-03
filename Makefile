@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/02 18:12:55 by wricky-t         ###   ########.fr        #
+#    Updated: 2023/02/03 13:04:58 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,8 +79,6 @@ SRCS		:= minishell.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
-
-SRCS		+= bin.c
 
 OBJS		:= $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 
