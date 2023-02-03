@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 16:00:14 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:15:39 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	}
 	exec_redirt_in(cur_cmd);
 	exec_redirt_out(cur_cmd);
-	if (call_buildin(ms, cur_cmd) == 1 && cmd[0])
+	if (call_builtin(ms, cur_cmd) == 1 && cmd[0])
 		ret = execve(cmd[0], cmd, envp);
 	exit(ret);
 }
@@ -75,7 +75,7 @@ int	executor(t_minishell *ms)
 	cur_proc = ms->cmds;
 	while (cur_proc != NULL)
 	{
-		if (cur_proc->next == NULL && call_buildin(ms, cur_proc->content) == 0)
+		if (cur_proc->next == NULL && call_builtin(ms, cur_proc->content) == 0)
 			;
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 16:00:59 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:06:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ void			init_environment(t_minishell *ms, char **ev);
 void			init_signal(void);
 void			set_prompt(t_minishell *ms);
 void			add_env_var(t_minishell *ms, char *key, char *value);
+void			*cpy_env(void *env);
 
 void			lexer(t_minishell *ms, char *cmds);
 void			tokenizer(t_minishell *ms, char *word);
@@ -237,15 +238,14 @@ void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
-int				call_buildin(t_minishell *ms, t_cmd *cmd);
+int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
 void			call_env(t_minishell *ms);
-void			call_unset(t_minishell *ms, char **key);
-void			call_export(t_minishell *ms, char **key);
-void			call_echo(t_minishell *ms, char **s);
-void			call_exit(t_minishell *ms, char **cmds);
-int				check_valid(char *cmds, char *args);
+void			call_unset(t_minishell *ms, char **keys);
+void			call_export(t_minishell *ms, char **args);
+void			call_echo(t_minishell *ms, char **args);
+void			call_exit(t_minishell *ms, char **args);
 
 t_env			*load_env_var(t_list *envp, char *var);
 void			edit_env_val(t_minishell *ms, char *key, char *value);

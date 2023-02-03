@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:53:38 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 12:21:56 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 18:12:55 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	add_as_cmd_block(t_minishell *ms, t_parser *hlpr)
 }
 
 /**
- * @brief Help building the cmd_list by checking the current grammar and token
+ * @brief Help builting the cmd_list by checking the current grammar and token
  */
 void	builder(t_minishell *ms, t_parser *hlpr, t_token *token)
 {

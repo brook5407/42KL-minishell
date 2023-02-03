@@ -6,15 +6,15 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:50 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/12 16:33:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:15:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	call_exit(t_minishell *ms, char **cmds)
+void	call_exit(t_minishell *ms, char **args)
 {
-	free(cmds);
+	(void)args;
 	free(ms->prompt);
 	free_env(ms->envp);
 	exit(0);

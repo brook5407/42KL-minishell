@@ -6,7 +6,7 @@
 #    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/03 13:26:35 by chchin           ###   ########.fr        #
+#    Updated: 2023/02/03 13:27:32 by chchin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,8 +62,7 @@ SRCS		:= minishell.c \
 			   parser/grammar.c \
 			   parser/parser_helper.c \
 			   parser/builder.c \
-			   env_utilise.c \
-			   cmds/call_buildin.c \
+			   cmds/call_builtin.c \
 			   cmds/call_cd.c \
 			   cmds/call_pwd.c \
 			   cmds/call_env.c \
@@ -71,7 +70,7 @@ SRCS		:= minishell.c \
 			   cmds/call_unset.c \
 			   cmds/call_export.c \
 			   cmds/call_echo.c \
-			   cmds/check_valid.c \
+			   cmds/env_utils.c \
 			   executor/executor_utils.c \
 			   executor/executor.c \
 			   free/free_env.c \
@@ -79,8 +78,6 @@ SRCS		:= minishell.c \
 
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
-
-SRCS		+= bin.c
 
 OBJS		:= $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 

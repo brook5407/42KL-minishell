@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utilise.c                                      :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:25:36 by chchin            #+#    #+#             */
-/*   Updated: 2023/01/10 12:51:02 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/03 13:09:01 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_env	*load_env_var(t_list *envp, char *var)
 {
@@ -31,8 +31,13 @@ void	edit_env_val(t_minishell *ms, char *key, char *value)
 	t_env	*env;
 
 	env = load_env_var(ms->envp, key);
-	if (!env)
+	if (env == NULL)
 		add_env_var(ms, key, value);
+	else if (value == NULL && env->value != NULL)
+	{
+		free(value);
+		free(key);
+	}
 	else
 	{
 		free(env->value);
@@ -71,7 +76,7 @@ char	**get_env_arry(t_minishell *ms)
 	while (envp != NULL)
 	{
 		env_var = envp->content;
-		if (env_var->value[0])
+		if (env_var->value != NULL && env_var->value[0] != '\0')
 		{
 			tmp = ft_strjoin(env_var->key, "=");
 			env_arry[i++] = ft_strjoin_free(tmp, env_var->value);
