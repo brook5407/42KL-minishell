@@ -34,7 +34,7 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	}
 	exec_redirt_in(cur_cmd);
 	exec_redirt_out(cur_cmd);
-	if (call_buildin(ms, cur_cmd) == 1)
+	if (call_buildin(ms, cur_cmd) == 1 && cmd[0])
 		ret = execve(cmd[0], cmd, envp);
 	exit(ret);
 }

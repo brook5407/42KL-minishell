@@ -36,7 +36,12 @@ int	call_buildin(t_minishell *ms, t_cmd *cmd)
 {
 	char	**cmds;
 
+<<<<<<< HEAD
 	// show_cmd_block(cmd);
+=======
+	if (!cmd->cmd_name)
+		return (EXIT_FAILURE);
+>>>>>>> d83ca5a6d9e9059a1fa197a5971e16bd5b0f37d2
 	cmds = lst_to_array(cmd->args);
 	if (ft_strcmp(*cmds, "cd") == 0)
 		call_cd(ms, ++cmds);
