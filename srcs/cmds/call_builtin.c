@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/02 18:59:02 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:31:19 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	call_builtin(t_minishell *ms, t_cmd *cmd)
 
 	args = lst_to_array(cmd->args);
 	cmd_name = cmd->cmd_name;
+	if (cmd_name == NULL)
+		return (EXIT_FAILURE);
 	if (is_builtin(ms, cmd_name) == 0)
 	{
 		free(args);
