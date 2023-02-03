@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 20:24:46 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:29:00 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void	printfstr(char **words)
  * 2. Tokenize the words to identify their category
  * 3. Parse the command list to check if the grammar is correct
 */
+/** TODO: Need to reconsider the expander process */
 void	lexer(t_minishell *ms, char *cmds)
 {
 	char	**words;
