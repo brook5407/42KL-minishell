@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/01 17:25:58 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:17:16 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*extract_ids(char **str, int ignore)
 
 	next = (*str + 1);
 	i = 0;
-	if (ft_isdigit(*next) == 1)
+	if (ft_isdigit(*next) == 1 || *next == '?')
 		next++;
 	else if ((*next == '\'' || *next == '"') && ignore == 1)
 		i = 1;
@@ -96,7 +96,7 @@ char	*extract_ids(char **str, int ignore)
  *
  * Get the value of the parameter from environment variable.
  * If the parameter is not set, meaning NULL, return value should be an
- * empty string. The return value of this function is not malloced.
+ * empty string.
  */
 char	*get_parameter_value(t_minishell *ms, char *token)
 {
@@ -106,6 +106,12 @@ char	*get_parameter_value(t_minishell *ms, char *token)
 	id = ft_strchr(token, '$') + 1;
 	if (*id == '$')
 		value = "";
+	else if (*id == '?')
+	{
+		value = ft_itoa(g_errno);
+		free(token);
+		return (value);
+	}
 	else if (*id == '\0')
 		value = "$";
 	else
@@ -113,7 +119,7 @@ char	*get_parameter_value(t_minishell *ms, char *token)
 	if (value == NULL)
 		value = "";
 	free(token);
-	return (value);
+	return (ft_strdup(value));
 }
 
 /**

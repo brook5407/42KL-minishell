@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/03 13:31:19 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:03:57 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,36 +31,6 @@ char	**lst_to_array(t_list *lst)
 	array[i] = NULL;
 	return (array);
 }
-
-// int call_builtin(t_minishell *ms, t_cmd *cmd)
-// {
-// 	char **cmds;
-// 	char **ori_cmds;
-
-// 	cmds = lst_to_array(cmd->args);
-// 	ori_cmds = cmds;
-// 	if (ft_strcmp(*cmds, "cd") == 0)
-// 		call_cd(ms, ++cmds);
-// 	else if (ft_strcmp(*cmds, "env") == 0)
-// 		call_env(ms);
-// 	else if (ft_strcmp(*cmds, "export") == 0)
-// 		call_export(ms, ++cmds);
-// 	else if (ft_strcmp(*cmds, "exit") == 0)
-// 		call_exit(ms, ++cmds);
-// 	else if (ft_strcmp(*cmds, "unset") == 0)
-// 		call_unset(ms, ++cmds);
-// 	else if (ft_strcmp(*cmds, "pwd") == 0)
-// 		call_pwd(ms);
-// 	else if (ft_strcmp(*cmds, "echo") == 0)
-// 		call_echo(ms, ++cmds);
-// 	else
-// 	{
-// 		free(cmds);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	free(ori_cmds);
-// 	return (EXIT_SUCCESS);
-// }
 
 static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 {
