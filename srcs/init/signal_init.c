@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/02 14:19:40 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 19:55:13 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	signal_handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
+	g_errno = 1;
 	ft_printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
