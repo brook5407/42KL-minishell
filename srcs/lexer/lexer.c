@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/12 15:58:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:24:46 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,15 +161,18 @@ void	tokenizer(t_minishell *ms, char *word)
 	{
 		token = get_token(&word);
 		recognize_token(ms, token);
-		free(token);
 	}
 	if (start == word)
-	{
-		printf("yo\n");
 		add_token(ms, STR, ft_strdup(word));
+}
+void	printfstr(char **words)
+{
+	while (*words != NULL)
+	{
+		printf("word: %s at %p\n", *words, *words);
+		words++;
 	}
 }
-
 /**
  * Lexer - Perform Lexical Analysis
  * 
@@ -182,11 +185,21 @@ void	lexer(t_minishell *ms, char *cmds)
 	char	**words;
 	char	**ori_words;
 	char	*ori_cmds;
+	char	*ori_word;
 
 	ori_cmds = cmds;
-	expander(ms, &cmds, PARAM);
-	words = ft_split_delims(cmds, "\"\'");
+	words = ft_split_delims(cmds, "\"\'"); // b4: expand param first then split
 	ori_words = words;
+	while (*words != NULL)
+	{
+		ori_word = *words;
+		expander(ms, &(*words), PARAM);
+		if (ori_word != *words)
+			free(ori_word);
+		words++;
+	}
+	words = ori_words;
+	printfstr(words);
 	while (*words != NULL)
 	{
 		tokenizer(ms, *words);

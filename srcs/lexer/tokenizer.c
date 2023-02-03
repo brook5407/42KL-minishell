@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 12:31:29 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:16:04 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ int	recognize_operator(t_minishell *ms, char *token)
 
 void	recognize_token(t_minishell *ms, char *token)
 {
+	char	*ori_token;
+
+	ori_token = token;
+	expander(ms, &token, INQUOTE);
 	if (recognize_cmd(ms, token) == 0)
 	{
 		if (recognize_operator(ms, token) == 0)
@@ -95,4 +99,6 @@ void	recognize_token(t_minishell *ms, char *token)
 			add_token(ms, STR, ft_strdup(token));
 		}
 	}
+	if (ori_token != token)
+		free(ori_token);
 }

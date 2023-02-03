@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 19:14:03 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/01/09 17:15:04 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:18:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,11 @@ void	free_token(void	*content)
 void	add_token(t_minishell *ms, t_token_type type, char *token)
 {
 	t_token		*tok;
-	char		*temp;
 
 	tok = malloc(sizeof(t_token));
 	if (tok == NULL)
 		return ;
 	tok->type = type;
-	temp = token;
-	expander(ms, &token, INQUOTE);
-	if (temp != token)
-		free(temp);
 	tok->value = token;
 	ft_lstadd_back(&ms->tokens, ft_lstnew(tok));
 }
