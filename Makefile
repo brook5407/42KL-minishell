@@ -6,7 +6,7 @@
 #    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/03 13:04:58 by wricky-t         ###   ########.fr        #
+#    Updated: 2023/02/03 13:06:25 by wricky-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,6 @@ SRCS		:= minishell.c \
 			   cmds/call_unset.c \
 			   cmds/call_export.c \
 			   cmds/call_echo.c \
-			   cmds/check_valid.c \
 			   executor/executor_utils.c \
 			   executor/executor.c \
 			   free/free_env.c \
