@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/03 17:03:57 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:32:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ char	**lst_to_array(t_list *lst)
 static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 {
 	args++;
+	g_errno = 0;
 	if (ft_strcmp(cmd_name, "cd") == 0)
 		call_cd(ms, args);
 	else if (ft_strcmp(cmd_name, "env") == 0)
-		call_env(ms);
+		call_env(ms, args);
 	else if (ft_strcmp(cmd_name, "export") == 0)
 		call_export(ms, args);
 	else if (ft_strcmp(cmd_name, "exit") == 0)

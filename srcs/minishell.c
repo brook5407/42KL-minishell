@@ -105,6 +105,7 @@ int	main(int ac, char **av, char **ev)
 	(void)ac;
 	(void)av;
 	init_minishell(&ms, ev);
+	g_errno = 0;
 	while (1)
 	{
 		set_prompt(&ms);

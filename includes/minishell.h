@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 13:06:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:29:41 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <curses.h>
 # include <term.h>
 # include <unistd.h>
+# include <sys/ioctl.h>
 # include "../lib42/lib42.h"
 
 /* ====== TEXT STYLING ====== */
@@ -108,6 +109,7 @@ typedef enum e_error_type
 	FILE_NOT_FOUND = 1,
 	INVALID_ID_EXP = 2,
 	INVALID_ID_UNS = 3,
+	TOO_MANY_ARG = 4,
 	SUCCESS = 0
 }		t_error_type;
 
@@ -188,7 +190,7 @@ typedef struct s_parser
 }		t_parser;
 
 /* Global errno is defined here */
-int8_t			g_errno;
+int			g_errno;
 
 /* ====== FUNCTION PROTOTYPES ====== */
 
@@ -241,7 +243,7 @@ void			check_incomplete_grammar(t_minishell *ms);
 int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
-void			call_env(t_minishell *ms);
+void			call_env(t_minishell *ms, char **args);
 void			call_unset(t_minishell *ms, char **keys);
 void			call_export(t_minishell *ms, char **args);
 void			call_echo(t_minishell *ms, char **args);
@@ -261,7 +263,9 @@ void			show_error(t_error_type type, char *token);
 void			free_env_var(t_env *env_var);
 void			free_env(t_list *envp);
 
-void			exec_redirt_in(t_cmd *cur_cmd);
+int				exec_heredoc(t_minishell *ms, char *quote);
+void			exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd);
 void			exec_redirt_out(t_cmd *cur_cmd);
+void			exec_exit_status(int status);
 
 #endif

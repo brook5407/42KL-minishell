@@ -6,11 +6,17 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/02 10:49:46 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:07:16 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	cd_error(char *error)
+{
+	ft_putendl_fd(error, STDIN_FILENO);
+	g_errno = 1;
+}
 
 static char	*check_path(t_minishell *ms, char *path)
 {
@@ -21,7 +27,7 @@ static char	*check_path(t_minishell *ms, char *path)
 		env_var = load_env_var(ms->envp, "HOME");
 		if (env_var == NULL)
 		{
-			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
+			cd_error("cd: HOME not set");
 			return (NULL);
 		}
 		return (ft_strdup(env_var->value));
@@ -31,7 +37,7 @@ static char	*check_path(t_minishell *ms, char *path)
 		env_var = load_env_var(ms->envp, "OLDPWD");
 		if (env_var == NULL)
 		{
-			ft_putendl_fd("cd: OLDPWD not set", STDERR_FILENO);
+			cd_error("cd: OLDPWD not set");
 			return (NULL);
 		}
 		ft_putendl_fd(env_var->value, 1);
@@ -63,6 +69,7 @@ void	call_cd(t_minishell *ms, char **path)
 		free(cur_path);
 		ft_putstr_fd("cd: ", STDERR_FILENO);
 		perror(*path);
+		g_errno = 1;
 	}
 	else
 	{

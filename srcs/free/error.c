@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 12:37:02 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:45:12 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ void	show_error(t_error_type type, char *token)
 		else
 			ft_printf("`%s'\n", token);
 	}
+	if (type == TOO_MANY_ARG)
+		ft_printf("%s: too many arguments\n", token);
 	if (type == CMD_NOT_FOUND)
 		ft_printf("%s: command not found\n", token);
 	if (type == FILE_NOT_FOUND)
-		ft_printf("%s: no such file or directory\n");
+		ft_printf("%s: no such file or directory\n", token);
 	if (type == INVALID_ID_EXP)
 		ft_printf("export: `%s': not a valid identifier\n", token);
 	if (type == INVALID_ID_UNS)

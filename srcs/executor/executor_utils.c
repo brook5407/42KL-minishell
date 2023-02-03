@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/03 13:15:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:14:48 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_here_str(char *quote)
+char	*get_here_str(t_minishell *ms, char *quote)
 {
 	char	*line;
 	char	*rl;
@@ -27,27 +27,28 @@ char	*get_here_str(char *quote)
 			break ;
 		}
 		line = ft_strjoin_free(line, "\n");
+		expander(ms, &line, PARAM);
 		rl = ft_strjoin_free(rl, line);
 		free(line);
 	}
 	return (rl);
 }
 
-int	exec_heredoc(char *quote)
+int	exec_heredoc(t_minishell *ms, char *quote)
 {
 	int		fd[2];
 	char	*heredoc;
 
 	if (pipe(fd) == -1)
 		perror("PIPE");
-	heredoc = get_here_str(quote);
+	heredoc = get_here_str(ms, quote);
 	write(fd[1], heredoc, ft_strlen(heredoc));
 	free(heredoc);
 	close(fd[1]);
 	return (fd[0]);
 }
 
-void	exec_redirt_in(t_cmd *cur_cmd)
+void	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 {
 	int		port;
 	t_list	*lst_redir;
@@ -62,7 +63,7 @@ void	exec_redirt_in(t_cmd *cur_cmd)
 			if (file->rdr_type == RDRIN)
 				port = open(file->name, O_RDONLY);
 			else if (file->rdr_type == HEREDOC)
-				port = exec_heredoc(file->name);
+				port = exec_heredoc(ms, file->name);
 			if (port < 0)
 			{
 				ft_putstr_fd(file->name, 2);
@@ -99,4 +100,10 @@ void	exec_redirt_out(t_cmd *cur_cmd)
 			lst_redir = lst_redir->next;
 		}
 	}
+}
+
+void	exec_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		g_errno = (WEXITSTATUS(status));
 }
