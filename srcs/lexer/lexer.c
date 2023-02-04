@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 20:29:00 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/04 18:55:45 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,26 +153,27 @@ void	tokenizer(t_minishell *ms, char *word)
 {
 	char	*token;
 	char	*start;
+	char	*str;
+	char	**words;
 
 	if (word == NULL)
 		return ;
-	start = word;
-	while (*word != '\0')
-	{
-		token = get_token(&word);
-		recognize_token(ms, token);
-	}
-	if (start == word)
-		add_token(ms, STR, ft_strdup(word));
-}
-void	printfstr(char **words)
-{
+	words = ft_split_delims(word, "\"\'");
 	while (*words != NULL)
 	{
-		printf("word: %s at %p\n", *words, *words);
+		start = *words;
+		str = *words;
+		while (*str != '\0')
+		{
+			token = get_token(&str);
+			recognize_token(ms, token);
+		}
+		if (start == str)
+			add_token(ms, STR, ft_strdup(str));
 		words++;
 	}
 }
+
 /**
  * Lexer - Perform Lexical Analysis
  * 
@@ -189,21 +190,15 @@ void	lexer(t_minishell *ms, char *cmds)
 	char	*ori_word;
 
 	ori_cmds = cmds;
-	words = ft_split_delims(cmds, "\"\'"); // b4: expand param first then split
+	words = ft_split_delims(cmds, "\"\'");
 	ori_words = words;
 	while (*words != NULL)
 	{
 		ori_word = *words;
 		expander(ms, &(*words), PARAM);
+		tokenizer(ms, *words);
 		if (ori_word != *words)
 			free(ori_word);
-		words++;
-	}
-	words = ori_words;
-	printfstr(words);
-	while (*words != NULL)
-	{
-		tokenizer(ms, *words);
 		words++;
 	}
 	ft_freestrarr(ori_words);

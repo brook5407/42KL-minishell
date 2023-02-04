@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 20:16:23 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/04 18:56:11 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int	main(int ac, char **av, char **ev)
 	(void)ac;
 	(void)av;
 	init_minishell(&ms, ev);
-	g_errno = 0;
 	while (1)
 	{
 		set_prompt(&ms);

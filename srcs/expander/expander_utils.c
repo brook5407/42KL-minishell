@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 18:17:16 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/04 18:23:18 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,15 @@ char	*extract_ids(char **str, int ignore)
 	return (ids);
 }
 
+char	*wrap_with_quote(char *str, char *quote)
+{
+	char	*wrapped;
+
+	wrapped = ft_strjoin(quote, str);
+	wrapped = ft_strjoin_free(wrapped, quote);
+	return (wrapped);
+}
+
 /**
  * @brief Get the shell parameter value
  *
@@ -98,7 +107,7 @@ char	*extract_ids(char **str, int ignore)
  * If the parameter is not set, meaning NULL, return value should be an
  * empty string.
  */
-char	*get_parameter_value(t_minishell *ms, char *token)
+char	*get_parameter_value(t_minishell *ms, char *token, int wrap)
 {
 	char	*id;
 	char	*value;
@@ -119,6 +128,8 @@ char	*get_parameter_value(t_minishell *ms, char *token)
 	if (value == NULL)
 		value = "";
 	free(token);
+	if (wrap == WRAP)
+		return (wrap_with_quote(value, "'"));
 	return (ft_strdup(value));
 }
 

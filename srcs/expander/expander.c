@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 18:02:37 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/04 18:52:13 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*expand_parameter(t_minishell *ms, char *token, int ignore)
 		if (*token == '$')
 		{
 			prefix = ft_strndup(prefix, token - prefix);
-			value = get_parameter_value(ms, extract_ids(&token, ignore));
+			value = get_parameter_value(ms, extract_ids(&token, ignore), 0);
 			str = join_expanded(str, prefix, value);
 			prefix = token;
 			continue ;
@@ -154,7 +154,7 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	}
 	else
 		*str = join_expanded(*str, prefix,
-				get_parameter_value(ms, extract_ids(&copy, 1)));
+				get_parameter_value(ms, extract_ids(&copy, 1), NOWRAP));
 	prefix = copy;
 	*token = copy;
 	*pre = prefix;

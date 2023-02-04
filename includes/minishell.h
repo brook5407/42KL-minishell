@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 17:29:41 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/04 18:17:33 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 # define BUILTINS_TOTAL 7
 # define OPERATORS_TOTAL 5
 # define BUFFSIZE 256
+# define WRAP 1
+# define NOWRAP 0
 
 /* ====== ENUMS ====== */
 
@@ -208,7 +210,7 @@ void			recognize_token(t_minishell *ms, char *token);
 
 int				is_valid_id(char *id);
 char			*extract_ids(char **str, int ignore);
-char			*get_parameter_value(t_minishell *ms, char *token);
+char			*get_parameter_value(t_minishell *ms, char *token, int wrap);
 char			*join_expanded(char *str, char *prefix, char *id);
 
 int				token_in_quote(char *token);
