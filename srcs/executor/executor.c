@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/03 18:17:32 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/04 19:01:08 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 	t_cmd	*cur_cmd;
 	t_cmd	*next_cmd;
 	char	**cmd;
-	pid_t	pid;
-	int		status;
 
 	cur_cmd = cur_proc->content;
 	next_cmd = cur_proc->content;
@@ -57,22 +55,35 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 		next_cmd = cur_proc->next->content;
 		pipe(next_cmd->pipefd);
 	}
-	pid = fork();
-	if (pid == 0)
+	cur_cmd->pid = fork();
+	if (cur_cmd->pid == 0)
 		exec_child(ms, cur_proc, cmd, envp);
-	waitpid(pid, &status, WUNTRACED);
-	exec_exit_status(status);
-	if (cur_proc->next)
-		close(next_cmd->pipefd[1]);
-	if (cur_cmd->pipefd[0] != 0)
-		close(cur_cmd->pipefd[0]);
-	free(cmd);
+	else
+		free(cmd);
 	return (EXIT_SUCCESS);
+}
+
+void	wait_pipe(t_minishell *ms)
+{
+	t_list	*cur_proc;
+	t_cmd	*cur_cmd;
+	int		status;
+
+	cur_proc = ms->cmds;
+	while (cur_proc)
+	{
+		cur_cmd = cur_proc->content;
+		waitpid(cur_cmd->pid, &status, WUNTRACED);
+		exec_exit_status(status);
+		cur_proc = cur_proc->next;
+	}
 }
 
 int	executor(t_minishell *ms)
 {
 	t_list	*cur_proc;
+	t_cmd	*cur_cmd;
+	t_cmd	*next_cmd;
 	char	**envp;
 
 	cur_proc = ms->cmds;
@@ -82,11 +93,21 @@ int	executor(t_minishell *ms)
 			;
 		else
 		{
+			g_errno = -1;
 			envp = get_env_arry(ms);
 			exec_pipe(ms, cur_proc, envp);
+			cur_cmd = cur_proc->content;
+			if (cur_proc->next)
+			{
+				next_cmd = cur_proc->next->content;
+				close(next_cmd->pipefd[1]);
+			}
+			if (cur_cmd->pipefd[0] != 0)
+				close(cur_cmd->pipefd[0]);
 			free(envp);
 		}
 		cur_proc = cur_proc->next;
 	}
+	wait_pipe(ms);
 	return (0);
 }

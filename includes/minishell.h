@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 18:17:33 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/04 19:03:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*infile;
 	t_list	*outfile;
+	pid_t	pid;
 	int		pipefd[2];
 }		t_cmd;
 

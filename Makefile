@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+         #
+#    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/03 20:33:09 by wricky-t         ###   ########.fr        #
+#    Updated: 2023/02/03 20:43:22 by chchin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,7 @@ SRCS		:= minishell.c \
 
 SRCS		:= $(SRCS:%=$(SRC_PATH)/%)
 
-SRCS		+= bin.c
+# SRCS		+= bin.c
 
 OBJS		:= $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 

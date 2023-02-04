@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 19:55:13 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/04 16:58:23 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
  * Ctrl + C
  * Expected: Display a new prompt on a new line.
  * Default : Kill the process (SIGINT)
- * 
+ *
  * Ctrl + D
  * Expected: Exits the shell
  * Default : Same (SIGTERM)
- * 
+ *
  * Ctrl + \
  * Expected: Do nothing
  * Default : Quit program (SIGQUIT)
@@ -28,9 +28,9 @@
 
 /**
  * Signal handler for SIGINT
- * 
+ *
  * @brief Replicate the behaviour of Bash when using CTRL + C
- * 
+ *
  * 1. Print a new line
  * 2. Replace the current line in the input buffer to ""
  * 3. Move the cursor to the start of the next line
@@ -40,8 +40,10 @@ void	signal_handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
-	g_errno = 1;
 	ft_printf("\n");
+	if ( g_errno < 0)
+		return ;
+	g_errno = 1;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

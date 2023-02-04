@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/03 20:14:48 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/04 19:01:01 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*get_here_str(t_minishell *ms, char *quote)
 	while (1)
 	{
 		line = readline("> ");
+		if (line == NULL)
+			printf("here");
 		if (ft_strcmp(line, quote) == 0)
 		{
 			free(line);
@@ -70,10 +72,10 @@ void	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 				ft_putendl_fd(": No such file or directory", 2);
 				exit (EXIT_FAILURE);
 			}
-			dup2(port, STDIN_FILENO);
-			close(port);
 			lst_redir = lst_redir->next;
 		}
+		dup2(port, STDIN_FILENO);
+		close(port);
 	}
 }
 
@@ -106,4 +108,6 @@ void	exec_exit_status(int status)
 {
 	if (WIFEXITED(status))
 		g_errno = (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		g_errno = 130;
 }
