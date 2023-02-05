@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 18:52:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/05 16:12:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
  * 
  * Return the string at the end.
  */
-char	*expand_parameter(t_minishell *ms, char *token, int ignore)
+char	*expand_parameter(t_minishell *ms, char *token)
 {
 	char	*prefix;
 	char	*str;
@@ -55,7 +55,7 @@ char	*expand_parameter(t_minishell *ms, char *token, int ignore)
 		if (*token == '$')
 		{
 			prefix = ft_strndup(prefix, token - prefix);
-			value = get_parameter_value(ms, extract_ids(&token, ignore), 0);
+			value = get_parameter_value(ms, extract_ids(&token, 0));
 			str = join_expanded(str, prefix, value);
 			prefix = token;
 			continue ;
@@ -109,7 +109,7 @@ char	*expand_quotes(t_minishell *ms, char *token)
 	else
 	{
 		token = ft_strndup(token +1, ft_strlen(token + 1) - 1);
-		value = expand_parameter(ms, token, 0);
+		value = expand_parameter(ms, token);
 		free(token);
 	}
 	free(temp);
@@ -154,7 +154,7 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 	}
 	else
 		*str = join_expanded(*str, prefix,
-				get_parameter_value(ms, extract_ids(&copy, 1), NOWRAP));
+				get_parameter_value(ms, extract_ids(&copy, 1)));
 	prefix = copy;
 	*token = copy;
 	*pre = prefix;

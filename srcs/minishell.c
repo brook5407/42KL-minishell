@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 18:56:11 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/05 17:45:25 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int ac, char **av, char **ev)
 	while (1)
 	{
 		set_prompt(&ms);
-		init_signal();
+		init_termios_signal(1);
 		cmds = readline(ms.prompt);
 		if (cmds == NULL)
 			call_exit(&ms, NULL);

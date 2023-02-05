@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 18:23:18 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/05 16:00:34 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*wrap_with_quote(char *str, char *quote)
  * If the parameter is not set, meaning NULL, return value should be an
  * empty string.
  */
-char	*get_parameter_value(t_minishell *ms, char *token, int wrap)
+char	*get_parameter_value(t_minishell *ms, char *token)
 {
 	char	*id;
 	char	*value;
@@ -128,8 +128,6 @@ char	*get_parameter_value(t_minishell *ms, char *token, int wrap)
 	if (value == NULL)
 		value = "";
 	free(token);
-	if (wrap == WRAP)
-		return (wrap_with_quote(value, "'"));
 	return (ft_strdup(value));
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 16:58:23 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/05 17:45:10 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	signal_handler(int sig)
 	if (sig != SIGINT)
 		return ;
 	ft_printf("\n");
-	if ( g_errno < 0)
+	if (g_errno < 0)
 		return ;
 	g_errno = 1;
 	rl_replace_line("", 0);
@@ -49,7 +49,7 @@ void	signal_handler(int sig)
 	rl_redisplay();
 }
 
-void	init_signal(void)
+void	init_termios_signal(int set_sig)
 {
 	struct termios		termios_current;
 
@@ -59,11 +59,14 @@ void	init_signal(void)
 		exit(0);
 	}
 	termios_current.c_cflag &= ~ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_current) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_current) == 1)
 	{
 		perror("tcsetattr failed\n");
 		exit(0);
 	}
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	if (set_sig)
+	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }

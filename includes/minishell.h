@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 19:03:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/05 17:41:48 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ int			g_errno;
 
 void			init_minishell(t_minishell *ms, char **ev);
 void			init_environment(t_minishell *ms, char **ev);
-void			init_signal(void);
+void			init_termios_signal(int set_sig);
 void			set_prompt(t_minishell *ms);
 void			add_env_var(t_minishell *ms, char *key, char *value);
 void			*cpy_env(void *env);
@@ -211,8 +211,9 @@ void			recognize_token(t_minishell *ms, char *token);
 
 int				is_valid_id(char *id);
 char			*extract_ids(char **str, int ignore);
-char			*get_parameter_value(t_minishell *ms, char *token, int wrap);
+char			*get_parameter_value(t_minishell *ms, char *token);
 char			*join_expanded(char *str, char *prefix, char *id);
+char			*expand_parameter(t_minishell *ms, char *token);
 
 int				token_in_quote(char *token);
 char			*get_next_file(DIR *dir);
