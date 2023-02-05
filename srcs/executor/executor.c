@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/04 19:01:08 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/05 21:24:51 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	t_cmd	*cur_cmd;
 	t_cmd	*next_cmd;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	cur_cmd = cur_proc->content;
 	if (cur_proc->next)
 	{
@@ -36,9 +34,11 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
 	exec_redirt_in(ms, cur_cmd);
 	exec_redirt_out(cur_cmd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (call_builtin(ms, cur_cmd) == 1 && cmd[0])
 		execve(cmd[0], cmd, envp);
-	exit(EXIT_SUCCESS);
+	exit(g_errno);
 }
 
 int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
@@ -74,12 +74,15 @@ void	wait_pipe(t_minishell *ms)
 	{
 		cur_cmd = cur_proc->content;
 		waitpid(cur_cmd->pid, &status, WUNTRACED);
-		exec_exit_status(status);
+		if (WIFEXITED(status))
+			g_errno = (WEXITSTATUS(status));
+		if (WIFSIGNALED(status))
+			g_errno = 130;
 		cur_proc = cur_proc->next;
 	}
 }
 
-int	executor(t_minishell *ms)
+void	executor(t_minishell *ms)
 {
 	t_list	*cur_proc;
 	t_cmd	*cur_cmd;
@@ -89,25 +92,19 @@ int	executor(t_minishell *ms)
 	cur_proc = ms->cmds;
 	while (cur_proc != NULL)
 	{
-		if (cur_proc->next == NULL && call_builtin(ms, cur_proc->content) == 0)
-			;
-		else
+		g_errno = -1;
+		envp = get_env_arry(ms);
+		exec_pipe(ms, cur_proc, envp);
+		cur_cmd = cur_proc->content;
+		if (cur_proc->next)
 		{
-			g_errno = -1;
-			envp = get_env_arry(ms);
-			exec_pipe(ms, cur_proc, envp);
-			cur_cmd = cur_proc->content;
-			if (cur_proc->next)
-			{
-				next_cmd = cur_proc->next->content;
-				close(next_cmd->pipefd[1]);
-			}
-			if (cur_cmd->pipefd[0] != 0)
-				close(cur_cmd->pipefd[0]);
-			free(envp);
+			next_cmd = cur_proc->next->content;
+			close(next_cmd->pipefd[1]);
 		}
+		if (cur_cmd->pipefd[0] != 0)
+			close(cur_cmd->pipefd[0]);
+		free(envp);
 		cur_proc = cur_proc->next;
 	}
 	wait_pipe(ms);
-	return (0);
 }

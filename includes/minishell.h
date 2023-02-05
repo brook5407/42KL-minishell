@@ -243,6 +243,7 @@ void			set_next_grammar(t_parser *phlpr, t_token_type curr);
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
+char			**lst_to_array(t_list *lst);
 int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);
@@ -258,14 +259,12 @@ char			*get_env_value(t_minishell *ms, char *key);
 char			**get_env_arry(t_minishell *ms);
 void			clear_env_var(void *content);
 
-char			**lst_to_array(t_list *lst);
-int				executor(t_minishell *ms);
-
 void			show_error(t_error_type type, char *token);
 
 void			free_env_var(t_env *env_var);
 void			free_env(t_list *envp);
 
+void			executor(t_minishell *ms);
 int				exec_heredoc(t_minishell *ms, char *quote);
 void			exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd);
 void			exec_redirt_out(t_cmd *cur_cmd);

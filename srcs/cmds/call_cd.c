@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:11:18 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/03 17:07:16 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/05 20:07:05 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	call_cd(t_minishell *ms, char **path)
 	if (chdir(cur_path) != 0)
 	{
 		free(cur_path);
-		ft_putstr_fd("cd: ", STDERR_FILENO);
 		perror(*path);
 		g_errno = 1;
 	}

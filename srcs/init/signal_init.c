@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 16:58:23 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/05 21:38:05 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	signal_handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
-	ft_printf("\n");
+	write(1, "\n", 1);
 	if ( g_errno < 0)
 		return ;
 	g_errno = 1;
