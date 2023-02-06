@@ -6,7 +6,7 @@
 #    By: chchin <chchin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 18:05:23 by wricky-t          #+#    #+#              #
-#    Updated: 2023/02/03 20:43:22 by chchin           ###   ########.fr        #
+#    Updated: 2023/02/05 21:00:28 by brook            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,8 +71,9 @@ SRCS		:= minishell.c \
 			   cmds/call_export.c \
 			   cmds/call_echo.c \
 			   cmds/env_utils.c \
-			   executor/executor_utils.c \
+			   executor/redirection.c \
 			   executor/executor.c \
+			   executor/heredoc.c \
 			   free/free_env.c \
 			   free/error.c \
 
