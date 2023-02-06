@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/06 11:23:17 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:47:39 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,12 @@ void	executor(t_minishell *ms)
 	cur_proc = ms->cmds;
 	while (cur_proc != NULL)
 	{
+		cur_cmd = cur_proc->content;
+		if (cur_proc->next == NULL && call_builtin(ms, cur_cmd) == 0)
+			return ;
 		g_errno = -1;
 		envp = get_env_arry(ms);
 		exec_pipe(ms, cur_proc, envp);
-		cur_cmd = cur_proc->content;
 		if (cur_proc->next)
 		{
 			next_cmd = cur_proc->next->content;

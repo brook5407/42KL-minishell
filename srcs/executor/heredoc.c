@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 20:52:18 by brook             #+#    #+#             */
-/*   Updated: 2023/02/06 11:27:58 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:59:44 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*get_here_str(t_minishell *ms, char *quote)
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, quote) == 0)
 		{
+			g_errno = 0;
 			free(line);
 			break ;
 		}
