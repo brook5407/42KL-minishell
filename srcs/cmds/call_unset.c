@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 11:14:28 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/02 19:14:11 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 21:20:46 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	del_env_var(t_minishell *ms, t_env *env)
 	if (curr->content == env)
 	{
 		ms->envp = curr->next;
-		free_env_var(env);
+		// free_env_var(env);
+		clear_env_var(env);
 		free(curr);
 		return ;
 	}
@@ -42,7 +43,8 @@ static void	del_env_var(t_minishell *ms, t_env *env)
 		{
 			tmp = curr->next;
 			curr->next = curr->next->next;
-			free_env_var(env);
+			// free_env_var(env);
+			clear_env_var(env);
 			free(tmp);
 			return ;
 		}

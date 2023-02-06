@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:57:16 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/04 16:06:33 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:29:17 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,28 @@ void	recognize_token(t_minishell *ms, char *token)
 	}
 	if (ori_token != token)
 		free(ori_token);
+	free(token);
+}
+
+/**
+ * @brief Get words
+ * 
+ * @details
+ * This function is to split the word into words before passing into
+ * tokenizer. This function is specially created to make sure this works:
+ * export A="ho hi"
+ * export B=$A (expected B="ho hi")
+*/
+char	**get_words(char *word)
+{
+	char	**words;
+
+	if (ft_strchr(word, '=') == NULL)
+		words = ft_split_delims(word, "\"\'");
+	else
+	{
+		words = ft_calloc(2, sizeof(char *));
+		*words = ft_strdup(word);
+	}
+	return (words);
 }

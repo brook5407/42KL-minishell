@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/05 17:41:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:02:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ void			lexer(t_minishell *ms, char *cmds);
 void			tokenizer(t_minishell *ms, char *word);
 void			expander(t_minishell *ms, char **token, t_expand_type type);
 void			recognize_token(t_minishell *ms, char *token);
+char			**get_words(char *word);
 
 int				is_valid_id(char *id);
 char			*extract_ids(char **str, int ignore);

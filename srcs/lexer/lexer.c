@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:02:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/05 16:47:40 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:29:40 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,12 @@ void	tokenizer(t_minishell *ms, char *word)
 	char	*start;
 	char	*str;
 	char	**words;
+	char	**ori_words;
 
 	if (word == NULL)
 		return ;
-	words = ft_split_delims(word, "\"\'");
+	words = get_words(word);
+	ori_words = words;
 	while (*words != NULL)
 	{
 		start = *words;
@@ -172,6 +174,7 @@ void	tokenizer(t_minishell *ms, char *word)
 			add_token(ms, STR, ft_strdup(str));
 		words++;
 	}
+	ft_freestrarr(ori_words);
 }
 
 /**

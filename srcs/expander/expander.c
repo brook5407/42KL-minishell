@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:30:09 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/05 16:12:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 21:01:46 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	expander_process(t_minishell *ms, char **str, char **token, char **pre)
 		next = ft_strchr(copy + 1, *copy) + 1;
 		value = expand_quotes(ms, ft_strndup(copy, next - copy));
 		*str = join_expanded(*str, prefix, value);
-		free(value);
+		// free(value);
 		copy = next;
 	}
 	else

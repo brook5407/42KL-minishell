@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 21:53:40 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/05 16:00:34 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:58:03 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,6 @@ char	*join_expanded(char *str, char *prefix, char *value)
 	else
 		str = ft_strjoin_free(str, suffix);
 	free(suffix);
+	free(value);
 	return (str);
 }
