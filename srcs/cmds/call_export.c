@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 18:23:31 by brook             #+#    #+#             */
-/*   Updated: 2023/02/06 13:40:13 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:11:02 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,13 @@ static int	compare_env(void *cont1, void *cont2)
 
 /**
  * @brief Sort and print the environment variables.
- * 
+ *
  * @details
  * The format of each environment variable should be in a format of:
  * 		`declare -x key=value`
  * 				OR
  * 		`declare -x key` (if there is no value)
- * 
+ *
  * This function will first create a copy of env vars and sort it. Iterate
  * through the list and print it out in the format above. Free out the list
  * before return to caller.
@@ -170,12 +170,12 @@ static void	print_export(t_minishell *ms)
 
 /**
  * @brief Extract the key and value pair out of the arg
- * 
+ *
  * @details
  * Locate the start of the value using strchr. If there's no '=', meaning
  * there's no value for this export key. In this case, copy the key and
  * return back. Please noted that value will be NULL in this case.
- * 
+ *
  * If there's a '=', meaning this key has a value and we need to add it
  * to the env list. Extract the key using strndup, and strdup for the value.
 */
@@ -193,7 +193,7 @@ static void	extract_key_value(char *arg, char **key, char **value)
 
 /**
  * @brief Call the export builtin
- * 
+ *
  * @details
  * If call export without args, print all the environment list in a format.
  * (Please refer to print_export() function to know more about the format)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/03 20:32:44 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:46:26 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @brief List all the environment variable
- * 
+ *
  * Iterate through the environment variables, if the value is not just a '\0',
  * print the environemnt variable along with its value in a format of:
  * 		`key=value`
@@ -24,7 +24,7 @@ void	call_env(t_minishell *ms, char **args)
 	t_list	*envp;
 	t_env	*env_var;
 
-	if (*args != NULL)
+	if (args != NULL && *args != NULL)
 	{
 		show_error(FILE_NOT_FOUND, *args);
 		return ;

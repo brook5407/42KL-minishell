@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 20:52:18 by brook             #+#    #+#             */
-/*   Updated: 2023/02/06 11:59:44 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:17:13 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ char	*get_here_str(t_minishell *ms, char *quote)
 			break ;
 		}
 		line = ft_strjoin_free(line, "\n");
+		g_errno = 0;
 		process_here_str(ms, &line);
 		rl = ft_strjoin_free(rl, line);
 		free(line);
+		g_errno = -1;
 	}
 	return (rl);
 }

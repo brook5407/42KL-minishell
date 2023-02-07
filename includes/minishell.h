@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/06 18:02:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:20:42 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
 
 char			**lst_to_array(t_list *lst);
+int				is_builtin(t_minishell *ms, char *cmd_name);
 int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);

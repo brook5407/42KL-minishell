@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/06 12:36:36 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:20:25 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 		call_echo(ms, args);
 }
 
-static int	is_builtin(t_minishell *ms, char *cmd_name)
+int	is_builtin(t_minishell *ms, char *cmd_name)
 {
 	char	**builtins;
 
