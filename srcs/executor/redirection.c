@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/06 16:07:48 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:26:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	exec_redirt_out(t_cmd *cur_cmd)
 		{
 			file = lst_redir->content;
 			if (file->rdr_type == RDROUT)
-				flag = O_RDONLY | O_WRONLY | O_TRUNC | O_CREAT;
+				flag = O_CREAT | O_TRUNC | O_WRONLY;
 			else if (file->rdr_type == APPEND)
-				flag = O_RDONLY | O_WRONLY | O_APPEND | O_CREAT;
-			port = open(file->name, flag);
+				flag = O_CREAT | O_APPEND | O_WRONLY;
+			port = open(file->name, flag, 0644);
 			dup2(port, STDOUT_FILENO);
 			close(port);
 			lst_redir = lst_redir->next;
