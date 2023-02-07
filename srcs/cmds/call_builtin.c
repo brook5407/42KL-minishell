@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/07 12:20:25 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/07 12:59:22 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ int	is_builtin(t_minishell *ms, char *cmd_name)
 	char	**builtins;
 
 	builtins = ms->builtins;
-	while (*builtins != NULL)
+	if (cmd_name == NULL)
+		return (EXIT_FAILURE);
+	while (builtins[0] != NULL && *builtins != NULL)
 	{
 		if (ft_strcmp(*builtins, cmd_name) == 0)
 			return (1);

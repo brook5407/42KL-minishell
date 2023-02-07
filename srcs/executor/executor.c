@@ -6,17 +6,11 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/07 12:33:05 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:22:10 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	set_io(int fd, int std_file_no)
-{
-	dup2(fd, std_file_no);
-	close(fd);
-}
 
 void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 {
@@ -32,7 +26,8 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	}
 	if (cur_cmd->pipefd[0] != 0)
 		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
-	exec_redirt_in(ms, cur_cmd);
+	if (exec_redirt_in(ms, cur_cmd) == EXIT_SUCCESS)
+		exit(exit);
 	exec_redirt_out(cur_cmd);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -66,13 +61,18 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 
 int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
 {
+	int	out;
+	int in;
+
+	out = dup(STDOUT_FILENO);
+	in = dup(STDIN_FILENO);
 	if (ms->cmds->next == NULL && is_builtin(ms, cur_cmd->cmd_name) == 0)
 		return (EXIT_FAILURE);
-	pipe(cur_cmd->pipefd);
-	exec_redirt_in(ms, cur_cmd);
 	exec_redirt_out(cur_cmd);
-	call_builtin(ms, cur_cmd);
-	close(STDOUT_FILENO);
+	if (exec_redirt_in(ms, cur_cmd) != EXIT_FAILURE);
+		call_builtin(ms, cur_cmd);
+	set_io(in, STDIN_FILENO);
+	set_io(out, STDOUT_FILENO);
 	return(EXIT_SUCCESS);
 }
 
@@ -106,8 +106,6 @@ void	executor(t_minishell *ms)
 	while (cur_proc != NULL)
 	{
 		cur_cmd = cur_proc->content;
-		// if (cur_proc->next == NULL && !cur_cmd->infile
-		// 	&& !cur_cmd->outfile && call_builtin(ms, cur_cmd) == 0)
 		if (exe_one_cmd(ms, cur_cmd) == 0)
 			return ;
 		envp = get_env_arry(ms);

@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/07 10:26:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:21:57 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
+void	set_io(int fd, int std_file_no)
+{
+	dup2(fd, std_file_no);
+	close(fd);
+}
+
+int	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 {
 	int		port;
 	t_list	*lst_redir;
@@ -32,12 +38,12 @@ void	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 			{
 				ft_putstr_fd(file->name, 2);
 				ft_putendl_fd(": No such file or directory", 2);
-				exit(EXIT_FAILURE);
+				set_io(infd, STDIN_FILENO);
+				return (EXIT_FAILURE);
 			}
 			lst_redir = lst_redir->next;
 		}
-		dup2(port, STDIN_FILENO);
-		close(port);
+		set_io(port, STDIN_FILENO);
 	}
 }
 
