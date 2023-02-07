@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/07 19:33:05 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/07 20:21:07 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
 	int	out;
 	int	in;
 
-	if (ms->cmds->next == NULL && is_builtin(ms, cur_cmd->cmd_name) == 0)
+	if (is_builtin(ms, cur_cmd->cmd_name) == 0)
 		return (EXIT_FAILURE);
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
@@ -106,8 +106,8 @@ void	executor(t_minishell *ms)
 	while (cur_proc != NULL)
 	{
 		cur_cmd = cur_proc->content;
-//		if (exe_one_cmd(ms, cur_cmd) == 0)
-//			return ;
+		if (ms->cmds->next == NULL && exe_one_cmd(ms, cur_cmd) == 0)
+			return ;
 		envp = get_env_arry(ms);
 		exec_pipe(ms, cur_proc, envp);
 		if (cur_proc->next)
