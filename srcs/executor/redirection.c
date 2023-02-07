@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/07 16:21:57 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:21:37 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 			{
 				ft_putstr_fd(file->name, 2);
 				ft_putendl_fd(": No such file or directory", 2);
-				set_io(infd, STDIN_FILENO);
 				return (EXIT_FAILURE);
 			}
 			lst_redir = lst_redir->next;
 		}
 		set_io(port, STDIN_FILENO);
 	}
+	return (EXIT_SUCCESS);
 }
 
 void	exec_redirt_out(t_cmd *cur_cmd)
@@ -65,8 +65,7 @@ void	exec_redirt_out(t_cmd *cur_cmd)
 			else if (file->rdr_type == APPEND)
 				flag = O_CREAT | O_APPEND | O_WRONLY;
 			port = open(file->name, flag, 0644);
-			dup2(port, STDOUT_FILENO);
-			close(port);
+			set_io(port, STDOUT_FILENO);
 			lst_redir = lst_redir->next;
 		}
 	}

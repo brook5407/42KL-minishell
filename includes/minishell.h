@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/07 16:12:44 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:20:39 by brook            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,9 +268,9 @@ void			free_env_var(t_env *env_var);
 void			free_env(t_list *envp);
 
 void			executor(t_minishell *ms);
-void			set_io(int fd, int std_file_no)
+void			set_io(int fd, int std_file_no);
 int				exec_heredoc(t_minishell *ms, char *quote);
-void			exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd, int i);
+int				exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd);
 void			exec_redirt_out(t_cmd *cur_cmd);
 void			exec_exit_status(int status);
 
