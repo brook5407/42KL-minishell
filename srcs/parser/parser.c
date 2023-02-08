@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/02 18:12:55 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 21:22:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,19 +91,58 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 		status = SYNTAX_ERROR;
 	else if (token != NULL && is_type_on(hlpr, token->type) == 0)
 	{
-		if ((gram == START || gram == CMD_ONLY) && token->type == STR)
+		// if ((gram == START || gram == CMD_ONLY) && token->type == STR)
+		if (gram == START && token->type == STR)
 			status = CMD_NOT_FOUND;
 		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
 			status = SYNTAX_ERROR;
 		unexpected = token->value;
 	}
-	if (status == CMD_NOT_FOUND || status == SYNTAX_ERROR)
+	if (status == SYNTAX_ERROR)
 	{
 		show_error(status, unexpected);
 		init_parser(hlpr);
 		ft_lstclear(&ms->cmds, free_cmd_block);
 	}
 	return (status);
+}
+
+void	resolve_loop(t_minishell *ms, t_list **curr, t_parser *hlpr)
+{
+	t_list	*lst;
+	t_token	*token;
+
+	lst = *curr;
+	while (lst != NULL)
+	{
+		token = lst->content;
+		if (token->type == PIPE)
+		{
+			lst = lst->next;
+			break ;
+		}
+		builder(ms, hlpr, token);
+		set_next_grammar(hlpr, token->type);
+		lst = lst->next;
+	}
+}
+
+void	resolve_cmd_not_found(t_minishell *ms, t_list **curr, t_parser *hlpr)
+{
+	t_list	*lst;
+
+	lst = *curr;
+	((t_token *)lst->content)->type = CMD;
+	resolve_loop(ms, curr, hlpr);
+	exec_redirt_in(ms, &hlpr->cmd);
+	exec_redirt_out(&hlpr->cmd);
+	// need to reset the io back
+	show_error(CMD_NOT_FOUND, hlpr->cmd.cmd_name);
+	free_cmd_data(&hlpr->cmd);
+	init_parser(hlpr);
+	ft_lstclear(&ms->cmds, free_cmd_block);
+	hlpr->curr_grammar = FREE_FORM;
+	*curr = lst;
 }
 
 /**
@@ -138,7 +177,7 @@ void	parser(t_minishell *ms)
 			return ;
 		else if (status == CMD_NOT_FOUND)
 		{
-			token_lst = skip_to_next_cmd_block(token_lst, &hlpr);
+			resolve_cmd_not_found(ms, &token_lst, &hlpr);
 			continue ;
 		}
 		builder(ms, &hlpr, token_lst->content);

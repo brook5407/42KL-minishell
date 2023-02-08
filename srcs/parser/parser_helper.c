@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 18:45:50 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/01 17:27:20 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/07 19:09:17 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,12 @@ void	init_parser(t_parser *hlpr)
 	hlpr->cmd.infile = NULL;
 	hlpr->cmd.outfile = NULL;
 	apply_grammar(hlpr, START);
+}
+
+void	free_cmd_data(t_cmd *cmd)
+{
+	free(cmd->cmd_name);
+	ft_lstclear(&cmd->args, free);
+	ft_lstclear(&cmd->infile, free_iofile);
+	ft_lstclear(&cmd->outfile, free_iofile);
 }

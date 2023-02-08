@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/07 19:20:39 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/08 10:25:23 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ void			parser(t_minishell *ms);
 void			add_as_cmd_block(t_minishell *ms, t_parser *hlpr);
 void			show_cmd_block(void *content);
 void			free_cmd_block(void *content);
+void			free_cmd_data(t_cmd *cmd);
 
 void			builder(t_minishell *ms, t_parser *hlpr, t_token *token);
 
@@ -241,6 +242,7 @@ int				is_type_on(t_parser *phlpr, t_token_type type);
 
 void			apply_grammar(t_parser *phlpr, t_grammar grammar);
 void			set_next_grammar(t_parser *phlpr, t_token_type curr);
+void			add_as_cmd(t_minishell *ms, t_parser *hlpr, t_token *token);
 
 int				check_operator_syntax(t_minishell *ms, char *token);
 void			check_incomplete_grammar(t_minishell *ms);
