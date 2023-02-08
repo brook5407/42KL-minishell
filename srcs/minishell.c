@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:36:35 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/08 13:50:27 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:30:37 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,21 @@ static char	get_dangling_quote(char *cmds)
 static char	*check_dangling_quote(char *cmds)
 {
 	char	dang_quote;
+	char	*quote;
 
+	quote = NULL;
 	dang_quote = get_dangling_quote(cmds);
 	if (dang_quote == 0)
 		return (cmds);
 	else if (dang_quote == '"')
-		show_error(UNCLOSED_QUOTE, ft_strndup(&QUOTES[0], 1));
+		quote = ft_strndup(&QUOTES[0], 1);
 	else if (dang_quote == '\'')
-		show_error(UNCLOSED_QUOTE, ft_strndup(&QUOTES[1], 1));
+		quote = ft_strndup(&QUOTES[1], 1);
+	show_error(UNCLOSED_QUOTE, quote);
 	free(cmds);
-	return (ft_strdup(""));
+	free(quote);
+	cmds = ft_strdup("");
+	return (cmds);
 }
 
 /**
