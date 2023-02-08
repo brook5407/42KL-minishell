@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/08 10:25:15 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:45:49 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	}
 	if (cur_cmd->pipefd[0] != 0)
 		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
-	if (exec_redirt_in(ms, cur_cmd) == EXIT_SUCCESS)
-		exit(EXIT_FAILURE);
 	exec_redirt_out(cur_cmd);
 	if (exec_redirt_in(ms, cur_cmd) == EXIT_FAILURE)
 		exit(g_errno);
