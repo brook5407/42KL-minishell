@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/07 11:46:26 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/08 13:28:50 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	call_env(t_minishell *ms, char **args)
 		env_var = envp->content;
 		if (env_var->value != NULL && env_var->value[0] != '\0')
 			ft_printf("%s=%s\n", env_var->key, env_var->value);
+		else if (env_var->value[0] == '\0')
+			ft_printf("%s=\n", env_var->key);
 		envp = envp->next;
 	}
 }

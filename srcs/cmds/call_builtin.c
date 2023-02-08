@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/07 12:59:22 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/08 14:18:40 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 		call_echo(ms, args);
 }
 
+int	is_export_unset_exit(char *cmd_name)
+{
+	if (ft_strcmp(cmd_name, "export") == 0
+		|| ft_strcmp(cmd_name, "unset") == 0
+		|| ft_strcmp(cmd_name, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 int	is_builtin(t_minishell *ms, char *cmd_name)
 {
 	char	**builtins;
@@ -76,7 +85,10 @@ int	call_builtin(t_minishell *ms, t_cmd *cmd)
 	args = lst_to_array(cmd->args);
 	cmd_name = cmd->cmd_name;
 	if (cmd_name == NULL)
+	{
+		free(args);
 		return (EXIT_FAILURE);
+	}
 	if (is_builtin(ms, cmd_name) == 0)
 	{
 		free(args);

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/08 10:45:49 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:18:01 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
 	int	out;
 	int	in;
 
-	if (is_builtin(ms, cur_cmd->cmd_name) == 0)
+	if (is_export_unset_exit(cur_cmd->cmd_name) == 0)
 		return (EXIT_FAILURE);
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);

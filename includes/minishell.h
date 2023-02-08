@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/08 10:25:23 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:18:47 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef enum e_error_type
 	INVALID_ID_EXP = 2,
 	INVALID_ID_UNS = 3,
 	TOO_MANY_ARG = 4,
+	UNCLOSED_QUOTE = 5,
 	SUCCESS = 0
 }		t_error_type;
 
@@ -249,6 +250,7 @@ void			check_incomplete_grammar(t_minishell *ms);
 
 char			**lst_to_array(t_list *lst);
 int				is_builtin(t_minishell *ms, char *cmd_name);
+int				is_export_unset_exit(char *cmd_name);
 int				call_builtin(t_minishell *ms, t_cmd *cmd);
 void			call_cd(t_minishell *ms, char **path);
 void			call_pwd(t_minishell *ms);

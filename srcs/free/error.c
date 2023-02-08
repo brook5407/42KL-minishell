@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:49:34 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/03 15:45:12 by brook            ###   ########.fr       */
+/*   Updated: 2023/02/08 13:46:00 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ void	show_error(t_error_type type, char *token)
 		ft_printf("export: `%s': not a valid identifier\n", token);
 	if (type == INVALID_ID_UNS)
 		ft_printf("unset: `%s': not a valid identifier\n", token);
+	if (type == UNCLOSED_QUOTE)
+		ft_printf("found unclosed quote: %s\n", token);
 	set_errno(type);
 }
