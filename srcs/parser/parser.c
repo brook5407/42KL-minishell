@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/07 21:22:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:40:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 		status = SYNTAX_ERROR;
 	else if (token != NULL && is_type_on(hlpr, token->type) == 0)
 	{
-		// if ((gram == START || gram == CMD_ONLY) && token->type == STR)
 		if (gram == START && token->type == STR)
 			status = CMD_NOT_FOUND;
 		else if ((gram == START && token->type == PIPE) || gram == POST_RDR)
@@ -130,13 +129,17 @@ void	resolve_loop(t_minishell *ms, t_list **curr, t_parser *hlpr)
 void	resolve_cmd_not_found(t_minishell *ms, t_list **curr, t_parser *hlpr)
 {
 	t_list	*lst;
+	int		fd[2];
 
 	lst = *curr;
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	((t_token *)lst->content)->type = CMD;
 	resolve_loop(ms, curr, hlpr);
 	exec_redirt_in(ms, &hlpr->cmd);
 	exec_redirt_out(&hlpr->cmd);
-	// need to reset the io back
+	set_io(fd[0], STDIN_FILENO);
+	set_io(fd[1], STDOUT_FILENO);
 	show_error(CMD_NOT_FOUND, hlpr->cmd.cmd_name);
 	free_cmd_data(&hlpr->cmd);
 	init_parser(hlpr);
