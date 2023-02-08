@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:38:49 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/08 10:25:35 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:22:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	exec_redirt_in(t_minishell *ms, t_cmd *cur_cmd)
 				port = exec_heredoc(ms, file->name);
 			if (port < 0)
 			{
-				ft_putstr_fd(file->name, 2);
-				ft_putendl_fd(": No such file or directory", 2);
+				show_error(FILE_NOT_FOUND, file->name);
 				set_io(port, STDIN_FILENO);
 				return (EXIT_FAILURE);
 			}
