@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 12:42:56 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/08 11:20:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 10:39:34 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,25 @@
  * In parser, when this function return NULL, it means
  * the whole parsing process is terminated.
 */
-t_list	*skip_to_next_cmd_block(t_list *curr, t_parser *hlpr)
-{
-	t_list	*new_start;
-	t_token	*token;
+// t_list	*skip_to_next_cmd_block(t_list *curr, t_parser *hlpr)
+// {
+// 	t_list	*new_start;
+// 	t_token	*token;
 
-	new_start = curr;
-	while (new_start != NULL)
-	{
-		token = new_start->content;
-		if (ft_strcmp(token->value, "|") == 0 && token->type == PIPE)
-		{
-			hlpr->curr_grammar = START;
-			return (new_start->next);
-		}
-		new_start = new_start->next;
-	}
-	hlpr->curr_grammar = FREE_FORM;
-	return (new_start);
-}
+// 	new_start = curr;
+// 	while (new_start != NULL)
+// 	{
+// 		token = new_start->content;
+// 		if (ft_strcmp(token->value, "|") == 0 && token->type == PIPE)
+// 		{
+// 			hlpr->curr_grammar = START;
+// 			return (new_start->next);
+// 		}
+// 		new_start = new_start->next;
+// 	}
+// 	hlpr->curr_grammar = FREE_FORM;
+// 	return (new_start);
+// }
 
 /**
  * @brief Grammar checker. Checks the token if it's expected. If not expected,
@@ -106,49 +106,49 @@ int	grammar_checker(t_minishell *ms, t_parser *hlpr, t_token *token)
 	return (status);
 }
 
-void	resolve_loop(t_minishell *ms, t_list **curr, t_parser *hlpr)
-{
-	t_list	*lst;
-	t_token	*token;
+// void	resolve_loop(t_minishell *ms, t_list **curr, t_parser *hlpr)
+// {
+// 	t_list	*lst;
+// 	t_token	*token;
 
-	lst = *curr;
-	while (lst != NULL)
-	{
-		token = lst->content;
-		if (token->type == PIPE)
-		{
-			lst = lst->next;
-			hlpr->curr_grammar = START;
-			break ;
-		}
-		builder(ms, hlpr, token);
-		set_next_grammar(hlpr, token->type);
-		lst = lst->next;
-	}
-	*curr = lst;
-}
+// 	lst = *curr;
+// 	while (lst != NULL)
+// 	{
+// 		token = lst->content;
+// 		if (token->type == PIPE)
+// 		{
+// 			lst = lst->next;
+// 			hlpr->curr_grammar = START;
+// 			break ;
+// 		}
+// 		builder(ms, hlpr, token);
+// 		set_next_grammar(hlpr, token->type);
+// 		lst = lst->next;
+// 	}
+// 	*curr = lst;
+// }
 
-void	resolve_cmd_not_found(t_minishell *ms, t_list **curr, t_parser *hlpr)
-{
-	t_list	*lst;
-	int		fd[2];
+// void	resolve_cmd_not_found(t_minishell *ms, t_list **curr, t_parser *hlpr)
+// {
+// 	t_list	*lst;
+// 	int		fd[2];
 
-	lst = *curr;
-	fd[0] = dup(STDIN_FILENO);
-	fd[1] = dup(STDOUT_FILENO);
-	((t_token *)lst->content)->type = CMD;
-	resolve_loop(ms, &lst, hlpr);
-	exec_redirt_in(ms, &hlpr->cmd);
-	exec_redirt_out(&hlpr->cmd);
-	set_io(fd[0], STDIN_FILENO);
-	set_io(fd[1], STDOUT_FILENO);
-	show_error(CMD_NOT_FOUND, hlpr->cmd.cmd_name);
-	free_cmd_data(&hlpr->cmd);
-	init_parser(hlpr);
-	ft_lstclear(&ms->cmds, free_cmd_block);
-	hlpr->curr_grammar = FREE_FORM;
-	*curr = lst;
-}
+// 	lst = *curr;
+// 	fd[0] = dup(STDIN_FILENO);
+// 	fd[1] = dup(STDOUT_FILENO);
+// 	((t_token *)lst->content)->type = CMD;
+// 	resolve_loop(ms, &lst, hlpr);
+// 	exec_redirt_in(ms, &hlpr->cmd);
+// 	exec_redirt_out(&hlpr->cmd);
+// 	set_io(fd[0], STDIN_FILENO);
+// 	set_io(fd[1], STDOUT_FILENO);
+// 	show_error(CMD_NOT_FOUND, hlpr->cmd.cmd_name);
+// 	free_cmd_data(&hlpr->cmd);
+// 	init_parser(hlpr);
+// 	// ft_lstclear(&ms->cmds, free_cmd_block);
+// 	hlpr->curr_grammar = FREE_FORM;
+// 	*curr = lst;
+// }
 
 /**
  * @brief Parse the list of token and build a cmd list
@@ -170,6 +170,7 @@ void	resolve_cmd_not_found(t_minishell *ms, t_list **curr, t_parser *hlpr)
 void	parser(t_minishell *ms)
 {
 	t_list		*token_lst;
+	t_token		*token;
 	t_parser	hlpr;
 	int			status;
 
@@ -177,16 +178,14 @@ void	parser(t_minishell *ms)
 	init_parser(&hlpr);
 	while (token_lst != NULL)
 	{
-		status = grammar_checker(ms, &hlpr, token_lst->content);
+		token = token_lst->content;
+		status = grammar_checker(ms, &hlpr, token);
 		if (status == SYNTAX_ERROR)
 			return ;
 		else if (status == CMD_NOT_FOUND)
-		{
-			resolve_cmd_not_found(ms, &token_lst, &hlpr);
-			continue ;
-		}
+			token->type = CMD;
 		builder(ms, &hlpr, token_lst->content);
-		set_next_grammar(&hlpr, ((t_token *)token_lst->content)->type);
+		set_next_grammar(&hlpr, token->type);
 		token_lst = token_lst->next;
 	}
 	status = grammar_checker(ms, &hlpr, NULL);
