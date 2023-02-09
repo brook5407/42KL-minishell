@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/09 11:05:21 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:26:58 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 {
 	t_cmd	*cur_cmd;
 	t_cmd	*next_cmd;
-	int		fd_out;
+	int		fd[2];
 
-	fd_out = dup(STDOUT_FILENO);
 	cur_cmd = cur_proc->content;
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	if (cur_proc->next)
 	{
 		next_cmd = cur_proc->next->content;
@@ -28,14 +29,16 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	}
 	if (cur_cmd->pipefd[0] != 0)
 		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
-	exec_redirt_out(cur_cmd);
+	if (cur_cmd->infile != NULL)
+		set_io(fd[0], STDIN_FILENO);
 	if (exec_redirt_in(ms, cur_cmd) == EXIT_FAILURE)
 		exit(g_errno);
+	exec_redirt_out(cur_cmd);
 	signal_default();
 	if (call_builtin(ms, cur_cmd) == 1 && cmd[0])
 	{
 		execve(cmd[0], cmd, envp);
-		set_io(fd_out, STDOUT_FILENO);
+		set_io(fd[1], STDOUT_FILENO);
 		show_error(CMD_NOT_FOUND, *cmd);
 	}
 	exit(g_errno);
@@ -50,7 +53,7 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 	cur_cmd = cur_proc->content;
 	next_cmd = cur_proc->content;
 	cmd = lst_to_array(cur_cmd->args);
-	g_errno = -1;
+	g_errno = 0;
 	if (cur_proc->next)
 	{
 		next_cmd = cur_proc->next->content;
@@ -61,23 +64,6 @@ int	exec_pipe(t_minishell *ms, t_list *cur_proc, char **envp)
 		exec_child(ms, cur_proc, cmd, envp);
 	else
 		free(cmd);
-	return (EXIT_SUCCESS);
-}
-
-int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
-{
-	int	out;
-	int	in;
-
-	if (is_builtin(ms, cur_cmd->cmd_name) == 0)
-		return (EXIT_FAILURE);
-	in = dup(STDIN_FILENO);
-	out = dup(STDOUT_FILENO);
-	exec_redirt_out(cur_cmd);
-	if (exec_redirt_in(ms, cur_cmd) != EXIT_FAILURE)
-		call_builtin(ms, cur_cmd);
-	set_io(in, STDIN_FILENO);
-	set_io(out, STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
 
@@ -100,6 +86,25 @@ void	wait_pipe(t_minishell *ms)
 	}
 }
 
+int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
+{
+	int	fd_in;
+
+	g_errno = 1;
+	if (is_builtin(ms, cur_cmd->cmd_name) == 0)
+		return (EXIT_FAILURE);
+	fd_in = dup(STDOUT_FILENO);
+	cur_cmd->pid = fork();
+	if (cur_cmd->pid == 0)
+		exit(exec_redirt_in(ms, cur_cmd));
+	wait_pipe(ms);
+	exec_redirt_out(cur_cmd);
+	if (g_errno != 1 && g_errno != 130)
+		call_builtin(ms, cur_cmd);
+	set_io(fd_in, STDOUT_FILENO);
+	return (EXIT_SUCCESS);
+}
+
 void	executor(t_minishell *ms)
 {
 	t_list	*cur_proc;
@@ -110,6 +115,7 @@ void	executor(t_minishell *ms)
 	cur_proc = ms->cmds;
 	while (cur_proc != NULL)
 	{
+		signal(SIGINT, SIG_IGN);
 		cur_cmd = cur_proc->content;
 		if (ms->cmds->next == NULL && exe_one_cmd(ms, cur_cmd) == 0)
 			return ;
