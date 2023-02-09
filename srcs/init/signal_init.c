@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:52 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/06 11:22:06 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:04:45 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
  * 3. Move the cursor to the start of the next line
  * 4. Redraw the current input line on the screen
 */
-void	signal_handler(int sig)
+static void	signal_handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
@@ -69,4 +69,32 @@ void	init_termios_signal(int set_sig)
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
+}
+
+/**
+ * @brief Signal handler for heredoc
+*/
+static void	heredoc_signal_handler(int sig)
+{
+	if (sig != SIGINT)
+		return ;
+	g_errno = INTERRUPTED;
+	rl_on_new_line();
+	ft_printf("\n");
+	rl_replace_line("", 0);
+}
+
+/**
+ * @brief Set heredoc signal
+*/
+void	init_heredoc_signal(void)
+{
+	signal(SIGINT, heredoc_signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	signal_default(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

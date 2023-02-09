@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/08 14:18:01 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:05:21 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 {
 	t_cmd	*cur_cmd;
 	t_cmd	*next_cmd;
+	int		fd_out;
 
+	fd_out = dup(STDOUT_FILENO);
 	cur_cmd = cur_proc->content;
 	if (cur_proc->next)
 	{
@@ -29,10 +31,13 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	exec_redirt_out(cur_cmd);
 	if (exec_redirt_in(ms, cur_cmd) == EXIT_FAILURE)
 		exit(g_errno);
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	signal_default();
 	if (call_builtin(ms, cur_cmd) == 1 && cmd[0])
+	{
 		execve(cmd[0], cmd, envp);
+		set_io(fd_out, STDOUT_FILENO);
+		show_error(CMD_NOT_FOUND, *cmd);
+	}
 	exit(g_errno);
 }
 
@@ -64,7 +69,7 @@ int	exe_one_cmd(t_minishell *ms, t_cmd *cur_cmd)
 	int	out;
 	int	in;
 
-	if (is_export_unset_exit(cur_cmd->cmd_name) == 0)
+	if (is_builtin(ms, cur_cmd->cmd_name) == 0)
 		return (EXIT_FAILURE);
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
@@ -90,7 +95,7 @@ void	wait_pipe(t_minishell *ms)
 		if (WIFEXITED(status))
 			g_errno = (WEXITSTATUS(status));
 		if (WIFSIGNALED(status))
-			g_errno = 130;
+			g_errno = INTERRUPTED;
 		cur_proc = cur_proc->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:48:10 by wricky-t          #+#    #+#             */
-/*   Updated: 2023/02/08 14:18:47 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:05:06 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@
 # define BUFFSIZE 256
 # define WRAP 1
 # define NOWRAP 0
+# define INTERRUPTED 130
+# define HDOC_TERMINATED -1
 
 /* ====== ENUMS ====== */
 
@@ -201,6 +203,7 @@ int			g_errno;
 void			init_minishell(t_minishell *ms, char **ev);
 void			init_environment(t_minishell *ms, char **ev);
 void			init_termios_signal(int set_sig);
+void			signal_default(void);
 void			set_prompt(t_minishell *ms);
 void			add_env_var(t_minishell *ms, char *key, char *value);
 void			*cpy_env(void *env);
