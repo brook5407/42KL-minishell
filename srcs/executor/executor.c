@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:25:49 by brook             #+#    #+#             */
-/*   Updated: 2023/02/09 14:26:58 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:21:59 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,18 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 {
 	t_cmd	*cur_cmd;
 	t_cmd	*next_cmd;
-	int		fd[2];
+	int		fd_out;
 
 	cur_cmd = cur_proc->content;
-	fd[0] = dup(STDIN_FILENO);
-	fd[1] = dup(STDOUT_FILENO);
+	fd_out = dup(STDOUT_FILENO);
 	if (cur_proc->next)
 	{
 		next_cmd = cur_proc->next->content;
 		close(next_cmd->pipefd[0]);
 		set_io(next_cmd->pipefd[1], STDOUT_FILENO);
 	}
-	if (cur_cmd->pipefd[0] != 0)
+	if (cur_cmd->pipefd[0] != 0 && cur_cmd->infile == NULL)
 		set_io(cur_cmd->pipefd[0], STDIN_FILENO);
-	if (cur_cmd->infile != NULL)
-		set_io(fd[0], STDIN_FILENO);
 	if (exec_redirt_in(ms, cur_cmd) == EXIT_FAILURE)
 		exit(g_errno);
 	exec_redirt_out(cur_cmd);
@@ -38,7 +35,7 @@ void	exec_child(t_minishell *ms, t_list *cur_proc, char **cmd, char **envp)
 	if (call_builtin(ms, cur_cmd) == 1 && cmd[0])
 	{
 		execve(cmd[0], cmd, envp);
-		set_io(fd[1], STDOUT_FILENO);
+		set_io(fd_out, STDOUT_FILENO);
 		show_error(CMD_NOT_FOUND, *cmd);
 	}
 	exit(g_errno);
