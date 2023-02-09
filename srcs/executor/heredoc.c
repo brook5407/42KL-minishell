@@ -6,7 +6,7 @@
 /*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 20:52:18 by brook             #+#    #+#             */
-/*   Updated: 2023/02/07 12:17:13 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:38:57 by chchin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*get_here_str(t_minishell *ms, char *quote)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
+		g_errno = -1;
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, quote) == 0)
 		{
@@ -49,7 +50,6 @@ char	*get_here_str(t_minishell *ms, char *quote)
 		process_here_str(ms, &line);
 		rl = ft_strjoin_free(rl, line);
 		free(line);
-		g_errno = -1;
 	}
 	return (rl);
 }
