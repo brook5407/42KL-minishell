@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chchin <chchin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:32:44 by brook             #+#    #+#             */
-/*   Updated: 2023/02/09 14:02:49 by chchin           ###   ########.fr       */
+/*   Updated: 2023/02/10 12:15:56 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static void	builtin_caller(t_minishell *ms, char *cmd_name, char **args)
 {
 	args++;
 	g_errno = 0;
+	if (cmd_name == NULL)
+		return ;
 	if (ft_strcmp(cmd_name, "cd") == 0)
 		call_cd(ms, args);
 	else if (ft_strcmp(cmd_name, "env") == 0)

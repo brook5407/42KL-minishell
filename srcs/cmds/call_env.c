@@ -6,7 +6,7 @@
 /*   By: wricky-t <wricky-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 10:57:46 by chchin            #+#    #+#             */
-/*   Updated: 2023/02/08 13:28:50 by wricky-t         ###   ########.fr       */
+/*   Updated: 2023/02/10 12:19:57 by wricky-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,13 @@ void	call_env(t_minishell *ms, char **args)
 	while (envp != NULL)
 	{
 		env_var = envp->content;
-		if (env_var->value != NULL && env_var->value[0] != '\0')
-			ft_printf("%s=%s\n", env_var->key, env_var->value);
-		else if (env_var->value[0] == '\0')
-			ft_printf("%s=\n", env_var->key);
+		if (env_var->value != NULL)
+		{
+			if (env_var->value[0] != '\0')
+				ft_printf("%s=%s\n", env_var->key, env_var->value);
+			else if (env_var->value[0] == '\0')
+				ft_printf("%s=\n", env_var->key);
+		}
 		envp = envp->next;
 	}
 }
